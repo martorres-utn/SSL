@@ -22,7 +22,7 @@
 
 5. **Indique el paradigma de programación aplicado en primer año de la carrera.**
 
-6. **Defina abstracción.2. **
+6. **Defina abstracción.**
 
 
 ## Parte II
@@ -41,7 +41,7 @@
 
 7. **Defina Lenguaje Formal.**
 
-8. **Defina autómata finito.3. **
+8. **Defina autómata finito.**
 
 
 ## Parte III
@@ -62,6 +62,6 @@
 
 8. **Indique las diferencias entre una pila y una cola**
 
-9. **Defina archivo.
+9. **Defina archivo.**
 
 10. **Diseñe un algoritmo que dado un arreglo de naturales a y su longitud n calcule el promedio.**
