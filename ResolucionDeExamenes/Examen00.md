@@ -48,8 +48,8 @@
 
 	Dicha relación es un subconjunto del producto cartesiano A x B y para ser considerado función debe cumplir:
 
-	1. Existencia: Todo elemento del conjunto A debe relacionarse con alguno del conjunto B.
-	2. Unicidad: Un mismo elemento del conjunto A no puede relacionarse con dos elementos distintos del conjunto B.
+	1. **Existencia**: Todo elemento del conjunto A debe relacionarse con alguno del conjunto B.
+	2. **Unicidad**: Un mismo elemento del conjunto A no puede relacionarse con dos elementos distintos del conjunto B.
 
 4. **Defina grafo.**
 
@@ -57,9 +57,9 @@
 	
 	Definición formal: es una terna G = (V; A; r) siendo:
 
-	* V: un conjunto de vértices no vacío.
-	* A: un conjunto de aristas.
-	* r: una función de incidencia r: A -> V\'\' y V\'\' es un conjunto formado por subconjuntos de 1 o 2 elementos de V.
+	* **V**: un conjunto de vértices no vacío.
+	* **A**: un conjunto de aristas.
+	* **r**: una función de incidencia r: A -> V\'\' y V\'\' es un conjunto formado por subconjuntos de 1 o 2 elementos de V.
 
 5. **Defina partición de un conjunto.**
 	
@@ -83,11 +83,11 @@
 
 	A = (Q; V; r; q0; F)
 
-	Q: Conjunto finito de estados.
-	V: Alfabeto.
-	r: función de transición: Q x V -> Q.
-	q0: estado inicial
-	F: Conjunto de estados finales. Este conjunto no puede ser vacío y debe estar incluido dentro de Q.
+	* **Q**: Conjunto finito de estados.
+	* **V**: Alfabeto.
+	* **r**: función de transición: Q x V -> Q.
+	* **q0**: estado inicial
+	* **F**: Conjunto de estados finales. Este conjunto no puede ser vacío y debe estar incluido dentro de Q.
 
 ## Parte III
 
