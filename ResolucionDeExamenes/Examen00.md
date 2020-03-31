@@ -43,11 +43,11 @@
 	Una secuencia o sucesión es una lista de elementos numerables y ordenados, es decir que a cada número en el conjunto de los números naturales le corresponde un elemento de la sucesión. Esta correspondencia puede ser con el mismo conjunto de números naturales o con conjuntos de otro tipo. Puede decirse que una sucesión es una función con dominio N (naturales) y codominio A (cualquier otro conjunto).
 
 3. **Defina función matemática.**
-	
+
 	Una función matemática es una relación entre dos conjuntos cualquiera. Supongamos función F que relaciona conjuntos A y B. 
-	
+
 	Dicha relación es un subconjunto del producto cartesiano A x B y para ser considerado función debe cumplir:
-	
+
 	1. Existencia: Todo elemento del conjunto A debe relacionarse con alguno del conjunto B.
 	2. Unicidad: Un mismo elemento del conjunto A no puede relacionarse con dos elementos distintos del conjunto B.
 
@@ -56,10 +56,10 @@
 	Definición informal: es un conjunto de puntos o nodos unidos por arcos o aristas.
 	
 	Definición formal: es una terna G = (V; A; r) siendo:
-		
-		* V: un conjunto de vértices no vacío.
-		* A: un conjunto de aristas.
-		* r: una función de incidencia r: A -> V'' y V'' es un conjunto formado por subconjuntos de 1 o 2 elementos de V.
+
+	* V: un conjunto de vértices no vacío.
+	* A: un conjunto de aristas.
+	* r: una función de incidencia r: A -> V\'\' y V\'\' es un conjunto formado por subconjuntos de 1 o 2 elementos de V.
 
 5. **Defina partición de un conjunto.**
 	
