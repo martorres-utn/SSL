@@ -45,14 +45,18 @@
 3. **Defina función matemática.**
 	
 	Una función matemática es una relación entre dos conjuntos cualquiera. Supongamos función F que relaciona conjuntos A y B. 
+	
 	Dicha relación es un subconjunto del producto cartesiano A x B y para ser considerado función debe cumplir:
+	
 	1. Existencia: Todo elemento del conjunto A debe relacionarse con alguno del conjunto B.
 	2. Unicidad: Un mismo elemento del conjunto A no puede relacionarse con dos elementos distintos del conjunto B.
 
 4. **Defina grafo.**
 
 	Definición informal: es un conjunto de puntos o nodos unidos por arcos o aristas.
+	
 	Definición formal: es una terna G = (V; A; r) siendo:
+		
 		* V: un conjunto de vértices no vacío.
 		* A: un conjunto de aristas.
 		* r: una función de incidencia r: A -> V'' y V'' es un conjunto formado por subconjuntos de 1 o 2 elementos de V.
@@ -60,6 +64,7 @@
 5. **Defina partición de un conjunto.**
 	
 	Sea un conjunto no vacío A, la partición de A es otro conjunto P constituido a su vez por otros conjuntos: P = { A1, A2, ... , An}. P es partición si y sólo si cumple lo siguiente:
+	
 	1. Para todo i: Ai no es vacío. Esto significa que todos los elementos dentro de P no son vacíos.
 	2. Para todo i distinto de j se verifica que: Ai intersección con Aj es vacío. Esto significa que para cualquier par de elementos dentro de P, la intersección entre ellos no posee elementos (no hay elementos en común).
 	3. La unión de todos los elementos Ai es igual al conjunto original A.
