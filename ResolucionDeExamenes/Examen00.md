@@ -163,13 +163,21 @@
 
 10. **Diseñe un algoritmo que dado un arreglo de naturales a y su longitud n calcule el promedio.**
 
-		unsigned int CalcularPromedio (unsigned int a[], unsigned int n)
+		double CalcularPromedio (unsigned int a[], unsigned int n)
 		{
-		    double suma = 0;
-		    for(unsigned int ind = 0; ind < n; ind++)
-		    {
-		        suma += a[ind];
-		    }
+			// Considero que n == 0 es un caso extremo de un arreglo vacío. 
+			// Su promedio es imposible de ser calculado. 
+			// Devolvemos -1 indicando que no se pudo procesar el dato.
+			if(n == 0)
+			{
+				return -1;
+			}
+			
+			double suma = 0;
+			for(unsigned int ind = 0; ind < n; ind++)
+			{
+				suma += a[ind];
+			}
 
-		    return (suma / n);
+			return (suma / n);
 		}
