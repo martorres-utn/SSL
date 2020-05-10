@@ -85,5 +85,33 @@
                 int i=42;
                 prontf("La respuesta es %d\n");
 
+3. Escribir hello3.c, una nueva variante:
+
+        int printf(const char *s, ...);
+        
+        int main(void){ 
+            int i=42; 
+            prontf("La respuesta es %d\n")
+    
+4. Investigar la semántica de la primera línea.
+    
+    Se declara una función llamada printf que recibe como primer argumento un puntero tipo char constante llamado "s". Los puntos suspensivos indican que la cantidad de argumentos que suceden al primero es variable.
+
+5. Preprocesar hello3.c, no compilar, y generar hello3.i. Buscar diferenciasentre hello3.c y hello3.i.
+
+    hello3.i:
+
+        # 1 "hello3.c"
+        # 1 "<built-in>"
+        # 1 "<command-line>"
+        # 1 "hello3.c"
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            prontf("La respuesta es %d\n");
+    
+    Es parecido a hello3.c sólo que la instrucción \#include fue reemplazada por los linemarkers que hacen referencia a la biblioteca \<built-in\> y \<command-line\>. Luego aparece el código de nuestro archivo hello3.c
+
 
 
