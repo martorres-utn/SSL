@@ -258,13 +258,193 @@
 
 9. Ensamblar hello4.s en hello4.o, no vincular.
 
+        PS C:\repos\SSL\03-FasesErrores> gcc hello4.s -std=c18 -c -o hello4.o
+    
+    No hubo errores y generó un archivo binario hello4.o
+
 10. Vincular hello4.o con la biblioteca estándar y generar el ejecutable.
+
+        PS C:\repos\SSL\03-FasesErrores> gcc hello4.o -std=c18
+
+    Generó un archivo a.exe, lo ejecutamos a continuación:
+
+        PS C:\repos\SSL\03-FasesErrores> .\a.exe
+        La respuesta es 4200688
+
+    Vemos que junto con la cadena imprime el valor 4200688 en lugar de 42. **Aunque en hello4.c no especificamos el valor que queríamos imprimir**.
 
 11. Corregir en hello5.c y generar el ejecutable.
 
+    Corregimos el error en hello5.c y nos queda:
+
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            printf("La respuesta es %d\n", i);
+        }
+
+    Luego volvemos a compilar y generar el ejecutable:
+
+        PS C:\repos\SSL\03-FasesErrores> gcc hello5.c -E -o hello5.i
+        PS C:\repos\SSL\03-FasesErrores> gcc hello5.i -S -o hello5.s
+        PS C:\repos\SSL\03-FasesErrores> gcc hello5.s -c -o hello5.o
+        PS C:\repos\SSL\03-FasesErrores> gcc hello5.o
+    
+    Se generó el archivo a.exce
+
 12. Ejecutar y analizar el resultado.
 
+        PS C:\repos\SSL\03-FasesErrores> .\a.exe
+            La respuesta es 42
+
+    Ahora la aplicación imprime el valor correcto: 42.
+
 13. Corregir en hello6.c y empezar de nuevo.
+
+    Incluyo stdio.h y queda:
+
+        #include <stdio.h>
+
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            printf("La respuesta es %d\n", i);
+        }
+
+    Vuelvo a iniciar todo el proceso de compilación hasta obtener un ejecutable:
+
+        PS C:\repos\SSL\03-FasesErrores> gcc hello6.c -E -o hello6.i
+        PS C:\repos\SSL\03-FasesErrores> gcc hello6.i -S -o hello6.s
+        PS C:\repos\SSL\03-FasesErrores> gcc hello6.s -c -o hello6.o
+        PS C:\repos\SSL\03-FasesErrores> gcc hello6.o 
+        PS C:\repos\SSL\03-FasesErrores> .\a.exe
+        La respuesta es 42
+
+    Comparo hello5.i con hello6.i y son diferentes: hello5.i carece de los linemarkers que hacen referencia a la biblioteca standard y de todas las declaraciones de tipos y variables globales de la biblioteca. hello6.i es mucho más extenso y posee linemarkers que hacen referencia a archivos de la biblioteca standard además de código de declaración de tipos y variables.
+
+    hello5.i
+
+        # 1 "hello5.c"
+        # 1 "<built-in>"
+        # 1 "<command-line>"
+        # 1 "hello5.c"
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            printf("La respuesta es %d\n", i);
+        }
+
+    hello6.i
+
+        # 1 "hello6.c"
+        # 1 "<built-in>"
+        # 1 "<command-line>"
+        # 1 "hello6.c"
+        # 1 "c:\\mingw\\include\\stdio.h" 1 3
+        # 38 "c:\\mingw\\include\\stdio.h" 3
+
+        ... MUCHAS LINEAS ...
+
+        __attribute__((__cdecl__)) __attribute__((__nothrow__)) wint_t fgetwchar (void);
+        __attribute__((__cdecl__)) __attribute__((__nothrow__)) wint_t fputwchar (wint_t);
+        __attribute__((__cdecl__)) __attribute__((__nothrow__)) int getw (FILE *);
+        __attribute__((__cdecl__)) __attribute__((__nothrow__)) int putw (int, FILE *);
+
+
+
+
+
+        # 2 "hello6.c" 2
+
+
+        # 3 "hello6.c"
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            printf("La respuesta es %d\n", i);
+        }
+
+    Comparo hello5.s y hello6.s y son casi identicos: Las únicas diferencias son los filenames en la directiva .file de assembler y LFB0 pasa a ser LFB13 (lo mismo con LFE0 a LFE13).
+
+    hello5.s
+
+        	.file	"hello5.c"
+            .text
+            .def	___main;	.scl	2;	.type	32;	.endef
+            .section .rdata,"dr"
+        LC0:
+            .ascii "La respuesta es %d\12\0"
+            .text
+            .globl	_main
+            .def	_main;	.scl	2;	.type	32;	.endef
+        _main:
+        LFB0:
+            .cfi_startproc
+            pushl	%ebp
+            .cfi_def_cfa_offset 8
+            .cfi_offset 5, -8
+            movl	%esp, %ebp
+            .cfi_def_cfa_register 5
+            andl	$-16, %esp
+            subl	$32, %esp
+            call	___main
+            movl	$42, 28(%esp)
+            movl	28(%esp), %eax
+            movl	%eax, 4(%esp)
+            movl	$LC0, (%esp)
+            call	_printf
+            movl	$0, %eax
+            leave
+            .cfi_restore 5
+            .cfi_def_cfa 4, 4
+            ret
+            .cfi_endproc
+        LFE0:
+            .ident	"GCC: (MinGW.org GCC Build-20200227-1) 9.2.0"
+            .def	_printf;	.scl	2;	.type	32;	.endef
+
+    hello6.s
+
+        	.file	"hello6.c"
+            .text
+            .def	___main;	.scl	2;	.type	32;	.endef
+            .section .rdata,"dr"
+        LC0:
+            .ascii "La respuesta es %d\12\0"
+            .text
+            .globl	_main
+            .def	_main;	.scl	2;	.type	32;	.endef
+        _main:
+        LFB13:
+            .cfi_startproc
+            pushl	%ebp
+            .cfi_def_cfa_offset 8
+            .cfi_offset 5, -8
+            movl	%esp, %ebp
+            .cfi_def_cfa_register 5
+            andl	$-16, %esp
+            subl	$32, %esp
+            call	___main
+            movl	$42, 28(%esp)
+            movl	28(%esp), %eax
+            movl	%eax, 4(%esp)
+            movl	$LC0, (%esp)
+            call	_printf
+            movl	$0, %eax
+            leave
+            .cfi_restore 5
+            .cfi_def_cfa 4, 4
+            ret
+            .cfi_endproc
+        LFE13:
+            .ident	"GCC: (MinGW.org GCC Build-20200227-1) 9.2.0"
+            .def	_printf;	.scl	2;	.type	32;	.endef
+
+    Supongo que GCC al compilar archivos .i si encuentra simbolos que coinciden con los de la biblioteca standard, entonces asume que se está haciendo referencia a ellos y por eso el resultado en código assembler es similar entre hello5.i y hello6.i (a pesar de que hello5.i no incluye explícitamente a la biblioteca standard)
 
 14. Escribir hello7.c, una nueva variante:
 
@@ -273,4 +453,51 @@
             printf("La respuesta es %d\n", i);
         }
 
+    Creo el nuevo archivo hello7.c y pego el código de arriba.
+
+    Luego repito el proceso de compilación paso por paso como en los puntos anteriores:
+
+        PS C:\repos\SSL\03-FasesErrores> gcc hello7.c -E -o hello7.i
+        PS C:\repos\SSL\03-FasesErrores> gcc hello7.i -S -o hello7.s
+        hello7.c:3:5: warning: incompatible implicit declaration of built-in function 'printf'
+        hello7.c:1:1: note: include '<stdio.h>' or provide a declaration of 'printf'
+        +++ |+#include <stdio.h>
+            1 | int main(void){
+        
+    Se genera el archivo hello7.s pero en el proceso el compilador me genera un warning avisándome de una declaración "implícita" de una función "built-in" printf (asumo que se refiere a que es una función propia de la biblioteca standard provista por el compilador GCC)
+
+    Igualmente puedo seguir el proceso de compilación y transformar el archivo.s en objeto:
+
+        PS C:\repos\SSL\03-FasesErrores> gcc hello7.s -c -o hello7.o
+        PS C:\repos\SSL\03-FasesErrores> gcc hello7.o
+        PS C:\repos\SSL\03-FasesErrores> gcc hello7.o
+        PS C:\repos\SSL\03-FasesErrores> .\a.exe
+        La respuesta es 42
+
+    El proceso de compilación finaliza y logro ejecutar el programa sin inconvenientes.
+
 15. Explicar porqué funciona.
+
+    Mi interpretación de por qué funciona: creo que GCC está ayudando en el proceso de compilación, cada vez que encuentra una palabra/símbolo que coincide con alguno definido en la biblioteca standard asume que el programador quizo hacer referencia a la biblioteca y no a otros.
+
+    Diferencias entre hello6.c y hello7.c
+
+    hello6.c
+
+        #include <stdio.h>
+
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            printf("La respuesta es %d\n", i);
+        }
+
+    hello7.c
+
+        int main(void){ 
+            int i=42;    
+            printf("La respuesta es %d\n", i);
+        }
+    
+    La diferencia es que hello6.c incluye la biblioteca standard y además tiene la linea **int printf(const char *s, ...);** que creo que actúa como una forward declaration de la función printf. Lo que quiere decir es que esa línea le dice al compilador que existe una función printf con una cantidad variable de argumentos pero no le especifica cómo se comporta esa función, luego en algún momento en el proceso de compilación el compilador encuentra que printf coincide con un simbolo de la biblioteca standard y entonces asume que se está haciendo referencia a él y lo utiliza.
