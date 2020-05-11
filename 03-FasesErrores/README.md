@@ -113,5 +113,164 @@
     
     Es parecido a hello3.c sólo que la instrucción \#include fue reemplazada por los linemarkers que hacen referencia a la biblioteca \<built-in\> y \<command-line\>. Luego aparece el código de nuestro archivo hello3.c
 
+6. Compilar el resultado y generar hello3.s, no ensamblar.
 
+        PS C:\repos\SSL\03-FasesErrores> gcc hello3.i -S -o hello3.s
+        hello3.c: In function 'main':
+        hello3.c:5:5: warning: implicit declaration of function 'prontf'; did you mean 'printf'? [-Wimplicit-function-declaration]
+            5 |     prontf("La respuesta es %d\n");
+            |     ^~~~~~
+            |     printf
+        hello3.c:5:5: error: expected declaration or statement at end of input
+    
+    Corregimos: reemplazamos prontf por printf y volvemos a generar hello3.i y a compilarlo.
 
+        PS C:\repos\SSL\03-FasesErrores> gcc hello3.c -E -o hello3.i
+        PS C:\repos\SSL\03-FasesErrores> gcc hello3.i -S -o hello3.s
+        hello3.c: In function 'main':
+        hello3.c:5:5: error: expected declaration or statement at end of input
+            5 |     printf("La respuesta es %d\n");
+            |     ^~~~~~
+    
+    Corregimos: cerramos con "}" la función main en hello3.c y volvemos a generar hello3.i y hello3.s.
+
+        int printf(const char *s, ...);
+
+        int main(void){
+            int i=42;
+            printf("La respuesta es %d\n");
+        }
+
+    Volvemos a compilar (esta vez sin errores):
+
+        PS C:\repos\SSL\03-FasesErrores> gcc hello3.c -E -o hello3.i
+        PS C:\repos\SSL\03-FasesErrores> gcc hello3.i -S -o hello3.s
+
+    Se generó el archivo hello3.s que contiene código de Assembler
+
+            .file	"hello3.c"
+            .text
+            .def	___main;	.scl	2;	.type	32;	.endef
+            .section .rdata,"dr"
+        LC0:
+            .ascii "La respuesta es %d\12\0"
+            .text
+            .globl	_main
+            .def	_main;	.scl	2;	.type	32;	.endef
+        _main:
+        LFB0:
+            .cfi_startproc
+            pushl	%ebp
+            .cfi_def_cfa_offset 8
+            .cfi_offset 5, -8
+            movl	%esp, %ebp
+            .cfi_def_cfa_register 5
+            andl	$-16, %esp
+            subl	$32, %esp
+            call	___main
+            movl	$42, 28(%esp)
+            movl	$LC0, (%esp)
+            call	_printf
+            movl	$0, %eax
+            leave
+            .cfi_restore 5
+            .cfi_def_cfa 4, 4
+            ret
+            .cfi_endproc
+        LFE0:
+            .ident	"GCC: (MinGW.org GCC Build-20200227-1) 9.2.0"
+            .def	_printf;	.scl	2;	.type	32;	.endef
+
+7. Corregir  en  el  nuevo  archivo  hello4.c  y  empezar  de  nuevo, generar hello4.s, no ensamblar.
+
+8. Investigar hello4.s.
+
+    hello4.s contiene código Assembler:
+
+    	.file	"hello4.c"
+            .text
+            .def	___main;	.scl	2;	.type	32;	.endef
+            .section .rdata,"dr"
+        LC0:
+            .ascii "La respuesta es %d\12\0"
+            .text
+            .globl	_main
+            .def	_main;	.scl	2;	.type	32;	.endef
+        _main:
+        LFB0:
+            .cfi_startproc
+            pushl	%ebp
+            .cfi_def_cfa_offset 8
+            .cfi_offset 5, -8
+            movl	%esp, %ebp
+            .cfi_def_cfa_register 5
+            andl	$-16, %esp
+            subl	$32, %esp
+            call	___main
+            movl	$42, 28(%esp)
+            movl	$LC0, (%esp)
+            call	_printf
+            movl	$0, %eax
+            leave
+            .cfi_restore 5
+            .cfi_def_cfa 4, 4
+            ret
+            .cfi_endproc
+        LFE0:
+            .ident	"GCC: (MinGW.org GCC Build-20200227-1) 9.2.0"
+            .def	_printf;	.scl	2;	.type	32;	.endef
+
+    *Observaciones*
+
+    * El archivo comienza con .file	"hello4.c" que nos indica el archivo del que provino el código assembler.
+    
+    * Luego .text indica el comienzo de una sección de código.
+    
+    * La línea: .section .rdata,"dr" indica la declaración de datos que estarán disponibles en modo sólo lectura para el programa (no pueden ser asignados o sobre-escritos).
+
+    * LC0 (local constant 0) es una directiva de assembler que indica la declaración de una constante, el código que sucede a esta marca LC0 corresponde a la constante del texto "La respuesta es %d\12\0".
+
+    * .globl	_main indica la definición de un símbolo "_main" que es global y accesible desde cualquier otro archivo. 
+
+    * LFB0: Local function begin 0. Indica el comienzo de una función local del programa. Después de esta directiva encontramos las instrucciones de assembler que representan a la función main.
+
+    * A continuación dejo comentarios en las lineas de instrucción de assembler explicando lo que hace cada una.
+
+            LFB0:
+                .cfi_startproc
+                pushl	%ebp                ; Manda el valor del registro %ebp al stack
+                .cfi_def_cfa_offset 8
+                .cfi_offset 5, -8
+                movl	%esp, %ebp          ; Copia el valor del stack pointer %esp al registro %ebp.
+                .cfi_def_cfa_register 5
+                andl	$-16, %esp          ; Ejecuta un and binario entre el valor -16 y  el valor en registro %esp y el resultado lo guarda en $esp en los primeros 32 bits.
+                subl	$32, %esp           ; Resta 32 al registro %esp
+                call	___main             ; Invoca función main
+                movl	$42, 28(%esp)       ; Copia el valor 42 en reggistro %esp, la forma en la que está escrito el registro destino: 28(%esp) indica que estamos obteniendo el valor que contiene %esp 28 bytes corridos de la dirección %esp (ni idea qué significa esto).
+                movl	$LC0, (%esp)        ; Copia el valor LC0 (la cadena de texto constante) en registro %esp (stack pointer)
+                call	_printf             ; Llama a _printf
+                movl	$0, %eax            ; copia 0 en %eax que es el registro que contiene el resultado de la función
+                leave                       ; Libera el stack frame creado por una instrucción ENTER previa (supongo que está implicita en algun lado del código)
+                .cfi_restore 5
+                .cfi_def_cfa 4, 4
+                ret                         ; Retorno de función, devuelve el control a la función llamadora supongo que a quien haya llamado a la función main.
+                .cfi_endproc
+
+9. Ensamblar hello4.s en hello4.o, no vincular.
+
+10. Vincular hello4.o con la biblioteca estándar y generar el ejecutable.
+
+11. Corregir en hello5.c y generar el ejecutable.
+
+12. Ejecutar y analizar el resultado.
+
+13. Corregir en hello6.c y empezar de nuevo.
+
+14. Escribir hello7.c, una nueva variante:
+
+        int main(void){ 
+            int i=42;    
+            printf("La respuesta es %d\n", i);
+        }
+
+15. Explicar porqué funciona.
