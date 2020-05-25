@@ -276,6 +276,49 @@ void TestPowerDynamic()
     free(result5);
 }
 
+void TestCompare()
+{
+    //pruebo compare con dos constantes literales no vacías
+    int result1 = Compare("abc", "abc", 0);
+    assert(result1 == 0);
+    
+    result1 = strcmp("abc", "abc");
+    assert(result1 == 0);
+    
+    //pruebo compare con constantes literales: String Vacío vs String NO Vacío
+    int result2 = Compare("", "abc", 0);
+    assert(result2 < 0);
+    
+    result2 = strcmp("", "abc");
+    assert(result2 < 0);
+    
+    //pruebo compare con constantes literales: String Vacío vs String Vacío
+    int result3 = Compare("", "", 0);
+    assert(result3 == 0);
+    
+    result3 = strcmp("", "");
+    assert(result3 == 0);
+    
+    //pruebo compare con strings estáticos no vacíos
+    char string1[5] = "abc";
+    char string2[5] = "abc";
+    int result4 = Compare(string1, string2, 0);
+    assert(result4 == 0);
+
+    result4 = strcmp(string1, string2);
+    assert(result4 == 0);
+
+    //pruebo compare con string estático vs string estático vacío
+    char string3[5] = "abc";
+    char string4[5] = "";
+    int result5 = Compare(string3, string4, 0);
+    assert(result5 > 0);
+    
+    result5 = strcmp(string3, string4);
+    assert(result5 > 0);
+    
+}
+
 int main(void){
     
     TestGetLength();
@@ -286,6 +329,8 @@ int main(void){
 
     TestPowerStatic();
     TestPowerDynamic();
+
+    TestCompare();
 
     printf("La prueba concluyó sin errores\n");
 }
