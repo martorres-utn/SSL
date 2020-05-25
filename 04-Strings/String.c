@@ -105,6 +105,27 @@ void PowerStatic(const char * string, unsigned int power, char * result)
     result[newLength] = '\0';
 }
 
+int Compare(const char * stringA, const char * stringB, size_t index)
+{
+    char a = stringA[index];
+    char b = stringB[index];
+
+    if(a == b)
+    {
+        if(a != '\0')
+        {
+            return Compare(stringA, stringB, index + 1);
+        }
+        
+        return 0;
+    }
+    else if(a > b)
+    {
+        return 1;
+    }
+    
+    return -1;
+}
 
 int main(void){
     char sampleString[20] = "String de prueba";
@@ -155,6 +176,26 @@ int main(void){
 
     printf("Strings: \"%s\", \"%s\", \"%s\", \"%s\" \"%s\"\n", sampleString, emptyString, concatResult1, concatResult2, concatResult3);
     
+    char stringA[10] = "Hola";
+    char stringB[10] = "Hola";
+
+    if(stringA == stringB)
+    {
+        printf("ambas cadenas son iguales \n");
+    }
+
+    if("Hola" == "Hola")
+    {
+        printf("Hola es igual a Hola\n");
+    }
+
+    int compareR1 = Compare("Hola", "Hola", 0);
+    int compareR2 = Compare(powerStaticR1, powerStaticR2, 0);
+    int compareR3 = Compare("ABCD", "ABCE", 0);
+    int compareR4 = Compare("ABCE", "ABCD", 0);
+    int compareR5 = Compare("", "", 0);
+    int compareR6 = Compare(powerDynamicR1, powerDynamicR1, 0);
+
     free(concatResult1);
     free(concatResult2);
     free(powerDynamicR1);

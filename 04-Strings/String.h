@@ -160,3 +160,24 @@ char * PowerDynamic(const char * string, unsigned int power);
             2. El tercer argumento (de salida) debe apuntar a un arreglo de char lo suficientemente grande como para contener el resultado de la potencia de la cadena original.
 */
 void PowerStatic(const char * string, unsigned int power, char * result);
+
+/*
+    Compare
+    
+        Argumentos:
+            1. const char * stringA: puntero const a un arreglo char tratado como una cadena A.
+            2. const char * stringB: puntero const a un arreglo char tratado como una cadena B.
+            3. size_t index: valor inicial desde donde se empieza a recorrer cadena A y cadena B para compararlas.
+            
+        Resultado:
+            1. int: la funcion devuelve 3 posibles valores.
+
+                0: ambas cadenas son iguales
+                -1: cadena A es menor a cadena B.
+                1: cadena A es mayor a cadena B.
+        
+        Precondiciones:
+            1. las cadenas A y B deben finalizar con caracter nulo '\0'.
+            2. El tercer argumento index debe ser 0 la primera vez que se llama a la función.
+*/
+int Compare(const char * stringA, const char * stringB, size_t index);
