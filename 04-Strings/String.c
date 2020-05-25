@@ -196,6 +196,10 @@ int main(void){
     int compareR5 = Compare("", "", 0);
     int compareR6 = Compare(powerDynamicR1, powerDynamicR1, 0);
 
+    int compareR = Compare("abc", "abc", 0);
+    compareR = Compare("abc", "abd", 0);
+    compareR = Compare("abd", "abc", 0);
+
     free(concatResult1);
     free(concatResult2);
     free(powerDynamicR1);

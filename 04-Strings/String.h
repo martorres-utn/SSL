@@ -131,7 +131,10 @@ void ConcatStatic(const char * stringA, const char * stringB, char * result);
 
 /*
     PowerDynamic
-    
+        
+        Descripción: Potencia una cadena a un exponente natural N (con cero incluido) dando como resultado la cadena N veces.
+        La cadena resultante es instanciada de forma dinámica.
+
         Argumentos:
             1. const char * stringValue: puntero const a un arreglo char tratado como una cadena.
             2. unsigned int power: valor entero natural al que se quiere potenciar la cadena.
@@ -146,7 +149,10 @@ char * PowerDynamic(const char * string, unsigned int power);
 
 /*
     PowerStatic
-    
+        
+        Descripción: Potencia una cadena a un exponente natural N (con cero incluido) dando como resultado la cadena N veces.
+        La cadena resultante se deposita en un arreglo pre-existente. Se asume que el arreglo tiene la longitud necesaria para contener el resultado.
+
         Argumentos:
             1. const char * stringValue: puntero const a un arreglo char tratado como una cadena.
             2. unsigned int power: valor entero natural al que se quiere potenciar la cadena.
@@ -167,17 +173,17 @@ void PowerStatic(const char * string, unsigned int power, char * result);
         Argumentos:
             1. const char * stringA: puntero const a un arreglo char tratado como una cadena A.
             2. const char * stringB: puntero const a un arreglo char tratado como una cadena B.
-            3. size_t index: valor inicial desde donde se empieza a recorrer cadena A y cadena B para compararlas.
+            3. size_t index: indice inicial desde donde se empiezan a recorrer las cadenas A y B para compararlas.
             
         Resultado:
             1. int: la funcion devuelve 3 posibles valores.
 
-                0: ambas cadenas son iguales
+                 0: ambas cadenas son iguales
                 -1: cadena A es menor a cadena B.
-                1: cadena A es mayor a cadena B.
+                +1: cadena A es mayor a cadena B.
         
         Precondiciones:
-            1. las cadenas A y B deben finalizar con caracter nulo '\0'.
+            1. Las cadenas A y B deben finalizar con caracter nulo '\0'.
             2. El tercer argumento index debe ser 0 la primera vez que se llama a la función.
 */
 int Compare(const char * stringA, const char * stringB, size_t index);
