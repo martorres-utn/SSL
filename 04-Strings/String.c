@@ -1,4 +1,10 @@
+#include <assert.h>
+#include <string.h>
 #include "String.h"
+
+/*
+    Implementaciones
+*/
 
 size_t GetLength(const char * stringValue)
 {
@@ -68,9 +74,6 @@ void ConcatStatic(const char * stringA, const char * stringB, char * result)
 
 char * PowerDynamic(const char * string, unsigned int power)
 {
-    if(power == 0)
-        return "";
-
     size_t length = GetLength(string);
     size_t newLength = length * power;
 
@@ -87,13 +90,7 @@ char * PowerDynamic(const char * string, unsigned int power)
 }
 
 void PowerStatic(const char * string, unsigned int power, char * result)
-{
-    if(power == 0)
-    {
-        result[0] = '\0';
-        return;
-    }
-        
+{   
     size_t length = GetLength(string);
     size_t newLength = length * power;
 
@@ -127,82 +124,168 @@ int Compare(const char * stringA, const char * stringB, size_t index)
     return -1;
 }
 
+/*
+    Tests
+*/
+
+void TestGetLength()
+{
+    //pruebo cadena constante longitud 3
+    size_t length1 = GetLength("abc");
+    assert(length1 == 3);
+
+    //pruebo cadena constante vacía
+    size_t length2 = GetLength("");
+    assert(length2 == 0);
+
+    //pruebo cadena estática inicializada con constante literal NO vacía
+    char staticString[20] = "Hola mundo";
+    size_t length3 = GetLength(staticString);
+    assert(length3 == 10);
+
+    //pruebo cadena estática inicializada con constante literal vacía
+    char staticEmptyString[20] = "";
+    size_t length4 = GetLength(staticEmptyString);
+    assert(length4 == 0);
+}
+
+void TestGetLength2()
+{
+    //pruebo cadena constante longitud 3
+    size_t length1 = GetLength2("abc");
+    assert(length1 == 3);
+
+    //pruebo cadena constante vacía
+    size_t length2 = GetLength2("");
+    assert(length2 == 0);
+
+    //pruebo cadena estática inicializada con constante literal NO vacía
+    char staticString1[20] = "Hola mundo";
+    size_t length3 = GetLength2(staticString1);
+    assert(length3 == 10);
+
+    //pruebo cadena estática inicializada con constante literal vacía
+    char staticString2[20] = "";
+    size_t length4 = GetLength2(staticString2);
+    assert(length4 == 0);
+}
+
+void TestIsEmpty()
+{
+    //pruebo IsEmpty con cadena constante no vacía
+    bool result1 = IsEmpty("abc");
+    assert(result1 == false);
+
+    //pruebo IsEmpty con cadena constante vacía
+    bool result2 = IsEmpty("");
+    assert(result2 == true);
+    
+    //pruebo IsEmpty con cadena estática no vacía
+    char staticString1[20] = "Hola mundo";
+    bool result3 = IsEmpty(staticString1);
+    assert(result3 == false);
+
+    //pruebo IsEmpty con cadena estática vacía
+    char staticString2[20] = "";
+    bool result4 = IsEmpty(staticString2);
+    assert(result4 == true);
+}
+
+void TestIsEmpty2()
+{
+    //pruebo IsEmpty con cadena constante no vacía
+    bool result1 = IsEmpty2("abc");
+    assert(result1 == false);
+
+    //pruebo IsEmpty con cadena constante vacía
+    bool result2 = IsEmpty2("");
+    assert(result2 == true);
+    
+    //pruebo IsEmpty con cadena estática no vacía
+    char staticString1[20] = "Hola mundo";
+    bool result3 = IsEmpty2(staticString1);
+    assert(result3 == false);
+
+    //pruebo IsEmpty con cadena estática vacía
+    char staticString2[20] = "";
+    bool result4 = IsEmpty2(staticString2);
+    assert(result4 == true);
+}
+
+void TestPowerStatic()
+{
+    //pruebo PowerStatic con cadena constante no vacía
+    char result1[20];
+    PowerStatic("abc", 3, result1);
+    assert(strcmp(result1, "abcabcabc") == 0);
+
+    //pruebo PowerStatic con cadena constante vacía
+    char result2[20];
+    PowerStatic("", 3, result2);
+    assert(strcmp(result2, "") == 0);
+    
+    //pruebo PowerStatic con cadena estática no vacía
+    char result3[20];
+    char string1[20] = "hola";
+    PowerStatic(string1, 3, result3);
+    assert(strcmp(result3, "holaholahola") == 0);
+    
+    //pruebo PowerStatic con cadena estática vacía
+    char result4[20];
+    char string2[20] = "";
+    PowerStatic(string2, 3, result4);
+    assert(strcmp(result4, "") == 0);
+
+    //pruebo PowerStatic con cadena constante elevada a la 0
+    char result5[20];
+    char string3[20] = "hola";
+    PowerStatic(string3, 0, result5);
+    assert(strcmp(result5, "") == 0);
+}
+
+void TestPowerDynamic()
+{
+    //pruebo PowerStatic con cadena constante no vacía
+    char * result1 = PowerDynamic("abc", 3);
+    assert(strcmp(result1, "abcabcabc") == 0);
+
+    //pruebo PowerStatic con cadena constante vacía
+    char * result2 = PowerDynamic("", 3);
+    assert(strcmp(result2, "") == 0);
+    
+    //pruebo PowerStatic con cadena estática no vacía
+    char string1[20] = "hola";
+    char * result3 = PowerDynamic(string1, 3);
+    assert(strcmp(result3, "holaholahola") == 0);
+    
+    //pruebo PowerStatic con cadena estática vacía
+    char string2[20] = "";
+    char * result4 = PowerDynamic(string2, 3);
+    assert(strcmp(result4, "") == 0);
+
+    //pruebo PowerStatic con cadena constante elevada a la 0
+    char string3[20] = "hola";
+    char * result5 = PowerDynamic(string3, 0);
+    assert(strcmp(result5, "") == 0);
+
+    //libero memoria dinámica
+    free(result1);
+    free(result2);
+    free(result3);
+    free(result4);
+    free(result5);
+}
+
 int main(void){
-    char sampleString[20] = "String de prueba";
-    char emptyString[20] = "";
-
-    size_t length1 = GetLength("Pepito");
-    size_t length2 = GetLength(sampleString);
-    size_t length3 = GetLength("");
-    size_t length4 = GetLength2("hola mundo");
-    size_t length5 = GetLength2(sampleString);
-    size_t length6 = GetLength2(emptyString);
-    size_t length7 = GetLength2("");
-
-    bool empty1 = IsEmpty("");
-    bool empty2 = IsEmpty2(emptyString);
-
-    char * concatResult1 = ConcatDynamic("string de ", "prueba");
-    char * concatResult2 = ConcatDynamic(sampleString, emptyString);
-    char concatResult3[100];
     
-    ConcatStatic("hola 1 2 3 probando!", "chau nos vimos", concatResult3);
+    TestGetLength();
+    TestGetLength2();
 
-    size_t lengthResult1 = GetLength(concatResult1);
-    size_t lengthResult2 = GetLength(concatResult2);
-    size_t lengthResult3 = GetLength(concatResult3);
+    TestIsEmpty();
+    TestIsEmpty2();
 
-    char * powerDynamicR1 = PowerDynamic("hola", 3);
-    printf("powerDynamicR1: \"%s\"\n", powerDynamicR1);
+    TestPowerStatic();
+    TestPowerDynamic();
 
-    char * powerDynamicR2 = PowerDynamic("hola", 1);
-    printf("powerDynamicR2: \"%s\"\n", powerDynamicR2);
-
-    char * powerDynamicR3 = PowerDynamic("hola", 0);
-    printf("powerDynamicR3: \"%s\"\n", powerDynamicR3);
-
-    char powerStaticR1[100] = "";
-    char powerStaticR2[100] = "";
-    char powerStaticR3[100] = "";
-
-    PowerStatic("hola", 3, powerStaticR1);
-    printf("powerStaticR1: \"%s\"\n", powerStaticR1);
-
-    PowerStatic("hola", 1, powerStaticR2);
-    printf("powerStaticR2: \"%s\"\n", powerStaticR2);
-
-    PowerStatic("hola", 0, powerStaticR3);
-    printf("powerStaticR3: \"%s\"\n", powerStaticR3);
-
-    printf("Strings: \"%s\", \"%s\", \"%s\", \"%s\" \"%s\"\n", sampleString, emptyString, concatResult1, concatResult2, concatResult3);
-    
-    char stringA[10] = "Hola";
-    char stringB[10] = "Hola";
-
-    if(stringA == stringB)
-    {
-        printf("ambas cadenas son iguales \n");
-    }
-
-    if("Hola" == "Hola")
-    {
-        printf("Hola es igual a Hola\n");
-    }
-
-    int compareR1 = Compare("Hola", "Hola", 0);
-    int compareR2 = Compare(powerStaticR1, powerStaticR2, 0);
-    int compareR3 = Compare("ABCD", "ABCE", 0);
-    int compareR4 = Compare("ABCE", "ABCD", 0);
-    int compareR5 = Compare("", "", 0);
-    int compareR6 = Compare(powerDynamicR1, powerDynamicR1, 0);
-
-    int compareR = Compare("abc", "abc", 0);
-    compareR = Compare("abc", "abd", 0);
-    compareR = Compare("abd", "abc", 0);
-
-    free(concatResult1);
-    free(concatResult2);
-    free(powerDynamicR1);
-    free(powerDynamicR2);
-    free(powerDynamicR3);
+    printf("La prueba concluyó sin errores\n");
 }
