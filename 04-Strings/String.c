@@ -1,8 +1,5 @@
 #include "String.h"
 
-/*
-    Si no encuentra caracter nulo '\0' estamos en problemas.
-*/
 size_t GetLength(const char * stringValue)
 {
     size_t index = 0;
@@ -13,9 +10,6 @@ size_t GetLength(const char * stringValue)
     return index;
 }
 
-/*
-    Avanzo incrementando la dirección del puntero.
-*/
 size_t GetLength2(const char * stringValue)
 {
     const char * start = stringValue;
@@ -24,27 +18,17 @@ size_t GetLength2(const char * stringValue)
     return stringValue - start;
 }
 
-/*
-    Si la cadena está vacía tiene longitud 0 es decir no posee ningun caracter salvo el caracter nulo.
-*/
-bool isEmpty(const char * stringValue)
+bool IsEmpty(const char * stringValue)
 {
     return GetLength(stringValue) == 0;
 }
 
-/*
-    Si el primer char de una cadena es char nulo \0 considero que la cadena está vacía.
-*/
-bool isEmpty2(const char * stringValue)
+bool IsEmpty2(const char * stringValue)
 {
     return stringValue[0] == '\0';
 }
 
-/*
-    Concatena dos strings y devuelve un puntero a un nuevo string que es el resultado de los dos concatenados.
-    El nuevo string fue reservado de forma dinámica.
-*/
-char * concatTwoStringsDynamic(const char * stringA, const char * stringB)
+char * ConcatDynamic(const char * stringA, const char * stringB)
 {
     size_t lengthA = GetLength(stringA);
     size_t lengthB = GetLength(stringB);
@@ -65,11 +49,7 @@ char * concatTwoStringsDynamic(const char * stringA, const char * stringB)
     return result;
 }
 
-/*
-    Concatena dos strings depositandolos en un array char pre-existente.
-    La longitud del array destino debe ser mayor o igual que la suma de las longitudes de los strings a concatenar.
-*/
-void concatTwoStringsStatic(const char * stringA, const char * stringB, char * result)
+void ConcatStatic(const char * stringA, const char * stringB, char * result)
 {
     size_t lengthA = GetLength(stringA);
     size_t lengthB = GetLength(stringB);
@@ -86,6 +66,46 @@ void concatTwoStringsStatic(const char * stringA, const char * stringB, char * r
     result[lengthAB] = '\0';
 }
 
+char * PowerDynamic(const char * string, unsigned int power)
+{
+    if(power == 0)
+        return "";
+
+    size_t length = GetLength(string);
+    size_t newLength = length * power;
+
+    char * result = (char*) malloc((newLength + 1) * sizeof(char));
+            
+    for(size_t index = 0; index < newLength; index++)
+    {
+        result[index] = string[index % length];
+    }
+
+    result[newLength] = '\0';
+
+    return result;
+}
+
+void PowerStatic(const char * string, unsigned int power, char * result)
+{
+    if(power == 0)
+    {
+        result[0] = '\0';
+        return;
+    }
+        
+    size_t length = GetLength(string);
+    size_t newLength = length * power;
+
+    for(size_t index = 0; index < newLength; index++)
+    {
+        result[index] = string[index % length];
+    }
+
+    result[newLength] = '\0';
+}
+
+
 int main(void){
     char sampleString[20] = "String de prueba";
     char emptyString[20] = "";
@@ -98,21 +118,46 @@ int main(void){
     size_t length6 = GetLength2(emptyString);
     size_t length7 = GetLength2("");
 
-    bool empty1 = isEmpty("");
-    bool empty2 = isEmpty2(emptyString);
+    bool empty1 = IsEmpty("");
+    bool empty2 = IsEmpty2(emptyString);
 
-    char * concatResult1 = concatTwoStringsDynamic("string de ", "prueba");
-    char * concatResult2 = concatTwoStringsDynamic(sampleString, emptyString);
+    char * concatResult1 = ConcatDynamic("string de ", "prueba");
+    char * concatResult2 = ConcatDynamic(sampleString, emptyString);
     char concatResult3[100];
     
-    concatTwoStringsStatic("hola 1 2 3 probando!", "chau nos vimos", concatResult3);
+    ConcatStatic("hola 1 2 3 probando!", "chau nos vimos", concatResult3);
 
     size_t lengthResult1 = GetLength(concatResult1);
     size_t lengthResult2 = GetLength(concatResult2);
     size_t lengthResult3 = GetLength(concatResult3);
 
+    char * powerDynamicR1 = PowerDynamic("hola", 3);
+    printf("powerDynamicR1: \"%s\"\n", powerDynamicR1);
+
+    char * powerDynamicR2 = PowerDynamic("hola", 1);
+    printf("powerDynamicR2: \"%s\"\n", powerDynamicR2);
+
+    char * powerDynamicR3 = PowerDynamic("hola", 0);
+    printf("powerDynamicR3: \"%s\"\n", powerDynamicR3);
+
+    char powerStaticR1[100] = "";
+    char powerStaticR2[100] = "";
+    char powerStaticR3[100] = "";
+
+    PowerStatic("hola", 3, powerStaticR1);
+    printf("powerStaticR1: \"%s\"\n", powerStaticR1);
+
+    PowerStatic("hola", 1, powerStaticR2);
+    printf("powerStaticR2: \"%s\"\n", powerStaticR2);
+
+    PowerStatic("hola", 0, powerStaticR3);
+    printf("powerStaticR3: \"%s\"\n", powerStaticR3);
+
     printf("Strings: \"%s\", \"%s\", \"%s\", \"%s\" \"%s\"\n", sampleString, emptyString, concatResult1, concatResult2, concatResult3);
     
     free(concatResult1);
     free(concatResult2);
+    free(powerDynamicR1);
+    free(powerDynamicR2);
+    free(powerDynamicR3);
 }
