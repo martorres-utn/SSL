@@ -104,20 +104,15 @@ int Compare(const char * stringA, const char * stringB, size_t index)
 {
     char a = stringA[index];
     char b = stringB[index];
+    int subtraction = a - b;
 
-    if(a == b)
+    if(subtraction == 0)
     {
         if(a != '\0')
         {
             return Compare(stringA, stringB, index + 1);
         }
-        
-        return 0;
     }
-    else if(a > b)
-    {
-        return 1;
-    }
-    
-    return -1;
+
+    return subtraction;
 }
