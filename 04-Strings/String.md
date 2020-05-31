@@ -35,15 +35,19 @@
         Power((abc, 2)) -> abcabc
         Power((a, 3)) -> aaa
 
-4. **Compare: V\* x V\* -> {-1, 0, 1}**
+4. **Compare: V\* x V\* -> Z**
 
     Conjunto de salida **V\* x V\***: Conjunto resultante del producto cartesiano de Clausura de Kleene del alfabeto con sigo mismo. Es decir un conjunto de infinitos pares ordenados (V\*, V\*).
 
-    Conjunto de llegada **{-1, 0, 1}**: -1 si el primer componente (primera cadena) del par ordenado es menor que el segundo. 0 si ambas cadenas son iguales. 1 si la primer cadena es mayor que la segunda.
+    Conjunto de llegada **Z** (números enteros): Si el primer componente (primera cadena) del par ordenado es menor que el segundo entonces el resultado será un número -Z (entero negativo). 
+    
+    Si ambas cadenas son iguales el resultado será 0. 
+    
+    Si la primer cadena es mayor que la segunda el resultado será un +Z (entero positivo).
 
     **Ejemplos**:
 
         Compare((abc,abc)) -> 0
-        Compare((abc,abd)) -> -1
-        Compare((abd,abc)) -> 1
+        Compare((abc,abd)) -> -Z
+        Compare((abd,abc)) -> +Z
 
