@@ -43,16 +43,21 @@
         Power((a, 3)) -> aaa
 
 4. **Compare: Epsilon\* x Epsilon\* -> {-1, 0, 1}**
+    
+    Sea (Epsilon\* , <) una relación de orden sobre un alfabeto, se puede definir la función Compare de la siguiente forma:.
 
     Conjunto de salida **Epsilon\* x Epsilon\***: Conjunto resultante del producto cartesiano de Clausura de Kleene del alfabeto con sigo mismo. Es decir un conjunto de infinitos pares ordenados (Epsilon\*, Epsilon\*).
 
-    Conjunto de llegada **{-1, 0, 1}**: Si el primer componente (primera cadena) del par ordenado es menor que el segundo entonces el resultado será un número -1. 
+    Conjunto de llegada **{-1, 0, 1}**: 
     
-    Si ambas cadenas son iguales el resultado será 0. 
+    * Si el primer componente (primera cadena) del par ordenado es menor que el segundo entonces el resultado será un número -1. 
     
-    Si la primer cadena es mayor que la segunda el resultado será un 1.
+    * Si ambas cadenas son iguales el resultado será 0. 
+    
+    * Si la primer cadena es mayor que la segunda el resultado será un 1.
 
-
+    **Observacion:** La palabra vacía pertenece a Epsilon\* pero no pertenece a Epsilon (alfabeto). Se considera que una palabra vacía es menor a todos los simbolos de Epsilon.
+    
     ![Compare](images/Compare1.png)
 
     ![Compare](images/Compare2.png)
