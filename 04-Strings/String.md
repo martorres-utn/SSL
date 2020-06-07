@@ -1,22 +1,27 @@
 # Especificaciones matemáticas de operaciones con cadenas
 
-1.  **GetLength: V\* -> N**
+1.  **GetLength: Epsilon\* -> N**
 
-    Conjunto de salida **V\***: Clausura de Kleene del alfabeto.
+    Conjunto de salida **Epsilon\***: Clausura de Kleene del alfabeto.
     
-    Conjunto de llegada **N**: Conjunto de números naturales.
+    Conjunto de llegada **N** con 0 incluido: Conjunto de números naturales incluyendo 0.
+
+    ![GetLength](images/GetLength.png)
 
     **Ejemplos**:
 
+        GetLength() -> 0
         GetLength(abc) -> 3
         GetLength(cba) -> 3
         GetLength(hola) -> 4
 
-2.  **IsEmpty: V\* -> \{V,F\}**
+2.  **IsEmpty: Epsilon\* -> \{V,F\}**
 
-    Conjunto de salida **V\***: Clausura de Kleene del alfabeto.
+    Conjunto de salida **Epsilon\***: Clausura de Kleene del alfabeto.
     
-    Conjunto de llegada **{V, F}**: V por Verdadero si la cadena es vacía. F por Falseo si la cadena NO está vacía.
+    Conjunto de llegada **{V, F}**: Verdadero si la cadena es vacía. Falso si la cadena NO está vacía.
+
+    ![IsEmpty](images/IsEmpty.png)
 
     **Ejemplos**:
 
@@ -24,30 +29,37 @@
         IsEmpty(a) -> F
         IsEmpty() -> V
 
-3.  **Power: V\* x N -> V\***
+3.  **Power: Epsilon\* x N -> Epsilon\***
 
-    Conjunto de salida **V\* x N**: Conjunto resultante del producto cartesiano de Clausura de Kleene del alfabeto y Conjunto de números naturales N. Es decir conjunto de infinitos pares ordenados (V\*, N).
+    Conjunto de salida **Epsilon\* x N**: Conjunto resultante del producto cartesiano de Clausura de Kleene del alfabeto y Conjunto de números naturales N. Es decir conjunto de infinitos pares ordenados (Epsilon\*, N).
     
-    Conjunto de llegada **V\***: Clausura de Kleene del alfabeto.
+    Conjunto de llegada **Epsilon\***: Clausura de Kleene del alfabeto.
+
+    ![Power](images/Power.png)
 
     **Ejemplos**:
 
         Power((abc, 2)) -> abcabc
         Power((a, 3)) -> aaa
 
-4. **Compare: V\* x V\* -> Z**
+4. **Compare: Epsilon\* x Epsilon\* -> {-1, 0, 1}**
 
-    Conjunto de salida **V\* x V\***: Conjunto resultante del producto cartesiano de Clausura de Kleene del alfabeto con sigo mismo. Es decir un conjunto de infinitos pares ordenados (V\*, V\*).
+    Conjunto de salida **Epsilon\* x Epsilon\***: Conjunto resultante del producto cartesiano de Clausura de Kleene del alfabeto con sigo mismo. Es decir un conjunto de infinitos pares ordenados (Epsilon\*, Epsilon\*).
 
-    Conjunto de llegada **Z** (números enteros): Si el primer componente (primera cadena) del par ordenado es menor que el segundo entonces el resultado será un número -Z (entero negativo). 
+    Conjunto de llegada **{-1, 0, 1}**: Si el primer componente (primera cadena) del par ordenado es menor que el segundo entonces el resultado será un número -1. 
     
     Si ambas cadenas son iguales el resultado será 0. 
     
-    Si la primer cadena es mayor que la segunda el resultado será un +Z (entero positivo).
+    Si la primer cadena es mayor que la segunda el resultado será un 1.
+
+
+    ![Compare](images/Compare1.png)
+
+    ![Compare](images/Compare2.png)
 
     **Ejemplos**:
 
         Compare((abc,abc)) -> 0
-        Compare((abc,abd)) -> -Z
-        Compare((abd,abc)) -> +Z
+        Compare((abc,abd)) -> -1
+        Compare((abd,abc)) -> 1
 
