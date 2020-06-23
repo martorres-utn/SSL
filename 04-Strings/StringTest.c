@@ -90,60 +90,60 @@ void TestIsEmpty2()
     assert(result4 == true);
 }
 
-void TestPowerStatic()
+void TestPower2()
 {
-    //pruebo PowerStatic con cadena constante no vacía
+    //pruebo Power2 con cadena constante no vacía
     char result1[20];
-    PowerStatic("abc", 3, result1);
+    Power2("abc", 3, result1);
     assert(strcmp(result1, "abcabcabc") == 0);
 
-    //pruebo PowerStatic con cadena constante vacía
+    //pruebo Power2 con cadena constante vacía
     char result2[20];
-    PowerStatic("", 3, result2);
+    Power2("", 3, result2);
     assert(strcmp(result2, "") == 0);
     
-    //pruebo PowerStatic con cadena estática no vacía
+    //pruebo Power2 con cadena estática no vacía
     char result3[20];
     char string1[20] = "hola";
-    PowerStatic(string1, 3, result3);
+    Power2(string1, 3, result3);
     assert(strcmp(result3, "holaholahola") == 0);
     
-    //pruebo PowerStatic con cadena estática vacía
+    //pruebo Power2 con cadena estática vacía
     char result4[20];
     char string2[20] = "";
-    PowerStatic(string2, 3, result4);
+    Power2(string2, 3, result4);
     assert(strcmp(result4, "") == 0);
 
-    //pruebo PowerStatic con cadena constante elevada a la 0
+    //pruebo Power2 con cadena constante elevada a la 0
     char result5[20];
     char string3[20] = "hola";
-    PowerStatic(string3, 0, result5);
+    Power2(string3, 0, result5);
     assert(strcmp(result5, "") == 0);
 }
 
-void TestPowerDynamic()
+void TestPower1()
 {
-    //pruebo PowerStatic con cadena constante no vacía
-    char * result1 = PowerDynamic("abc", 3);
+    //pruebo Power2 con cadena constante no vacía
+    char * result1 = Power1("abc", 3);
     assert(strcmp(result1, "abcabcabc") == 0);
 
-    //pruebo PowerStatic con cadena constante vacía
-    char * result2 = PowerDynamic("", 3);
+    //pruebo Power2 con cadena constante vacía
+    char * result2 = Power1("", 3);
     assert(strcmp(result2, "") == 0);
     
-    //pruebo PowerStatic con cadena estática no vacía
+    //pruebo Power2 con cadena estática no vacía
     char string1[20] = "hola";
-    char * result3 = PowerDynamic(string1, 3);
+    char * result3 = Power1(string1, 3);
     assert(strcmp(result3, "holaholahola") == 0);
     
-    //pruebo PowerStatic con cadena estática vacía
+    //pruebo Power2 con cadena estática vacía
     char string2[20] = "";
-    char * result4 = PowerDynamic(string2, 3);
+    char * result4 = Power1(string2, 3);
     assert(strcmp(result4, "") == 0);
 
-    //pruebo PowerStatic con cadena constante elevada a la 0
+    //pruebo Power2 con cadena constante elevada a la 0
     char string3[20] = "hola";
-    char * result5 = PowerDynamic(string3, 0);
+    char * result5 = Power1(string3, 0);
     assert(strcmp(result5, "") == 0);
 
     //libero memoria dinámica
@@ -205,8 +205,8 @@ int main(void){
     TestIsEmpty();
     TestIsEmpty2();
 
-    TestPowerStatic();
-    TestPowerDynamic();
+    TestPower2();
+    TestPower1();
 
     TestCompare();
 

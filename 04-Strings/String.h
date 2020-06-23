@@ -92,7 +92,7 @@ bool IsEmpty2(const char * stringValue);
 
 
 /*
-    ConcatDynamic
+    Concat1
         
         Descripción: Concatena dos cadenas y devuelve un puntero a una nueva cadena que es el resultado de las dos cadenas originales concatenadas.
         La nueva cadena es instanciada de forma dinámica.
@@ -108,11 +108,11 @@ bool IsEmpty2(const char * stringValue);
 
     
 */
-char * ConcatDynamic(const char * stringA, const char * stringB);
+char * Concat1(const char * stringA, const char * stringB);
 
 
 /*
-    ConcatStatic
+    Concat2
         
         Descripción: Concatena dos cadenas y devuelve un puntero a una nueva cadena que es el resultado de las dos cadenas originales concatenadas.
         La nueva cadena es depositada en el tercer argumento. La cadena resultante no es instanciada de forma dinámica.
@@ -127,10 +127,10 @@ char * ConcatDynamic(const char * stringA, const char * stringB);
             1. Las cadenas deben finalizar con caracter nulo '\0'.
             2. El tercer argumento (de salida) debe apuntar a un arreglo de char lo suficientemente grande como para contener el resultado de la concatenación de las cadenas originales.
 */
-void ConcatStatic(const char * stringA, const char * stringB, char * result);
+void Concat2(const char * stringA, const char * stringB, char * result);
 
 /*
-    PowerDynamic
+    Power1
         
         Descripción: Potencia una cadena a un exponente natural N (con cero incluido) dando como resultado la cadena N veces.
         La cadena resultante es instanciada de forma dinámica.
@@ -145,10 +145,10 @@ void ConcatStatic(const char * stringA, const char * stringB, char * result);
         Precondiciones:
             1. La cadena original debe finalizar con caracter '\0'.
 */
-char * PowerDynamic(const char * string, unsigned int power);
+char * Power1(const char * string, unsigned int power);
 
 /*
-    PowerStatic
+    Power2
         
         Descripción: Potencia una cadena a un exponente natural N (con cero incluido) dando como resultado la cadena N veces.
         La cadena resultante se deposita en un arreglo pre-existente. Se asume que el arreglo tiene la longitud necesaria para contener el resultado.
@@ -165,7 +165,7 @@ char * PowerDynamic(const char * string, unsigned int power);
             1. La cadena original debe finalizar con caracter '\0'.
             2. El tercer argumento (de salida) debe apuntar a un arreglo de char lo suficientemente grande como para contener el resultado de la potencia de la cadena original.
 */
-void PowerStatic(const char * string, unsigned int power, char * result);
+void Power2(const char * string, unsigned int power, char * result);
 
 /*
     Compare

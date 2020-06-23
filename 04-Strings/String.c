@@ -32,7 +32,7 @@ bool IsEmpty2(const char * stringValue)
     return stringValue[0] == '\0';
 }
 
-char * ConcatDynamic(const char * stringA, const char * stringB)
+char * Concat1(const char * stringA, const char * stringB)
 {
     size_t lengthA = GetLength(stringA);
     size_t lengthB = GetLength(stringB);
@@ -53,7 +53,7 @@ char * ConcatDynamic(const char * stringA, const char * stringB)
     return result;
 }
 
-void ConcatStatic(const char * stringA, const char * stringB, char * result)
+void Concat2(const char * stringA, const char * stringB, char * result)
 {
     size_t lengthA = GetLength(stringA);
     size_t lengthB = GetLength(stringB);
@@ -70,7 +70,7 @@ void ConcatStatic(const char * stringA, const char * stringB, char * result)
     result[lengthAB] = '\0';
 }
 
-char * PowerDynamic(const char * string, unsigned int power)
+char * Power1(const char * string, unsigned int power)
 {
     size_t length = GetLength(string);
     size_t newLength = length * power;
@@ -87,7 +87,7 @@ char * PowerDynamic(const char * string, unsigned int power)
     return result;
 }
 
-void PowerStatic(const char * string, unsigned int power, char * result)
+void Power2(const char * string, unsigned int power, char * result)
 {   
     size_t length = GetLength(string);
     size_t newLength = length * power;
