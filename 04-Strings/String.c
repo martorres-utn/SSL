@@ -100,6 +100,21 @@ void Power2(const char * string, unsigned int power, char * result)
     result[newLength] = '\0';
 }
 
+char * Power3(char * stringInOut, unsigned int power)
+{   
+    size_t initialLength = GetLength(stringInOut);
+    size_t newLength = initialLength * power;
+
+    for(size_t index = 0; index < newLength; index++)
+    {
+        stringInOut[index] = stringInOut[index % initialLength];
+    }
+
+    stringInOut[newLength] = '\0';
+
+    return stringInOut;
+}
+
 int Compare(const char * stringA, const char * stringB, size_t index)
 {
     char a = stringA[index];

@@ -168,6 +168,25 @@ char * Power1(const char * string, unsigned int power);
 void Power2(const char * string, unsigned int power, char * result);
 
 /*
+    Power3
+        
+        Descripción: Potencia una cadena a un exponente natural N (con cero incluido) dando como resultado la cadena N veces.
+        La cadena resultante se deposita en un arreglo pre-existente. Se asume que el arreglo tiene la longitud necesaria para contener el resultado.
+
+        Argumentos:
+            1. char * stringInOut: puntero a un arreglo char tratado como una cadena, este arreglo es un argumento de entrada y salida.
+            2. unsigned int power: valor entero natural al que se quiere potenciar la cadena.
+
+        Resultado:
+            1. char *: devolvemos el puntero al primer elemento de la cadena.
+        
+        Precondiciones:
+            1. La cadena original debe finalizar con caracter '\0'.
+            2. El arreglo cadena de entrada y salida debe apuntar a un arreglo de char lo suficientemente grande como para contener el resultado de la potencia de la cadena original.
+*/
+char * Power3(char * stringInOut, unsigned int power);
+
+/*
     Compare
     
         Argumentos:

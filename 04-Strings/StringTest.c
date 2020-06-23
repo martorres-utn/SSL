@@ -154,6 +154,12 @@ void TestPower1()
     free(result5);
 }
 
+void TestPower3()
+{
+    char stringValue[7] = "ab";
+    assert(0 == strcmp("ababab", Power3(stringValue, 3)));
+}
+
 void TestCompare()
 {
     //pruebo compare con dos constantes literales no vacías
@@ -205,8 +211,9 @@ int main(void){
     TestIsEmpty();
     TestIsEmpty2();
 
-    TestPower2();
     TestPower1();
+    TestPower2();
+    TestPower3();
 
     TestCompare();
 
