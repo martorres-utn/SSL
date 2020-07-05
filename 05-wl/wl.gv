@@ -1,0 +1,7 @@
+digraph G {
+    A [style=filled color="#c1ff33" fontcolor=black]
+    B [style=filled color="#ff5533" fontcolor=black]
+    A -> B [ label="EOF" ];
+    A -> A [ label="'a'..'z'|'A'..'Z'|'\\n' : putchar(c);"];
+    A -> A [ label="' '|'\\t'|'.'|','|';' : putchar('\\n');" headport=nw];
+}
