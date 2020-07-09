@@ -26,9 +26,11 @@ a. Estudiar el programa del ejemplo las sección 1.5.4 Conteo de Palabrasde [KR1
 
 b. Dibujar el árbol de expresión para la inicialización de los contadores: nl= nw = nc = 0.
 
-![ArbolExpresion1](images/ae_1b.png)
+![ArbolExpresion1b](images/ae_1b.png)
 
 c. Dibujar el árbol de expresión para la expresión de control del segundo if: c == ' ' || c == '\n' || c == '\t
+
+![ArbolExpresion1c](images/ae_1c.png)
 
 ### 2.Máquina de Estado:
 
