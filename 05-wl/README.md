@@ -40,6 +40,33 @@ a. Describir en lenguaje dot  [DOT2015] y dentro del archivo wl.gv la máquina d
 
 b. Formalizar la máquina de estados como una n-upla, basarse en el Capítulo #1 del Volumen #3 de [MUCH2012].
 
+Autómata Palabras por Línea es una 5-upla (Q, Sigma, T, A, I).
+
+* Q = {Out, In}: es el conjunto de estados posibles
+
+* Sigma = {'a',...,'z','A',...,'Z',' ','\t','\n',',','.'';'}: es el conjunto de simbolos que el Autómata es capaz de entender.
+
+* T: Q x Sigma -> Q: es una función de transición descripta por la siguiente tabla. Un estado pasa a otro a través de la aceptación de diferentes símbolos de Sigma.
+
+    |     | a\|b..\|z\|A\|B..\|Z | ' '\|'\t'\|'\n'\|'.'\|','\|';' |
+    |-----|----------------------|--------------------------------|
+    | Out | In                   | -                              |
+    | In  | In                   | Out                            |
+
+* A: Q x Sigma x Q -> "Acción" en lenguaje C, es una función que asigna acciones específicas a las transiciones descriptas en T. Las acciones en este ejemplo son código en lenguaje C.
+
+    Transición de Origen: es una 3-upla, la primer componente es el estado origen, la segunda componente es el símbolo por el cual se transiciona al estado final, la tercer componente es el estado final tras la recepción del símbolo.
+
+    Acción asociada: es una instrucción escrita en lenguaje C.
+
+    | Transición de Origen                      | Acción asociada |
+    |-------------------------------------------|-----------------|
+    | (Out, 'a'\|'b'...'z'\|'A'\|'B'...'Z', In) | putchar(c);     |
+    | (In, 'a'\|'b'...'z'\|'A'\|'B'...'Z' ,In)  | putchar(c);     |
+    | (In, ' '\|'\t'\|'\n'\|'.'\|','\|';', Out) | putchar('\n');  |
+
+* I = Out: estado inicial del autómata.
+
 ### 3.Implementaciones de Máquinas de Estado:Las implementaciones varían en los conceptos que utilizan para representaarlos estados y las transiciones.
 
 #### a.Implementación #1: Una variable para el estado actual.
