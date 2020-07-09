@@ -1,6 +1,6 @@
-SOURCE = wc-1-enum-switch.c
-BIN = test.exe
-OBJ = wc-1-enum-switch.o
+SOURCE = wl-1-enum-switch.c
+BIN = wl-1.exe
+OBJ = wl-1-enum-switch.o
 CC = gcc
 CFLAGS = -std=c18 -g #agrego -g para decirle al compilador que emita informacion adicional para debugger GDB
 
