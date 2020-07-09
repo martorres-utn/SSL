@@ -1,0 +1,12 @@
+digraph G {
+    graph [ordering="out"];
+    Eq1 [ label = "=" ]
+    Eq2 [ label = "=" ]
+    Eq3 [ label = "=" ]
+    Eq1 -> nl
+    Eq1 -> Eq2
+    Eq2 -> nw
+    Eq2 -> Eq3
+    Eq3 -> nc
+    Eq3 -> 0
+}

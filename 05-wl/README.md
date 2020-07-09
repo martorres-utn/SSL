@@ -23,7 +23,11 @@ La cantidadde líneas en la salida coincide con la cantidad de palabras en la en
 ### 1.Árboles de Expresión
 
 a. Estudiar el programa del ejemplo las sección 1.5.4 Conteo de Palabrasde [KR1988].
+
 b. Dibujar el árbol de expresión para la inicialización de los contadores: nl= nw = nc = 0.
+
+![ArbolExpresion1](images/ae_1b.png)
+
 c. Dibujar el árbol de expresión para la expresión de control del segundo if: c == ' ' || c == '\n' || c == '\t
 
 ### 2.Máquina de Estado:
