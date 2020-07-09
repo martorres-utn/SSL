@@ -35,6 +35,9 @@ c. Dibujar el árbol de expresión para la expresión de control del segundo if:
 ### 2.Máquina de Estado:
 
 a. Describir en lenguaje dot  [DOT2015] y dentro del archivo wl.gv la máquina de estado que resuelve el problema planteado.
+
+![DigrafoWL](images/wl.png)
+
 b. Formalizar la máquina de estados como una n-upla, basarse en el Capítulo #1 del Volumen #3 de [MUCH2012].
 
 ### 3.Implementaciones de Máquinas de Estado:Las implementaciones varían en los conceptos que utilizan para representaarlos estados y las transiciones.
