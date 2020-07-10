@@ -79,20 +79,26 @@ i. Escribir el programa wl-1-enum-switch.c que siga la Implementación #1, varia
 
 * Utilizar switch en vez de if.
 
-ii. Responder en readme.md: Indicar ventajas y desventajas de la versiónde [KR1988] y de esta implementación.
+ii. Responder en readme.md: Indicar ventajas y desventajas de la versión de [KR1988] y de esta implementación.
 
 #### b. Implementación #2: Sentencias goto (sí, el infame goto).
 
 i. Leer la sección 3.8 Goto and labels de [KR1988].
+
 ii. Leer Go To Statement Considered Harmful de [DIJ1968].
+
 iii. Leer "GOTO Considered Harmful" Considered Harmful de [RUB1987].
+
 iv. Responder en readme.md: ¿Tiene alguna aplicación go to hoy en día? ¿Algún lenguaje moderno lo utiliza?
-v. Escribir el programa wl-2-goto.c que siga la Implementación #2. En esta implementación los estados son etiquetas y las transicionesson la selección estructurada y el salto incondicional con la sentencia goto.
+
+v. Escribir el programa wl-2-goto.c que siga la Implementación #2. En esta implementación los estados son etiquetas y las transiciones son la selección estructurada y el salto incondicional con la sentencia goto.
 
 #### c. Implementación #3: Funciones Recursivas.
 
 i. Leer la sección 4.10 Recursividad de [KR1988].
+
 ii.Responder en readme.md: ¿Es necesario que las funciones accedana a contadores? Si es así, ¿cómo hacerlo?.Leer la sección 1.10 Variables Externas y Alcance y 4.3 VariablesExternas de [KR1988].
+
 iii.Escribir el programa, wl-3-rec.c que siga la implementación #3.En esta implementación los estados son funciones recursivas y lastransiciones son la selección estructurada y la invocación recursiva.
 
 #### d. Implementación #X:
@@ -100,6 +106,7 @@ iii.Escribir el programa, wl-3-rec.c que siga la implementación #3.En esta impl
 Es posible diseñar más implementaciones. Por ejemplo, una basada en una tabla que defina las transiciones de la máquina. En ese caso,el programa usaría la tabla para lograr el comportamiento deseado. El objetivo de este punto es diseñar una implementación diferente a las implementaciones #1, #2, y #3.
 
 i.Diseñar una nueva implementación e indicar en Readme.md cómo esa implementación representa los estados y cómo las transiciones.
+
 ii.Escribir el programa, wl-x.c que siga la nueva implementación.
 
 ### 4.Eficiencia del uso del Tiempo:

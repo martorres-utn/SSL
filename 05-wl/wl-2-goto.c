@@ -1,25 +1,17 @@
 /* 
-wl-1-enum-switch.c
+wl-2-goto.c
 martorres-utn
 20200709
 */
 
 #include <stdio.h>
 
-enum States
-{
-    In,
-    Out
-};
-
-typedef enum States State;
-
 int main(void){
-    
-    State s = Out;
+
     int c;
 
-    while ((c = getchar()) != EOF) {            
+MainLoop:
+    if ((c = getchar()) != EOF) {            
         switch(c)
         {
             case ' ':
@@ -29,21 +21,24 @@ int main(void){
             case ',':
             case ';':
             {
-                if(s == In)
-                {
-                    s = Out;
-                    putchar('\n');
-                }
+                goto Out;
                 break;
             }
             default:
             {
-                s = In;
-                putchar(c);
+                goto In;
                 break;
             }
         }
     }
     
     return 0;
+
+In:
+    putchar(c);
+    goto MainLoop;
+
+Out:
+    putchar('\n');
+    goto MainLoop;
 }
