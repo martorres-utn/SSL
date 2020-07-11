@@ -8,8 +8,8 @@
             "name": "(gdb) Iniciar WL 1",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            //"program": "${fileDirname}\\wl-1.exe",
+            //"program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}\\wl-1.exe",
             "args": [
                 "<","input.txt", ">","output.txt"
             ],
