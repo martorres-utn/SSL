@@ -96,6 +96,42 @@ iii. Leer "GOTO Considered Harmful" Considered Harmful de [RUB1987].
 
 iv. Responder en readme.md: ¿Tiene alguna aplicación go to hoy en día? ¿Algún lenguaje moderno lo utiliza?
 
+Podría ser utilizado para reducir la complejidad de ciertos algoritmos, tanto en operaciones como en cantidad de código. Esto depende del caso, pero usar la instrucción GOTO no es equivalente a complejizar un algoritmo: tomo como ejemplo el algoritmo para encontrar la primera fila completa de 0 en una matriz N x N ejemplificada en el documento http://web.archive.org/web/20090320002214/http://www.ecn.purdue.edu/ParaMount/papers/rubin87goto.pdf.
+
+En este escenario, el algoritmo que utiliza goto, usa menos variables: solamente 2, que son los contadores por cada estructura de bucle usada para recorrer la matriz.
+
+En cambio, en el ejemplo que evita usar goto, además de los contadores de los bucles se crea un flag booleano para representar el estado de "allzero" de una fila de la matriz: este flag booleano termina formando parte de las condiciones de fin de bucle lo cual incrementa las operaciones que se necesitan para evaluar si un bucle debe terminar o no.
+
+**Otras posibles situaciones donde sería util** (https://stackoverflow.com/questions/24451/is-it-ever-advantageous-to-use-goto-in-a-language-that-supports-loops-and-func):
+
+1. Salida rápida y limpia de una función: en funciones donde se requiera reservar muchos recursos y donde la lógica tenga multiples salidas se puede generar una etiqueta de salida única donde se haga una limpieza y se salga de la función en lugar de replicar el código de limpieza en cada sección de salida.
+
+2. Salida de bucles anidados: si estás en un bucle anidado adentro de otro es mucho más fácil salir de ambos mediante un goto en lugar de invocar un break; ya que solamente saldría de la estructura inmediatamente próxima.
+
+3. Mejoras de performance de bajo nivel: la ejecución de una instrucción goto es rápida y puede ser utilizada para mejorar la velocidad en la que se ejecuta una función. Este escenario sería sólo necesario en funciones donde la velocidad es un factor crítico. Una desventaja de esto es que al utilizar goto una función , esta no podrá ser optimizada por el compilador.
+
+**Lenguajes modernos que utilizan goto:**
+
+1. Go.
+
+2. C#
+
+**Lenguajes modernos que NO utilizan goto:**
+
+1. Swift.
+
+2. Rust.
+
+3. Javascript.
+
+4. Java (pero soporta etiquetas que pueden ser aplicadas a bucles para especificar su interrupción mediante "break").
+
+5. Ruby.
+
+6. Kotlin (pero soporta etiquetas en sentencias "break" y "continue" que le permiten romper las estructuras etiquetadas o continuar con ellas)
+
+*Fuente*: https://rosettacode.org/wiki/Jump_anywhere
+
 v. Escribir el programa wl-2-goto.c que siga la Implementación #2. En esta implementación los estados son etiquetas y las transiciones son la selección estructurada y el salto incondicional con la sentencia goto.
 
 #### c. Implementación #3: Funciones Recursivas.
@@ -104,7 +140,7 @@ i. Leer la sección 4.10 Recursividad de [KR1988].
 
 ii.Responder en readme.md: ¿Es necesario que las funciones accedana a contadores? Si es así, ¿cómo hacerlo?.Leer la sección 1.10 Variables Externas y Alcance y 4.3 VariablesExternas de [KR1988].
 
-iii.Escribir el programa, wl-3-rec.c que siga la implementación #3.En esta implementación los estados son funciones recursivas y lastransiciones son la selección estructurada y la invocación recursiva.
+iii.Escribir el programa, wl-3-rec.c que siga la implementación #3.En esta implementación los estados son funciones recursivas y las transiciones son la selección estructurada y la invocación recursiva.
 
 #### d. Implementación #X:
 
@@ -116,4 +152,4 @@ ii.Escribir el programa, wl-x.c que siga la nueva implementación.
 
 ### 4.Eficiencia del uso del Tiempo:
 
-Construir una tabla comparativa a modo de benchmark que muestre el tiempo de procesamiento para cada una de las cuatro implementaciones, para tresarchivos diferentes de tamaños diferentes, el primero en el orden de loskilobytes, el segundo en el orden de los megabytes, y el tercero en el ordende los gigabytes.La tabla tiene en las filas las cuatro implementación, en las columnas los tresarchivos, y en la intersección la duración para una implementación para unarchivo.
+Construir una tabla comparativa a modo de benchmark que muestre el tiempo de procesamiento para cada una de las cuatro implementaciones, para tres archivos diferentes de tamaños diferentes, el primero en el orden de los kilobytes, el segundo en el orden de los megabytes, y el tercero en el ordende los gigabytes. La tabla tiene en las filas las cuatro implementaciones, en las columnas los tres archivos, y en la intersección la duración para una implementación para un archivo.
