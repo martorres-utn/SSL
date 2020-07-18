@@ -156,6 +156,48 @@ Es posible diseñar más implementaciones. Por ejemplo, una basada en una tabla 
 
 i.Diseñar una nueva implementación e indicar en Readme.md cómo esa implementación representa los estados y cómo las transiciones.
 
+#### Implementación 4
+
+**1. Estados**
+
+Son números enteros.
+* 0 Para estado OUT
+* 1 Para estado IN
+
+En esta implementación los estos estados son definidos como constantes simbólicas mediante *#define OUT 0* y *#define IN 1*
+
+**2. Transición**
+
+Las transiciones se realizan mediante la selección usando *switch(symbol)* donde *symbol* es un número entero conteniendo 1 char del flujo de entrada: *symbol = getchar()*.
+
+**3. Acciones de una Transición**
+
+Esta FSM tiene un estado inicial u origen y mediante la interpretación de un símbolo podrá determinar un estado destino.
+
+Para determinar una acción asociada a una transición es necesario saber el estado "origen" y el estado "destino": estos dos componentes pueden ser interpretados como las coordenadas de un espacio R2 o las coordenadas de una matriz: coordenada = (estado_origen, estado_destino).
+
+En esta implementación existe una matriz de acciones de transición:
+
+    void (*actionPtr[2][2])(int);
+
+Cada componente de esta matriz es un puntero a una función del tipo:
+    
+    void functionName(int value);
+
+Luego al inicializar el programa se llena esta matriz con las acciones que queremos realizar cuando transicionemos de un estado a otro:
+
+    actionPtr[OUT][OUT] = NULL;
+    actionPtr[OUT][IN] = &PrintSymbol;
+    actionPtr[IN][OUT] = &PrintLn;
+    actionPtr[IN][IN] = &PrintSymbol;
+
+Cuando un componente de la matriz tiene acción NULL significa que no queremos hacer nada.
+
+Cuando FSM haya determinado el estado "destino" podrá usar este dato como una coordenada de la matriz y ejecutar la función-acción:
+
+    if(actionPtr[currentState][nextState] != NULL)
+            actionPtr[currentState][nextState](symbol);
+
 ii.Escribir el programa, wl-x.c que siga la nueva implementación.
 
 ### 4.Eficiencia del uso del Tiempo:

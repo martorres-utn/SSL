@@ -11,11 +11,14 @@ SOURCE3 = wl-3-rec.c
 BIN3 = wl-3-rec.out
 OBJ3 = wl-3-rec.o
 
+SOURCE4 = wl-4.c
+BIN4 = wl-4.out
+OBJ4 = wl-4.o
 
 CC = gcc
 CFLAGS = -std=c18 -g #agrego -g para decirle al compilador que emita informacion adicional para debugger GDB
 
-all: $(BIN1) $(BIN2) $(BIN3)
+all: $(BIN1) $(BIN2) $(BIN3) $(BIN4)
 
 $(OBJ1): $(SOURCE1)
 	$(CC) -c $(SOURCE1) $(CFLAGS)
@@ -40,6 +43,15 @@ $(OBJ3): $(SOURCE3)
 
 $(BIN3): $(OBJ3)
 	$(CC) $(OBJ3) -o $(BIN3) $(CFLAGS)
+
+#run: $(BIN3)
+#	$(BIN3)
+
+$(OBJ4): $(SOURCE4)
+	$(CC) -c $(SOURCE4) $(CFLAGS)
+
+$(BIN4): $(OBJ4)
+	$(CC) $(OBJ4) -o $(BIN4) $(CFLAGS)
 
 #run: $(BIN3)
 #	$(BIN3)
