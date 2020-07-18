@@ -4,6 +4,8 @@ digraph G {
     
     In [ label="In" style=filled color="#c1ff33" fontcolor=black ]
     
+    Out -> Out [ label="' '|'\\t'|'\\n'|','|'.'|';'" ];
+
     Out -> In [ color=blue fontcolor=blue label="'a'..'z'|'A'..'Z'
 putchar(c);"];
 

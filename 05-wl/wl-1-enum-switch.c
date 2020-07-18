@@ -29,17 +29,29 @@ int main(void){
             case ',':
             case ';':
             {
-                if(s == In)
+                switch(s)
                 {
-                    s = Out;
-                    putchar('\n');
+                    case In:
+                    {
+                        s = Out;
+                        putchar('\n');
+                    }
+                    case Out:
+                        s = Out;
                 }
                 break;
             }
             default:
             {
-                s = In;
-                putchar(c);
+                switch(s)
+                {
+                    case In:
+                    case Out:
+                    {        
+                        s = In;
+                        putchar(c);
+                    }
+                }
                 break;
             }
         }
