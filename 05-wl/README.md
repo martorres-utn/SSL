@@ -203,3 +203,22 @@ ii.Escribir el programa, wl-x.c que siga la nueva implementación.
 ### 4.Eficiencia del uso del Tiempo:
 
 Construir una tabla comparativa a modo de benchmark que muestre el tiempo de procesamiento para cada una de las cuatro implementaciones, para tres archivos diferentes de tamaños diferentes, el primero en el orden de los kilobytes, el segundo en el orden de los megabytes, y el tercero en el ordende los gigabytes. La tabla tiene en las filas las cuatro implementaciones, en las columnas los tres archivos, y en la intersección la duración para una implementación para un archivo.
+
+#### Benchmark
+
+Este benchmark se armó ejecutando las distintas versiones de la FSM con el comando time que en el sistema operativo (Ubuntu) calcula el tiempo que consume la ejecución de una aplicación. Por ejemplo:
+
+    marcos@marcos-G800:~/Documents/repos/SSL/05-wl$ time ./wl-1-enum-switch.out < input_kb.txt > output_kb-wl-1.txt
+
+    real    0m0,004s
+    user    0m0,003s
+    sys     0m0,001s
+    
+**Tabla**
+
+| Implementación   | 1 kb     | 1 mb                             | 1 gb                             |
+|------------------|----------|----------------------------------|----------------------------------|
+| wl-1-enum-switch | 0m0,004s | 0m0,032s                         | 0m23,049s                        |
+| wl-2-goto        | 0m0,003s | 0m0,026s                         | 0m24,313s                        |
+| wl-3-rec         | 0m0,022s | Segmentation fault (core dumped) | Segmentation fault (core dumped) |
+| wl-4             | 0m0,003s | 0m0,037s                         | 0m27,464s                        |
