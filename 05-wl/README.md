@@ -50,7 +50,7 @@ Máquina de estado **"Palabras por Línea"** es una **5-upla (Q, Sigma, T, A, I)
 
     |     | a\|b..\|z\|A\|B..\|Z | ' '\|'\t'\|'\n'\|'.'\|','\|';' |
     |-----|----------------------|--------------------------------|
-    | Out | In                   | -                              |
+    | Out | In                   | Out                            |
     | In  | In                   | Out                            |
 
 * **A: Q x Sigma x Q -> "Acción" en lenguaje C**, es una función que asigna acciones específicas a las transiciones descriptas en T. Las acciones en este ejemplo son código en lenguaje C.
