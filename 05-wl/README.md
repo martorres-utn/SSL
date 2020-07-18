@@ -138,7 +138,15 @@ v. Escribir el programa wl-2-goto.c que siga la Implementación #2. En esta impl
 
 i. Leer la sección 4.10 Recursividad de [KR1988].
 
-ii.Responder en readme.md: ¿Es necesario que las funciones accedana a contadores? Si es así, ¿cómo hacerlo?.Leer la sección 1.10 Variables Externas y Alcance y 4.3 VariablesExternas de [KR1988].
+ii.Responder en readme.md: ¿Es necesario que las funciones accedan a contadores? Si es así, ¿cómo hacerlo?.Leer la sección 1.10 Variables Externas y Alcance y 4.3 VariablesExternas de [KR1988].
+
+**Cuando una función necesita acceder datos para realizar su tarea estos pueden ser alcanzados de las siguientes formas**:
+
+1. Mecanismo de argumentos: los datos son suministrados a la función a través de un listado de argumentos. Dentro del contexto interno de la función, estos argumentos serán creados automáticamente al momento de invocar a la función pero es necesario proporcionarselos al momento de invocarla.
+
+2. Mecanismo de Variables Externas: los datos son alojados a variables globales externas a la función, esto significa que pueden ser accedidos por cualquier función. La función ya no recibe esos datos como parte de sus parámetros, pero igualmente los puede alcanzar y usar para ejecutar instrucciones con ellos.
+
+Estos dos mecanismos pueden ser utilizados en combinación o de forma exclusiva uno del otro pero depende del propósito que se quiera lograr. Por ejemplo, en una función recursiva puede ser necesario acceder a un dato que haya sido pasado estrictamente como argumento de la función ya que este mecanismo crea una copia de ese valor en el stack y ese valor es accedido exclusivamente por esa instancia de la función y por ninguna otra, en un algoritmo recursivo esto asegura que en esa instancia la función está trabajando con un término de la recursión (matemáticamente hablando).
 
 iii.Escribir el programa, wl-3-rec.c que siga la implementación #3.En esta implementación los estados son funciones recursivas y las transiciones son la selección estructurada y la invocación recursiva.
 
