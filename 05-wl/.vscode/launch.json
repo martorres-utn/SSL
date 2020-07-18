@@ -5,20 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Iniciar WL 1",
+            "name": "WL-1",
             "type": "cppdbg",
             "request": "launch",
             //"program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "program": "${fileDirname}\\wl-1.exe",
+            "program": "${workspaceFolder}\\wl-1-enum-switch.out",
             "args": [
-                "<","input.txt", ">","output.txt"
+                "<","input.txt", ">","output-wl-1-enum-switch.txt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            //"miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Habilitar la impresión con sangría para gdb",
@@ -29,18 +29,44 @@
             "preLaunchTask": "Build"
         },
         {
-            "name": "(gdb) Iniciar WL 2",
+            "name": "WL-2",
             "type": "cppdbg",
             "request": "launch",
             //"program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "program": "${fileDirname}\\wl-2.exe",
-            "args": [],
+            "program": "${workspaceFolder}\\wl-2-goto.out",
+            "args": [
+                "<","input.txt", ">","output-wl-2-goto.txt"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            //"miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Habilitar la impresión con sangría para gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build"
+        },
+        {
+            "name": "WL-3",
+            "type": "cppdbg",
+            "request": "launch",
+            //"program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}\\wl-3-rec.out",
+            "args": [
+                "<","input.txt", ">","output-wl-3-rec.txt"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            //"miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Habilitar la impresión con sangría para gdb",
@@ -50,6 +76,5 @@
             ],
             "preLaunchTask": "Build"
         }
-
     ]
 }
