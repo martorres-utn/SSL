@@ -16,11 +16,11 @@ digraph G {
     Eq1 -> cVar1
     Eq1 -> "' '"
     
-    Or1 -> Or2
-    Or2 -> Eq2
+    Or1 -> Eq2
     Eq2 -> cVar2
     Eq2 -> "'\\n'"
 
+    Or2 -> Or1
     Or2 -> Eq3
     Eq3 -> cVar3
     Eq3 -> "'\\t'"
