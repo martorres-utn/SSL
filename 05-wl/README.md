@@ -53,17 +53,17 @@ Máquina de estado **"Palabras por Línea"** es una **5-upla (Q, Sigma, T, A, I)
     | Out | In                   | Out                            |
     | In  | In                   | Out                            |
 
-* **A: Q x Sigma x Q -> "Acción" en lenguaje C**, es una función que asigna acciones específicas a las transiciones descriptas en T. Las acciones en este ejemplo son código en lenguaje C.
+* **A: Q x Q -> "Acción" en lenguaje C**, es una función que asigna acciones específicas a las transiciones descriptas en T. Las acciones en este ejemplo son código en lenguaje C.
 
-    Transición de Origen: es una 3-upla, la primer componente es el estado origen, la segunda componente es el símbolo por el cual se transiciona al estado final, la tercer componente es el estado final tras la recepción del símbolo.
+    Transición de Origen: es una 2-upla, la primer componente es el estado origen, la segunda componente es el estado final tras la aceptación del símbolo.
 
     Acción asociada: es una instrucción escrita en lenguaje C.
 
     | Transición de Origen                      | Acción asociada |
     |-------------------------------------------|-----------------|
-    | (Out, 'a'\|'b'...'z'\|'A'\|'B'...'Z', In) | putchar(c);     |
-    | (In, 'a'\|'b'...'z'\|'A'\|'B'...'Z' ,In)  | putchar(c);     |
-    | (In, ' '\|'\t'\|'\n'\|'.'\|','\|';', Out) | putchar('\n');  |
+    | (Out, In) | putchar(c);     |
+    | (In, In)  | putchar(c);     |
+    | (In, Out) | putchar('\n');  |
 
 * **I = Out**: estado inicial del autómata.
 
