@@ -4,8 +4,13 @@
 Token Scanner_GetNextToken()
 {
     int newChar = EOF;
+    Token nextState = T_INITIAL;
+    Token foundToken = T_INITIAL;
+
     while((newChar = getchar()) != EOF)
     {
+        foundToken = T_INITIAL;
+
         switch(newChar)
         {
             case 'a':
@@ -29,36 +34,41 @@ Token Scanner_GetNextToken()
             case 's':
             case 't':
             {
-                switch(CurrentState)
+                nextState = T_ID;
+                
+                switch(LastState)
                 {
                     case T_INITIAL:
-                        CurrentState = T_ID;
-                        break;
-                    case T_ID:
-                        CurrentState = T_ID;
-                        break;
-                    /*case T_CONSTANT:
                     {
-                        ungetc(newChar, stdin);
-                        return T_CONSTANT;
                         break;
-                    }*/
+                    }
+                    case T_ID:
+                    {
+                        break;
+                    }
+                    case T_CONSTANT:
+                    {
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
+                    }
                     case T_OP_PLUS:
                     {
-                        ungetc(newChar, stdin);
-                        return T_OP_PLUS;
+                        //ungetc(newChar, stdin);
+                        foundToken =  T_OP_PLUS;
                         break;
                     }
                     case T_OP_PROD:
                     {
-                        ungetc(newChar, stdin);
-                        return T_OP_PROD;
+                        //ungetc(newChar, stdin);
+                        foundToken =  T_OP_PROD;
                         break;
                     }
                     default:
                     {
-                        printf("[!LEXICAL_ERROR!]");
-                        return T_END; //lexical error
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
                     }
                 }
                 break;
@@ -74,175 +84,194 @@ Token Scanner_GetNextToken()
             case '8':
             case '9':
             {
-                switch(CurrentState)
+                nextState = T_CONSTANT;
+
+                switch(LastState)
                 {
                     case T_INITIAL:
-                        CurrentState = T_CONSTANT;
-                        break;
-                    /*case T_ID:
                     {
-                        ungetc(newChar, stdin);    
-                        return T_ID;
                         break;
-                    }*/
-                    case T_CONSTANT: //there was a constant token before
-                        CurrentState = T_CONSTANT;
+                    }
+                    case T_ID:
+                    {
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
                         break;
+                    }
+                    case T_CONSTANT:
+                    {
+                        break;
+                    }
                     case T_OP_PLUS:
                     {
-                        ungetc(newChar, stdin);
-                        return T_OP_PLUS;
+                        //ungetc(newChar, stdin);
+                        foundToken = T_OP_PLUS;
                         break;
                     }
                     case T_OP_PROD:
                     {
-                        ungetc(newChar, stdin);
-                        return T_OP_PROD;
+                        //ungetc(newChar, stdin);
+                        foundToken = T_OP_PROD;
                         break;
                     }
                     default:
                     {
-                        printf("[!LEXICAL_ERROR!]");
-                        return T_END; //lexical error
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
                     }
                 }
                 break;
             }
             case '+':
             {
-                switch(CurrentState)
+                nextState = T_OP_PLUS;
+
+                switch(LastState)
                 {
                     case T_INITIAL:
                     {
-                        CurrentState = T_OP_PLUS;
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
                         break;
                     }
                     case T_ID:
                     {
-                        ungetc(newChar, stdin);
-                        CurrentState = T_OP_PLUS;
-                        return T_ID;
+                        //ungetc(newChar, stdin);
+                        foundToken = T_ID;
                         break;
                     }
                     case T_CONSTANT:
                     {
-                        ungetc(newChar, stdin);
-                        CurrentState = T_OP_PLUS;
-                        return T_CONSTANT;
+                        //ungetc(newChar, stdin);
+                        foundToken = T_CONSTANT;
                         break;
                     }
-                    /*case T_OP_PLUS:
-                        CurrentState = T_OP_PLUS;
-                        break;*/
+                    case T_OP_PLUS:
+                    {
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
+                    }
                     case T_OP_PROD:
                     {
-                        ungetc(newChar, stdin);
-                        CurrentState = T_OP_PLUS;
-                        return T_OP_PROD;
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
                         break;
                     }
                     default:
                     {
-                        printf("[!LEXICAL_ERROR!]");
-                        return T_END; //lexical error
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
                     }
                 }
-
-                CurrentState = T_OP_PLUS;
-
                 break;
             }
             case '*':
             {
-                switch(CurrentState)
+                nextState = T_OP_PROD;
+
+                switch(LastState)
                 {
-                    /*case T_INITIAL:
-                        CurrentState = T_OP_PROD;
-                        break;*/
+                    case T_INITIAL:
+                    {
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
+                    }
                     case T_ID:
                     {
-                        ungetc(newChar, stdin);
-                        return T_ID;
+                        //ungetc(newChar, stdin);
+                        foundToken = T_ID;
                         break;
                     }
                     case T_CONSTANT:
                     {
-                        ungetc(newChar, stdin);
-                        return T_CONSTANT;
+                        //ungetc(newChar, stdin);
+                        foundToken = T_CONSTANT;
                         break;
                     }
-                    /*case T_OP_PLUS:
+                    case T_OP_PLUS:
                     {
-                        ungetc(newChar, stdin);
-                        return T_OP_PLUS;
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
                         break;
-                    }*/
-                    /*case T_OP_PROD:
-                        CurrentState = T_OP_PROD;
-                        break;*/
+                    }
+                    case T_OP_PROD:
+                    {
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
+                    }
                     default:
                     {
-                        printf("[!LEXICAL_ERROR!]");
-                        return T_END; //lexical error
+                        printf("[!LEXICAL_ERROR!]\n");
+                        return T_END;
+                        break;
                     }
                 }
                 break;
             }
             default:
             {
-                printf("[!LEXICAL_ERROR!]");
+                printf("[!LEXICAL_ERROR!]\n");
                 return T_END; //lexical error
             }
         }
+        
+        LastState = nextState;
+
+        if(foundToken != T_INITIAL)
+            return foundToken;
     }
 
-    switch(CurrentState)
+    nextState = T_END;
+
+    switch(LastState)
     {
         case T_INITIAL:
         {
-            return T_END;
             break;
         }
         case T_ID:
         {
-            ungetc(newChar, stdin);
-            CurrentState = T_END;
-            return T_ID;
+            //ungetc(newChar, stdin);
+            foundToken = T_ID;
             break;
         }
         case T_CONSTANT:
         {
-            ungetc(newChar, stdin);
-            CurrentState = T_END;
-            return T_CONSTANT;
+            //ungetc(newChar, stdin);
+            foundToken = T_CONSTANT;
             break;
         }
         case T_OP_PLUS:
         {
-            ungetc(newChar, stdin);
-            CurrentState = T_END;
-            return T_OP_PLUS;
+            printf("[!LEXICAL_ERROR!]\n");
+            return T_END;
             break;
         }
         case T_OP_PROD:
         {
-            ungetc(newChar, stdin);
-            CurrentState = T_END;
-            return T_OP_PROD;
+            printf("[!LEXICAL_ERROR!]\n");
+            return T_END;
             break;
         }
         case T_END:
         {
-            return T_END;
+            foundToken = T_END;
             break;
         }
         default:
         {
-            printf("[!LEXICAL_ERROR!]");
-            return T_END; //lexical error
+            printf("[!LEXICAL_ERROR!]\n");
+            return T_END;
             break;
         }
     }
+    
+    LastState = nextState;
 
-    return T_END;
+    return foundToken;
 }

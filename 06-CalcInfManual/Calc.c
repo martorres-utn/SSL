@@ -9,7 +9,7 @@ int main(void)
     int loopCounter = 0;
     while((currentToken = Scanner_GetNextToken()) != T_END && loopCounter < LOOP_LIMIT)
     {
-        printf("t[%d]", currentToken);
+        printf("t[%d]\n", currentToken);
         loopCounter++;
     }
     return 0;

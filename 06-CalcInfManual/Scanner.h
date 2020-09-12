@@ -9,18 +9,15 @@ enum PossibleTokens {
     T_END
 };
 
-/*enum PossibleStates {
-    S_INITIAL = 0,
+enum PossibleStates {
+    S_EXPR = 0,
     S_ID,
-    S_CONSTANT,
-    S_OP_PLUS,
-    S_OP_PROD,
-    S_END
-};*/
+    S_CONSTANT
+};
 
 typedef enum PossibleTokens Token;
-/*typedef enum PossibleStates State;*/
+typedef enum PossibleStates State;
 
-static Token CurrentState = T_INITIAL;
+static Token LastState = T_INITIAL;
 
 Token Scanner_GetNextToken();
