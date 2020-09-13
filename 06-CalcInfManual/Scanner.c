@@ -3,7 +3,8 @@
 
 Token FoundLexicalError(int symbol)
 {
-    printf("[!LEXICAL_ERROR!]\n");
+    printf("[lexical error!]\n");
+    Scanner_FoundLexicalError = true;
     return T_END;
 }
 
@@ -38,8 +39,9 @@ Token Scanner_GetNextToken()
 
         switch(newChar)
         {
-            //[a-z]
+            //[a-z][A-Z]
             case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': case 'j': case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': case 'r': case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z':
+            case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
             {
                 nextState = S_ID;
                 break;
@@ -62,10 +64,15 @@ Token Scanner_GetNextToken()
                 RemainingToken = T_OP_PROD;
                 break;
             }
+            case '\n':
+            {
+                nextState = S_EXPR;
+                RemainingToken = T_END;
+                break;
+            }
             default:
             {
-                printf("[!LEXICAL_ERROR!]\n");
-                foundToken = T_END;
+                foundToken = FoundLexicalError(newChar);
             }
         }
         
@@ -81,7 +88,7 @@ Token Scanner_GetNextToken()
     }
 
     //getchar() == EOF
-    
+    Scanner_ReachedEOF = true;    
     //once we reach the end we need to return the corresponding token according to the previous state
 
     switch(LastState)
@@ -106,4 +113,25 @@ Token Scanner_GetNextToken()
     }
 
     return foundToken;
+}
+
+bool Scanner_HasReachedEOF()
+{
+    return Scanner_ReachedEOF;
+}
+
+bool Scanner_HasFoundLexicalError()
+{
+    return Scanner_FoundLexicalError;
+}
+
+void Scanner_MoveToNextExpression()
+{
+    int newChar;
+    Scanner_FoundLexicalError = false; //clean flag
+    RemainingToken = T_INITIAL; //clean remaining token
+    while((newChar = getchar()) != EOF)
+        if(newChar == '\n')
+            return;
+    Scanner_ReachedEOF = true;
 }

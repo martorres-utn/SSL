@@ -7,19 +7,35 @@ void Parser_Start()
     size_t bufferTop = 0;
 
     int iterCounter = 0;
-
-    while((currentToken = Scanner_GetNextToken()) != T_END && iterCounter < PARSER_LOOP_LIMIT)
-    {
-        printf("t[%d],", currentToken);
-
-        tokenBuffer[bufferTop++] = currentToken;
-
-        iterCounter++;
-    }
-
-    bool isValid = Parser_IsExpression(tokenBuffer, bufferTop, 0, bufferTop);
     
-    printf("\nExpression is %s", isValid ? "VALID" : "INVALID");
+    while(!Scanner_HasReachedEOF())
+    {
+        Parser_CleanBuffer(tokenBuffer, TOKEN_BUFFER_SIZE);
+        bufferTop = 0;
+
+        while((currentToken = Scanner_GetNextToken()) != T_END && iterCounter < PARSER_LOOP_LIMIT)
+        {
+            printf("t[%d],", currentToken);
+            tokenBuffer[bufferTop++] = currentToken;
+            iterCounter++;
+        }
+
+        if(!Scanner_HasFoundLexicalError())
+        {
+            bool isValid = Parser_IsExpression(tokenBuffer, bufferTop, 0, bufferTop);
+            printf(" -> Syntax %s \n", isValid ? "Ok" : "Error");
+        }
+        else
+        {
+            Scanner_MoveToNextExpression();
+        }
+    }
+}
+
+void Parser_CleanBuffer(Token buffer[], size_t max)
+{
+    for(size_t pos = 0; pos < max; pos++)
+        buffer[pos] = T_INITIAL;
 }
 
 bool Parser_IsExpression(Token buffer[], size_t max, size_t start, size_t end)

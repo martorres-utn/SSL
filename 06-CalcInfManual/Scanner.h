@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdio.h>
+#include <stdbool.h>
+
 enum PossibleTokens {
     T_INITIAL = 0,
     T_ID,
@@ -21,7 +24,8 @@ typedef Token (*TokenReturningTransition)(int);
 
 static State LastState = S_EXPR;
 static Token RemainingToken = T_INITIAL;
-
+static bool Scanner_ReachedEOF = false;
+static bool Scanner_FoundLexicalError = false;
 
 Token FoundLexicalError();
 Token FoundID();
@@ -46,3 +50,6 @@ static TokenReturningTransition TokenReturningMatrix[3][3] = {
 };
 
 Token Scanner_GetNextToken();
+bool Scanner_HasReachedEOF();
+bool Scanner_HasFoundLexicalError();
+void Scanner_MoveToNextExpression();
