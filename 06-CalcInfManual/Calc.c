@@ -1,16 +1,8 @@
 #include <stdio.h>
-#include "Scanner.h"
-
-#define LOOP_LIMIT 50
+#include "Parser.h"
 
 int main(void)
 {
-    Token currentToken = T_END;
-    int loopCounter = 0;
-    while((currentToken = Scanner_GetNextToken()) != T_END && loopCounter < LOOP_LIMIT)
-    {
-        printf("t[%d]\n", currentToken);
-        loopCounter++;
-    }
+    Parser_Start();
     return 0;
 }
