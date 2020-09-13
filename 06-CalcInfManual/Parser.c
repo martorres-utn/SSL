@@ -5,19 +5,16 @@ void Parser_Start()
     Token tokenBuffer[TOKEN_BUFFER_SIZE];
     Token currentToken = T_END;
     size_t bufferTop = 0;
-
-    int iterCounter = 0;
     
     while(!Scanner_HasReachedEOF())
     {
         Parser_CleanBuffer(tokenBuffer, TOKEN_BUFFER_SIZE);
         bufferTop = 0;
 
-        while((currentToken = Scanner_GetNextToken()) != T_END && iterCounter < PARSER_LOOP_LIMIT)
+        while((currentToken = Scanner_GetNextToken()) != T_END)
         {
             printf("t[%d],", currentToken);
             tokenBuffer[bufferTop++] = currentToken;
-            iterCounter++;
         }
 
         if(!Scanner_HasFoundLexicalError())

@@ -33,7 +33,7 @@ Token Scanner_GetNextToken()
     }
     
     //get char from input stream
-    while((newChar = getchar()) != EOF)
+    while((newChar = getchar()) != EOF && newChar != '\n')
     {
         foundToken = T_INITIAL; //will containt a token if we find one
 
@@ -64,12 +64,6 @@ Token Scanner_GetNextToken()
                 RemainingToken = T_OP_PROD;
                 break;
             }
-            case '\n':
-            {
-                nextState = S_EXPR;
-                RemainingToken = T_END;
-                break;
-            }
             default:
             {
                 foundToken = FoundLexicalError(newChar);
@@ -87,8 +81,9 @@ Token Scanner_GetNextToken()
             return foundToken;
     }
 
-    //getchar() == EOF
-    ReachedEOF = true;    
+    //getchar() == EOF or \n
+    ReachedEOF = newChar == EOF;
+
     //once we reach the end we need to return the corresponding token according to the previous state
 
     switch(LastState)
@@ -111,6 +106,8 @@ Token Scanner_GetNextToken()
             break;
         }
     }
+    
+    LastState = S_EXPR; //return to initial state
 
     return foundToken;
 }
