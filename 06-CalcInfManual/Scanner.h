@@ -24,8 +24,8 @@ typedef Token (*TokenReturningTransition)(int);
 
 static State LastState = S_EXPR;
 static Token RemainingToken = T_INITIAL;
-static bool Scanner_ReachedEOF = false;
-static bool Scanner_FoundLexicalError = false;
+static bool ReachedEOF = false;
+static bool LexicalError = false;
 
 Token FoundLexicalError();
 Token FoundID();

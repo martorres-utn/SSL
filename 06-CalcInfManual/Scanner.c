@@ -4,7 +4,7 @@
 Token FoundLexicalError(int symbol)
 {
     printf("[lexical error!]\n");
-    Scanner_FoundLexicalError = true;
+    LexicalError = true;
     return T_END;
 }
 
@@ -88,7 +88,7 @@ Token Scanner_GetNextToken()
     }
 
     //getchar() == EOF
-    Scanner_ReachedEOF = true;    
+    ReachedEOF = true;    
     //once we reach the end we need to return the corresponding token according to the previous state
 
     switch(LastState)
@@ -117,21 +117,21 @@ Token Scanner_GetNextToken()
 
 bool Scanner_HasReachedEOF()
 {
-    return Scanner_ReachedEOF;
+    return ReachedEOF;
 }
 
 bool Scanner_HasFoundLexicalError()
 {
-    return Scanner_FoundLexicalError;
+    return LexicalError;
 }
 
 void Scanner_MoveToNextExpression()
 {
     int newChar;
-    Scanner_FoundLexicalError = false; //clean flag
+    LexicalError = false; //clean flag
     RemainingToken = T_INITIAL; //clean remaining token
     while((newChar = getchar()) != EOF)
         if(newChar == '\n')
             return;
-    Scanner_ReachedEOF = true;
+    ReachedEOF = true;
 }
