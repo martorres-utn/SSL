@@ -18,6 +18,7 @@ enum PossibleStates {
 typedef enum PossibleTokens Token;
 typedef enum PossibleStates State;
 
-static Token LastState = T_INITIAL;
+static State LastState = S_EXPR;
+static Token RemainingToken = T_INITIAL;
 
 Token Scanner_GetNextToken();

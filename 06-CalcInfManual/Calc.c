@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "Scanner.h"
 
-#define LOOP_LIMIT 1000
+#define LOOP_LIMIT 50
 
 int main(void)
 {
