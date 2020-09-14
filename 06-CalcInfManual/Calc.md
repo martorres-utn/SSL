@@ -122,9 +122,25 @@ Cada categoría tiene asociada un Lenguaje Regular y cada cadena será reconocid
         A -> + | *
     G3 = ({A}, {+,*}, A, P)
 
+**Gramática léxica en BNF**
+
+    <token> -> uno de <identificador> <constante> <operador>
+
+    <identificador> -> <letra> { <letra> }
+
+    <constante> -> <dígito> { <dígito> }
+
+    <operador> -> uno de + *
+
+    <letra> -> una de a-z A-Z
+
+    <dígito> -> uno de 0-9
+
 ### Diseño Sintáctico
 
 Las expresiones aritméticas pertenecerán a un Lenguaje Independiente de Contexto y serán reconocidas por la siguiente Gramática Independientes de Contexto.
+
+**Producciones**
 
 *expresión* -> *término* | *término* + *expresión*
 
@@ -140,13 +156,13 @@ Las expresiones aritméticas pertenecerán a un Lenguaje Independiente de Contex
         F -> 'identificador' | 'entero'
     GIC = ({E, T, F}, {'identificador', 'entero', +, *}, E, P)
 
-Observación: identificador y entero son los lexemas reconocidos por las GR previamente descriptas.
+**Observación**: identificador y entero son los lexemas reconocidos por las GR previamente descriptas.
 
-En nuestra implementación el analizador sintáctico hará derivaciones siguiendo las producciones anteriores para verificar si una cadena de tokens respeta la sintaxis.
+El analizador sintáctico hará derivaciones siguiendo las producciones de la GIC para verificar si una cadena de tokens respeta la sintaxis.
 
 A continuación un ejemplo derivando usando cadenas en lugar de tokens para una mejor comprensión.
 
-Ejemplo de derivación para encontrar expresion "A * 3 + 5 * 6"
+**Ejemplo de derivación** para encontrar expresion "A * 3 + 5 * 6"
 
 1. *expresión*
 2. *término* + *expresión* 
@@ -163,4 +179,14 @@ Ejemplo de derivación para encontrar expresion "A * 3 + 5 * 6"
 13. A * 3 + 5 * *entero*
 14. A * 3 + 5 * 6
 
-Observación: intentar alcanzar una cadena como "+ A + 3 *" derivando con las producciones anteriores no será posible.
+**Observación**: intentar alcanzar una cadena como "+ A + 3 *" derivando con las producciones anteriores no será posible.
+
+**Gramática Sintactica en BNF**
+
+    <listaExpresiones> -> <expresion> { <expresion>\n }
+
+    <expresion> -> <término> | <término> + <expresión>
+
+    <término> -> <factor> | <factor> * <término>
+
+    <factor> -> uno de <identificador> <entero>
