@@ -23,17 +23,18 @@ typedef enum PossibleStates State;
 typedef Token (*TokenReturningTransition)(int);
 
 static State LastState = S_EXPR;
-static Token RemainingToken = T_INITIAL;
+static Token LastToken = T_INITIAL;
 static bool ReachedEOF = false;
 static bool LexicalError = false;
 
 Token FoundLexicalError();
 Token FoundID();
 Token FoundConstant();
+Token FoundOperatorOrLexicalError();
 
 static TokenReturningTransition TokenReturningMatrix[3][3] = {
     {
-        &FoundLexicalError, //S_EXPR -> S_EXPR
+        &FoundOperatorOrLexicalError, //S_EXPR -> S_EXPR
         NULL,               //S_EXPR -> S_ID
         NULL                //S_EXPR -> S_CONSTANT
     },
@@ -53,3 +54,4 @@ Token Scanner_GetNextToken();
 bool Scanner_HasReachedEOF();
 bool Scanner_HasFoundLexicalError();
 void Scanner_MoveToNextExpression();
+void Scanner_ResetInternalState();

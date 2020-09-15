@@ -11,12 +11,28 @@ Token FoundLexicalError(int symbol)
 
 Token FoundID(int symbol)
 {
+    ungetc(symbol, stdin);
     return T_ID;
 }
 
 Token FoundConstant(int symbol)
 {
+    ungetc(symbol, stdin);
     return T_CONSTANT;
+}
+//S_EXPR -> S_EXPR Do I wan't to return ++a or +a or + as Lexical Errors? I can detect those kind of strings at this level
+Token FoundOperatorOrLexicalError(int symbol)
+{
+    if(LastToken == T_CONSTANT || LastToken == T_ID || LastToken == T_INITIAL)
+    {
+        if(symbol == '+')
+            return T_OP_PLUS;
+        else if(symbol == '*')
+            return T_OP_PROD;
+        else
+            return FoundLexicalError(symbol); //this shouldn't be possible
+    }
+    return FoundLexicalError(symbol);
 }
 
 Token Scanner_GetNextToken()
@@ -24,14 +40,6 @@ Token Scanner_GetNextToken()
     int newChar = EOF;
     State nextState = S_EXPR;
     Token foundToken = T_INITIAL;
-    
-    // check if there is a remaining token from a previous call like operators: +, *
-    if(RemainingToken != T_INITIAL)
-    {
-        foundToken = RemainingToken;
-        RemainingToken = T_INITIAL;
-        return foundToken;
-    }
     
     //get char from input stream
     while((newChar = getchar()) != EOF && newChar != '\n')
@@ -51,12 +59,10 @@ Token Scanner_GetNextToken()
             else if(newChar == '+')
             {
                 nextState = S_EXPR;
-                RemainingToken = T_OP_PLUS;
             }
             else if(newChar == '*')
             {
                 nextState = S_EXPR;
-                RemainingToken = T_OP_PROD;
             }
             else
             {
@@ -75,7 +81,10 @@ Token Scanner_GetNextToken()
 
             //return a new token only if we find one
             if(foundToken != T_INITIAL)
+            {
+                LastToken = foundToken;
                 return foundToken;
+            }
         }
     }
 
@@ -94,19 +103,21 @@ Token Scanner_GetNextToken()
         case S_ID:
         {
             foundToken = T_ID;
-            RemainingToken = T_END;
+            if(newChar == '\n')
+                ungetc(newChar, stdin);
             break;
         }
         case S_CONSTANT:
         {
             foundToken = T_CONSTANT;
-            RemainingToken = T_END;
+            if(newChar == '\n')
+                ungetc(newChar, stdin);
             break;
         }
     }
     
     LastState = S_EXPR; //return to initial state
-
+    LastToken = foundToken;
     return foundToken;
 }
 
@@ -123,10 +134,16 @@ bool Scanner_HasFoundLexicalError()
 void Scanner_MoveToNextExpression()
 {
     int newChar;
-    LexicalError = false; //clean flag
-    RemainingToken = T_INITIAL; //clean remaining token
+    
     while((newChar = getchar()) != EOF)
         if(newChar == '\n')
             return;
     ReachedEOF = true;
+}
+
+void Scanner_ResetInternalState()
+{
+    LexicalError = false; //clean flag
+    LastToken = T_INITIAL;
+    LastState = S_EXPR;
 }

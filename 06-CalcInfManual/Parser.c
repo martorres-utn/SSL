@@ -11,6 +11,8 @@ void Parser_Start()
         Parser_CleanBuffer(tokenBuffer, TOKEN_BUFFER_SIZE);
         bufferTop = 0;
 
+        Scanner_ResetInternalState();
+
         while((currentToken = Scanner_GetNextToken()) != T_END)
         {
             printf("t[%d],", currentToken);
