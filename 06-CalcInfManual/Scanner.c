@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "Scanner.h"
 
 Token FoundLexicalError(int symbol)
@@ -37,48 +38,45 @@ Token Scanner_GetNextToken()
     {
         foundToken = T_INITIAL; //will containt a token if we find one
 
-        switch(newChar)
+        if(!isspace(newChar))
         {
-            //[a-z][A-Z]
-            case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': case 'j': case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': case 'r': case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z':
-            case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
+            if(isalpha(newChar))
             {
                 nextState = S_ID;
-                break;
             }
-            //[0-9]
-            case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            else if(isdigit(newChar))
             {
                 nextState = S_CONSTANT;
-                break;
             }
-            case '+':
+            else if(newChar == '+')
             {
                 nextState = S_EXPR;
                 RemainingToken = T_OP_PLUS;
-                break;
             }
-            case '*':
+            else if(newChar == '*')
             {
                 nextState = S_EXPR;
                 RemainingToken = T_OP_PROD;
-                break;
             }
-            default:
+            else
             {
+                nextState = S_EXPR;
                 foundToken = FoundLexicalError(newChar);
             }
+
+            if(!LexicalError)
+            {
+                //Check if there is a transition defined for: LastState -> nextState
+                if(TokenReturningMatrix[LastState][nextState] != NULL)
+                    foundToken = TokenReturningMatrix[LastState][nextState](newChar); //get the token from the transition
+            }
+
+            LastState = nextState;
+
+            //return a new token only if we find one
+            if(foundToken != T_INITIAL)
+                return foundToken;
         }
-        
-        //Check if there is a transition defined for: LastState -> nextState
-        if(TokenReturningMatrix[LastState][nextState] != NULL)
-            foundToken = TokenReturningMatrix[LastState][nextState](newChar); //get the token from the transition
-
-        LastState = nextState;
-
-        //return a new token only if we find one
-        if(foundToken != T_INITIAL)
-            return foundToken;
     }
 
     //getchar() == EOF or \n
