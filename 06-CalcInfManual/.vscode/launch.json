@@ -27,6 +27,30 @@
                 }
             ],
             "preLaunchTask": "Build"
+        },
+        {
+            "name": "(gdb) Launch - Calc 2",
+            "type": "cppdbg",
+            "request": "launch",
+            //"program": "enter program name, for example ${workspaceFolder}/a.out",
+            "program": "${workspaceFolder}\\Calc2.out",
+            "args": [
+                "<","input.txt", ">","output_calc2.txt"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            //"miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build"
         }
     ]
 }
