@@ -4,6 +4,8 @@
 
 Token Scanner_GetNextToken()
 {
+    Scanner_BufferClear(); //(?)
+
     int newChar = EOF;
 
     //get char from input stream
@@ -14,48 +16,117 @@ Token Scanner_GetNextToken()
             if(isalpha(newChar))
             {
                 //token id [a-zA-Z]*
+
+                Scanner_BufferPush(newChar);
+
 				int accepted = 0;
-				while( (newChar = getchar()) != EOF && (accepted = isalpha(newChar)) ) {}
+				while( (newChar = getchar()) != EOF && (accepted = isalpha(newChar)) ) {
+                    Scanner_BufferPush(newChar);
+                }
+
 				if(!accepted)
 					ungetc(newChar, stdin);
-				return T_ID;
+
+				return (LastToken = T_ID);
             }
             else if(isdigit(newChar))
             {
                 //token const [0-9]*
+                
+                Scanner_BufferPush(newChar);
+
 				int accepted = 0;
-				while( (newChar = getchar()) != EOF && (accepted = isdigit(newChar)) ) {}
+				while( (newChar = getchar()) != EOF && (accepted = isdigit(newChar)) ) {
+                    Scanner_BufferPush(newChar);
+                }
+
 				if(!accepted)
 					ungetc(newChar, stdin);
-				return T_CONSTANT;
+
+				return (LastToken = T_CONSTANT);
             }
             else if(newChar == '+')
             {
-                return T_OP_PLUS;
+                Scanner_BufferPush(newChar);
+
+                return (LastToken = T_OP_PLUS);
             }
             else if(newChar == '*')
             {
-                return T_OP_PROD;
+                Scanner_BufferPush(newChar);
+
+                return (LastToken = T_OP_PROD);
             }
             else if(newChar == '(')
             {
-                return T_L_PAR;
+                Scanner_BufferPush(newChar);
+
+                return (LastToken = T_L_PAR);
             }
             else if(newChar == ')')
             {
-                return T_R_PAR;
+                Scanner_BufferPush(newChar);
+
+                return (LastToken = T_R_PAR);
+            }
+            else if (newChar == '=')
+            {
+                Scanner_BufferPush(newChar);
+
+                return (LastToken = T_ASSIGN);
+            }
+            else if (newChar == '$')
+            {
+                Scanner_BufferPush(newChar);
+
+                return (LastToken = T_PRINT);
             }
             else
             {
                 printf("[lexical error!]\n");
                 LexicalError = true;
-                return T_END;
+                return (LastToken = T_END);
             }
         }
     }
+    
+    Scanner_BufferPush(newChar);
+
     //getchar() == EOF or \n
     ReachedEOF = newChar == EOF;
-    return T_END;
+    return (LastToken = T_END);
+}
+
+void Scanner_BufferPush(int symbol)
+{
+    Buffer[BufferTop++] = symbol;
+    Buffer[BufferTop] = '\0';
+}
+
+int Scanner_BufferPop()
+{
+    int symbol = Buffer[--BufferTop];
+    Buffer[BufferTop] = '\0';
+    return symbol;
+}
+
+void Scanner_BufferClear()
+{
+    for(size_t pos = 0; pos < BUFFER_SIZE; pos++)
+        Buffer[pos] = '\0';
+    BufferTop = 0;
+}
+
+Token Scanner_GetLastToken()
+{
+    return LastToken;
+}
+
+void Scanner_UngetLastToken()
+{
+    while(BufferTop > 0)
+        ungetc(Scanner_BufferPop(), stdin);
+    LastToken = T_INITIAL;
 }
 
 bool Scanner_HasReachedEOF()

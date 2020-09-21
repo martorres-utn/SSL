@@ -35,7 +35,7 @@
             //"program": "enter program name, for example ${workspaceFolder}/a.out",
             "program": "${workspaceFolder}\\Calc2.out",
             "args": [
-                "<","input.txt", ">","output_calc2.txt"
+                "<","input_calc_lang.txt", ">","output_calc_lang.txt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
