@@ -4,19 +4,9 @@
 #include <stdbool.h>
 #include "Scanner2.h"
 
-#define TOKEN_BUFFER_SIZE 1000
-#define PARSER_LOOP_LIMIT 50
-
 #define SEMANTIC_REGISTER_NAME_SIZE 33
-//#define SEMANTIC_REGISTER_VALUE_SIZE 33
-#define SEMANTIC_REGISTER_TABLE_SIZE 5
-//OLD
-
-void Parser_Start();
-void Parser_CleanBuffer(Token buffer[], size_t max);
-bool Parser_IsExpression(Token buffer[], size_t max, size_t start, size_t end);
-bool Parser_IsTerm(Token buffer[], size_t max, size_t start, size_t end);
-bool Parser_IsFactor(Token buffer[], size_t max, size_t start, size_t end);
+#define SEMANTIC_REGISTER_VALUE_SIZE 33
+#define SEMANTIC_REGISTER_TABLE_SIZE 10
 
 //PAS
 
@@ -48,7 +38,6 @@ struct SemanticRegisterStruct
 {
     RegisterType type;
     char name[SEMANTIC_REGISTER_NAME_SIZE];
-    //char value[SEMANTIC_REGISTER_VALUE_SIZE];
     int value;
 };
 
