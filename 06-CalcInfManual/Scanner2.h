@@ -33,6 +33,7 @@ void Scanner_UngetLastToken();
 void Scanner_BufferPush(int symbol);
 int Scanner_BufferPop();
 void Scanner_BufferClear();
+void Scanner_BufferGetContent(char output[]);
 
 bool Scanner_HasReachedEOF();
 bool Scanner_HasFoundLexicalError();

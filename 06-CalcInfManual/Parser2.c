@@ -1,3 +1,4 @@
+#include <string.h>
 #include "Parser2.h"
 
 void Parser_Start()
@@ -87,6 +88,8 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
 
 void Parser_SAP_Target() 
 {
+    Parser_Sem_CleanSemanticTable(); //clean (?)
+
     Parser_SAP_Program();
     Parser_Aux_Match(T_END);
 }
@@ -125,9 +128,18 @@ void Parser_SAP_SingleSentence()
             Scanner_UngetLastToken(); //devolver token ID leido
             
             Parser_Aux_Match(T_ID); 
+
+            SemanticRegister regID = Parser_Sem_GetID();
+
             Parser_Aux_Match(T_ASSIGN);
-            Parser_SAP_Expression(); 
+
+            SemanticRegister regExp;
+            Parser_SAP_Expression(&regExp);
+
             Parser_Aux_Match(T_END);
+
+            //asignar regExp al regID y guardar en SemanticTable
+            Parser_Sem_Assign(regID, regExp);
             break;
         }
         case T_PRINT: /* <sentencia> -> $(<expresion>) */
@@ -136,9 +148,16 @@ void Parser_SAP_SingleSentence()
 
             Parser_Aux_Match(T_PRINT);
             Parser_Aux_Match(T_L_PAR);
-            Parser_SAP_Expression();
+            
+            SemanticRegister regExp;
+
+            Parser_SAP_Expression(&regExp);
+
             Parser_Aux_Match(T_R_PAR);
             Parser_Aux_Match(T_END);
+
+            printf("$:%d\n", regExp.value);
+
             break;
         }
         default:
@@ -150,9 +169,9 @@ void Parser_SAP_SingleSentence()
     }
 }
 
-void Parser_SAP_Expression() 
+void Parser_SAP_Expression(SemanticRegister *result) 
 {
-    Parser_SAP_Term(); //single <term>
+    Parser_SAP_Term(result); //single <term>
     
     while (!SyntaxError) //undefined cycle of + <term>
     {
@@ -163,7 +182,10 @@ void Parser_SAP_Expression()
         switch (currentToken) {
             case T_OP_PLUS:
             {
-                Parser_SAP_Expression();
+                SemanticRegister regExpr;
+                Parser_SAP_Expression(&regExpr);
+
+                *result = Parser_Sem_EvaluateSum(*result, regExpr);
                 break;
             }
             default:
@@ -175,9 +197,10 @@ void Parser_SAP_Expression()
     }
 }
 
-void Parser_SAP_Term() 
+void Parser_SAP_Term(SemanticRegister *result) 
 {
-    Parser_SAP_Factor(); //single expression
+
+    Parser_SAP_Factor(result); //single expression
     
     while (!SyntaxError) //undefined cycle of * <factor>
     {
@@ -185,7 +208,10 @@ void Parser_SAP_Term()
         switch (currentToken) {
             case T_OP_PROD:
             {
-                Parser_SAP_Term();
+                SemanticRegister regTerm;
+                Parser_SAP_Term(&regTerm);
+
+                *result = Parser_Sem_EvaluateProd(*result, regTerm);
                 break;
             }
             default:
@@ -197,26 +223,27 @@ void Parser_SAP_Term()
     }
 }
 
-void Parser_SAP_Factor()
+void Parser_SAP_Factor(SemanticRegister *result)
 {
     Token currentToken = Scanner_GetNextToken();
 
     if(currentToken == T_ID)
     {
-        //#process_id
+        //#process_id: devuelvo el valor que contiene el ID
+        (*result) = Parser_Sem_GetID();
         return;
     }
     else if(currentToken == T_CONSTANT)
     {
-        //#process_constant
+        //#process_constant: devuelvo el valor expresado por la constante
+        (*result) = Parser_Sem_GetConstant();
         return;
     }
     else if(currentToken == T_L_PAR)
     {
         Scanner_UngetLastToken(); //devolver token ID leido
-
         Parser_Aux_Match(T_L_PAR);
-        Parser_SAP_Expression();
+        Parser_SAP_Expression(result);
         Parser_Aux_Match(T_R_PAR);
         
         return;
@@ -227,4 +254,81 @@ void Parser_SAP_Factor()
         Parser_Aux_SyntaxError(expectedTokens, 3, currentToken);
         return;
     }
+}
+
+int Parser_Sem_FindValue(char name[])
+{
+    for(size_t pos = 0; pos < SEMANTIC_REGISTER_TABLE_SIZE; pos++)
+        if(strcmp(name, SemanticTable[pos].name) == 0)
+            return SemanticTable[pos].value;
+    return -1; //uninitialized (?)
+}
+
+SemanticRegister Parser_Sem_GetID() 
+{
+    SemanticRegister sr;
+    sr.type = RT_ID;
+    Scanner_BufferGetContent(sr.name);
+    sr.value = Parser_Sem_FindValue(sr.name);
+    return sr;
+}
+
+SemanticRegister Parser_Sem_GetConstant()
+{
+    SemanticRegister sr;
+    sr.type = RT_CONSTANT;
+    strcpy(sr.name, "[constant]");
+    char stringValue[33] = "";
+    Scanner_BufferGetContent(stringValue);
+    sscanf(stringValue, "%d", &sr.value);
+    return sr;
+}
+
+SemanticRegister Parser_Sem_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2) 
+{
+    SemanticRegister result;
+    result.type = RT_CONSTANT;
+    result.value = operand1.value * operand2.value;
+    return result;
+}
+
+SemanticRegister Parser_Sem_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2) 
+{
+    SemanticRegister result;
+    result.type = RT_CONSTANT;
+    result.value = operand1.value + operand2.value;
+    return result;
+}
+
+void Parser_Sem_Assign(SemanticRegister regID, SemanticRegister regConstant)
+{
+    size_t pos;
+    size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
+    for(size_t pos = 0; pos < max; pos++)
+    {
+        if(strcmp(regID.name, SemanticTable[pos].name) == 0)
+        {
+            SemanticTable[pos].value = regConstant.value;
+        }
+    }
+
+    SemanticRegister newReg;
+    newReg.type = regID.type;
+    strcpy(newReg.name, regID.name);
+    newReg.value = regConstant.value;
+
+    SemanticTable[SemanticTableTop++] = newReg;
+}
+
+void Parser_Sem_CleanSemanticTable()
+{
+    size_t pos;
+    size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
+    for(size_t pos = 0; pos < max; pos++)
+    {
+        SemanticTable[pos].type = RT_ID;
+        strcpy(SemanticTable[pos].name, "");
+        SemanticTable[pos].value = 0;
+    }
+    SemanticTableTop = 0;
 }

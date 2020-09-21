@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include "Scanner2.h"
 
 Token Scanner_GetNextToken()
@@ -115,6 +116,11 @@ void Scanner_BufferClear()
     for(size_t pos = 0; pos < BUFFER_SIZE; pos++)
         Buffer[pos] = '\0';
     BufferTop = 0;
+}
+
+void Scanner_BufferGetContent(char output[])
+{
+    strcpy(output, Buffer);
 }
 
 Token Scanner_GetLastToken()
