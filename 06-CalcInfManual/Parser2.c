@@ -3,10 +3,7 @@
 #include <stdbool.h>
 #include "Parser2.h"
 #include "Scanner2.h"
-
-#define SEMANTIC_REGISTER_NAME_SIZE 33
-#define SEMANTIC_REGISTER_VALUE_SIZE 33
-#define SEMANTIC_REGISTER_TABLE_SIZE 10
+#include "SemanticAnalyzer.h"
 
 /*
     Gramatica:
@@ -25,26 +22,7 @@
 
         <factor> -> T_ID | T_CONSTANT | T_L_PAR <expresión> T_R_PAR
 */
-
-enum PossibleSemanticRegisterTypes {
-    RT_ID = 0,
-    RT_CONSTANT
-};
-
-typedef enum PossibleSemanticRegisterTypes RegisterType;
-
-struct SemanticRegisterStruct
-{
-    RegisterType type; //TODO: no es necesario
-    char name[SEMANTIC_REGISTER_NAME_SIZE];
-    int value;
-};
-
-typedef struct SemanticRegisterStruct SemanticRegister;
-
 static bool SyntaxError = false;
-static SemanticRegister SemanticTable[SEMANTIC_REGISTER_TABLE_SIZE]; //TODO: VariableTable
-static size_t SemanticTableTop = 0;
 
 //Parser - Auxiliar Functions
 void Parser_Aux_Match(Token expectedToken);
@@ -58,16 +36,6 @@ void Parser_SAP_SingleSentence();
 void Parser_SAP_Expression(SemanticRegister *result);
 void Parser_SAP_Term(SemanticRegister *result);
 void Parser_SAP_Factor(SemanticRegister *result);
-
-//Parser - Semantic building procedures
-int SemanticAnalizer_FindIDValue(char idName[]);
-SemanticRegister SemanticAnalizer_GetID();
-SemanticRegister SemanticAnalizer_GetConstant();
-SemanticRegister SemanticAnalizer_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2);
-SemanticRegister SemanticAnalizer_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2);
-void SemanticAnalizer_Assign(SemanticRegister regID, SemanticRegister regConstant);
-void SemanticAnalizer_CleanSemanticTable();
-
 
 //Parser - Implementations
 
@@ -94,7 +62,7 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
 
 void Parser_SAP_Target() 
 {
-    SemanticAnalizer_CleanSemanticTable(); //clean (?)
+    SemanticAnalyzer_CleanSemanticTable(); //clean (?)
 
     Parser_SAP_Program();
     Parser_Aux_Match(T_END);
@@ -135,7 +103,7 @@ void Parser_SAP_SingleSentence()
             
             Parser_Aux_Match(T_ID); 
 
-            SemanticRegister regID = SemanticAnalizer_GetID();
+            SemanticRegister regID = SemanticAnalyzer_GetID();
 
             Parser_Aux_Match(T_ASSIGN);
 
@@ -145,7 +113,7 @@ void Parser_SAP_SingleSentence()
             Parser_Aux_Match(T_END);
 
             //asignar regExp al regID y guardar en SemanticTable
-            SemanticAnalizer_Assign(regID, regExp);
+            SemanticAnalyzer_Assign(regID, regExp);
             break;
         }
         case T_PRINT: /* <sentencia> -> $(<expresion>) */
@@ -188,7 +156,7 @@ void Parser_SAP_Expression(SemanticRegister *result)
                 SemanticRegister regExpr;
                 Parser_SAP_Expression(&regExpr);
 
-                *result = SemanticAnalizer_EvaluateSum(*result, regExpr);
+                *result = SemanticAnalyzer_EvaluateSum(*result, regExpr);
                 break;
             }
             default:
@@ -214,7 +182,7 @@ void Parser_SAP_Term(SemanticRegister *result)
                 SemanticRegister regTerm;
                 Parser_SAP_Term(&regTerm);
 
-                *result = SemanticAnalizer_EvaluateProd(*result, regTerm);
+                *result = SemanticAnalyzer_EvaluateProd(*result, regTerm);
                 break;
             }
             default:
@@ -233,13 +201,13 @@ void Parser_SAP_Factor(SemanticRegister *result)
     if(currentToken == T_ID)
     {
         //#process_id: devuelvo el valor que contiene el ID
-        (*result) = SemanticAnalizer_GetID();
+        (*result) = SemanticAnalyzer_GetID();
         return;
     }
     else if(currentToken == T_CONSTANT)
     {
         //#process_constant: devuelvo el valor expresado por la constante
-        (*result) = SemanticAnalizer_GetConstant();
+        (*result) = SemanticAnalyzer_GetConstant();
         return;
     }
     else if(currentToken == T_L_PAR)
@@ -257,80 +225,4 @@ void Parser_SAP_Factor(SemanticRegister *result)
         Parser_Aux_SyntaxError(expectedTokens, 3, currentToken);
         return;
     }
-}
-
-int SemanticAnalizer_FindValue(char name[])
-{
-    for(size_t pos = 0; pos < SEMANTIC_REGISTER_TABLE_SIZE; pos++)
-        if(strcmp(name, SemanticTable[pos].name) == 0)
-            return SemanticTable[pos].value;
-    return -1; //uninitialized (?) //TODO debería devolver algo dentro del universo
-}
-
-SemanticRegister SemanticAnalizer_GetID() 
-{
-    SemanticRegister sr;
-    sr.type = RT_ID;
-    Scanner_BufferGetContent(sr.name);
-    sr.value = SemanticAnalizer_FindValue(sr.name);
-    return sr;
-}
-
-SemanticRegister SemanticAnalizer_GetConstant()
-{
-    SemanticRegister sr;
-    sr.type = RT_CONSTANT;
-    strcpy(sr.name, "[constant]");
-    char stringValue[SEMANTIC_REGISTER_VALUE_SIZE] = "";
-    Scanner_BufferGetContent(stringValue);
-    sscanf(stringValue, "%d", &sr.value);
-    return sr;
-}
-
-SemanticRegister SemanticAnalizer_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2) 
-{
-    SemanticRegister result;
-    result.type = RT_CONSTANT;
-    result.value = operand1.value * operand2.value;
-    return result;
-}
-
-SemanticRegister SemanticAnalizer_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2) 
-{
-    SemanticRegister result;
-    result.type = RT_CONSTANT;
-    result.value = operand1.value + operand2.value;
-    return result;
-}
-
-void SemanticAnalizer_Assign(SemanticRegister regID, SemanticRegister regConstant)
-{
-    size_t pos;
-    size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
-    for(size_t pos = 0; pos < max; pos++)
-    {
-        if(strcmp(regID.name, SemanticTable[pos].name) == 0)
-        {
-            SemanticTable[pos].value = regConstant.value;
-            return;
-        }
-    }
-
-    SemanticRegister newReg = { .type = (RegisterType)regID.type, .value = (int)regConstant.value };
-    strcpy(newReg.name, regID.name);
-
-    SemanticTable[SemanticTableTop++] = newReg;
-}
-
-void SemanticAnalizer_CleanSemanticTable()
-{
-    size_t pos;
-    size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
-    for(size_t pos = 0; pos < max; pos++)
-    {
-        SemanticTable[pos].type = RT_ID;
-        strcpy(SemanticTable[pos].name, "");
-        SemanticTable[pos].value = 0;
-    }
-    SemanticTableTop = 0;
 }

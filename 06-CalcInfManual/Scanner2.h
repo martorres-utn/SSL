@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdbool.h>
 
 enum PossibleTokens {
     T_INITIAL = 0,
