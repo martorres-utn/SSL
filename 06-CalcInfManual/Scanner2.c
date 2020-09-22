@@ -1,8 +1,24 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
 #include "Scanner2.h"
 
+#define BUFFER_SIZE 33
+
+//Scanner - private global variables
+static bool ReachedEOF = false;
+static bool LexicalError = false;
+static Token LastToken = T_INITIAL;
+static char Buffer[BUFFER_SIZE]; // 32 characters + 1 '\0' 
+static size_t BufferTop = 0;
+
+//Scanner - private functions
+void Scanner_BufferPush(int symbol);
+int Scanner_BufferPop();
+void Scanner_BufferClear();
+
+//Scanner - Implementations
 Token Scanner_GetNextToken()
 {
     Scanner_BufferClear(); //(?)
@@ -121,11 +137,6 @@ void Scanner_BufferClear()
 void Scanner_BufferGetContent(char output[])
 {
     strcpy(output, Buffer);
-}
-
-Token Scanner_GetLastToken()
-{
-    return LastToken;
 }
 
 void Scanner_UngetLastToken()
