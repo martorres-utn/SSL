@@ -1,6 +1,11 @@
-ab=2
-cd=3
-e=ab*(cd+1)
-$((ab+cd*e)*3)
+ab = 2
+cd = 3
+$(ab+cd)
+ab = 3
+e = ab * (cd + 1)
+f = (( (ab + 1) + cd) * e) * 3
+$((( (ab + 1) + cd) * e) * 3)
 $(ab)
 $(cd)
+$(f)
+$(2)

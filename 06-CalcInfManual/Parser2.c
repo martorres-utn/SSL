@@ -62,7 +62,7 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
 
 void Parser_SAP_Target() 
 {
-    SemanticAnalyzer_CleanSemanticTable(); //clean (?)
+    SemanticAnalyzer_CleanVariableTable(); //clean (?)
 
     Parser_SAP_Program();
     Parser_Aux_Match(T_END);
@@ -112,7 +112,7 @@ void Parser_SAP_SingleSentence()
 
             Parser_Aux_Match(T_END);
 
-            //asignar regExp al regID y guardar en SemanticTable
+            //asignar regExp al regID y guardar en VariableTable
             SemanticAnalyzer_Assign(regID, regExp);
             break;
         }

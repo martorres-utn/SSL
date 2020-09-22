@@ -6,8 +6,8 @@
 int SemanticAnalyzer_FindValue(char name[])
 {
     for(size_t pos = 0; pos < SEMANTIC_REGISTER_TABLE_SIZE; pos++)
-        if(strcmp(name, SemanticTable[pos].name) == 0)
-            return SemanticTable[pos].value;
+        if(strcmp(name, VariableTable[pos].name) == 0)
+            return VariableTable[pos].value;
     return -1; //uninitialized (?) //TODO debería devolver algo dentro del universo
 }
 
@@ -53,9 +53,9 @@ void SemanticAnalyzer_Assign(SemanticRegister regID, SemanticRegister regConstan
     size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
     for(size_t pos = 0; pos < max; pos++)
     {
-        if(strcmp(regID.name, SemanticTable[pos].name) == 0)
+        if(strcmp(regID.name, VariableTable[pos].name) == 0)
         {
-            SemanticTable[pos].value = regConstant.value;
+            VariableTable[pos].value = regConstant.value;
             return;
         }
     }
@@ -63,18 +63,18 @@ void SemanticAnalyzer_Assign(SemanticRegister regID, SemanticRegister regConstan
     SemanticRegister newReg = { .type = (RegisterType)regID.type, .value = (int)regConstant.value };
     strcpy(newReg.name, regID.name);
 
-    SemanticTable[SemanticTableTop++] = newReg;
+    VariableTable[VariableTableTop++] = newReg;
 }
 
-void SemanticAnalyzer_CleanSemanticTable()
+void SemanticAnalyzer_CleanVariableTable()
 {
     size_t pos;
     size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
     for(size_t pos = 0; pos < max; pos++)
     {
-        SemanticTable[pos].type = RT_ID;
-        strcpy(SemanticTable[pos].name, "");
-        SemanticTable[pos].value = 0;
+        VariableTable[pos].type = RT_ID;
+        strcpy(VariableTable[pos].name, "");
+        VariableTable[pos].value = 0;
     }
-    SemanticTableTop = 0;
+    VariableTableTop = 0;
 }
