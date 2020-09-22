@@ -36,7 +36,7 @@ typedef enum PossibleSemanticRegisterTypes RegisterType;
 
 struct SemanticRegisterStruct
 {
-    RegisterType type;
+    RegisterType type; //TODO: no es necesario
     char name[SEMANTIC_REGISTER_NAME_SIZE];
     int value;
 };
@@ -44,14 +44,14 @@ struct SemanticRegisterStruct
 typedef struct SemanticRegisterStruct SemanticRegister;
 
 static bool SyntaxError = false;
-static SemanticRegister SemanticTable[SEMANTIC_REGISTER_TABLE_SIZE];
+static SemanticRegister SemanticTable[SEMANTIC_REGISTER_TABLE_SIZE]; //TODO: VariableTable
 static size_t SemanticTableTop = 0;
 
 void Parser_Aux_Match(Token expectedToken);
 void Parser_Aux_SyntaxError(Token expectedToken[], size_t expectedSize, Token foundToken);
 
 void Parser_SAP_Target();
-void Parser_SAP_Program();
+void Parser_SAP_Program(); //TODO: dejar sólo lo público
 void Parser_SAP_SentenceList();
 void Parser_SAP_SingleSentence();
 void Parser_SAP_Expression(SemanticRegister *result);

@@ -197,7 +197,7 @@ int Parser_Sem_FindValue(char name[])
     for(size_t pos = 0; pos < SEMANTIC_REGISTER_TABLE_SIZE; pos++)
         if(strcmp(name, SemanticTable[pos].name) == 0)
             return SemanticTable[pos].value;
-    return -1; //uninitialized (?)
+    return -1; //uninitialized (?) //TODO debería devolver algo dentro del universo
 }
 
 SemanticRegister Parser_Sem_GetID() 

@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    Parser_SAP_Program();
+    Parser_SAP_Target();
     return 0;
 }
