@@ -60,13 +60,13 @@ void Parser_SAP_Term(SemanticRegister *result);
 void Parser_SAP_Factor(SemanticRegister *result);
 
 //Parser - Semantic building procedures
-int Parser_Sem_FindIDValue(char idName[]);
-SemanticRegister Parser_Sem_GetID();
-SemanticRegister Parser_Sem_GetConstant();
-SemanticRegister Parser_Sem_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2);
-SemanticRegister Parser_Sem_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2);
-void Parser_Sem_Assign(SemanticRegister regID, SemanticRegister regConstant);
-void Parser_Sem_CleanSemanticTable();
+int SemanticAnalizer_FindIDValue(char idName[]);
+SemanticRegister SemanticAnalizer_GetID();
+SemanticRegister SemanticAnalizer_GetConstant();
+SemanticRegister SemanticAnalizer_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2);
+SemanticRegister SemanticAnalizer_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2);
+void SemanticAnalizer_Assign(SemanticRegister regID, SemanticRegister regConstant);
+void SemanticAnalizer_CleanSemanticTable();
 
 
 //Parser - Implementations
@@ -94,7 +94,7 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
 
 void Parser_SAP_Target() 
 {
-    Parser_Sem_CleanSemanticTable(); //clean (?)
+    SemanticAnalizer_CleanSemanticTable(); //clean (?)
 
     Parser_SAP_Program();
     Parser_Aux_Match(T_END);
@@ -135,7 +135,7 @@ void Parser_SAP_SingleSentence()
             
             Parser_Aux_Match(T_ID); 
 
-            SemanticRegister regID = Parser_Sem_GetID();
+            SemanticRegister regID = SemanticAnalizer_GetID();
 
             Parser_Aux_Match(T_ASSIGN);
 
@@ -145,7 +145,7 @@ void Parser_SAP_SingleSentence()
             Parser_Aux_Match(T_END);
 
             //asignar regExp al regID y guardar en SemanticTable
-            Parser_Sem_Assign(regID, regExp);
+            SemanticAnalizer_Assign(regID, regExp);
             break;
         }
         case T_PRINT: /* <sentencia> -> $(<expresion>) */
@@ -188,7 +188,7 @@ void Parser_SAP_Expression(SemanticRegister *result)
                 SemanticRegister regExpr;
                 Parser_SAP_Expression(&regExpr);
 
-                *result = Parser_Sem_EvaluateSum(*result, regExpr);
+                *result = SemanticAnalizer_EvaluateSum(*result, regExpr);
                 break;
             }
             default:
@@ -214,7 +214,7 @@ void Parser_SAP_Term(SemanticRegister *result)
                 SemanticRegister regTerm;
                 Parser_SAP_Term(&regTerm);
 
-                *result = Parser_Sem_EvaluateProd(*result, regTerm);
+                *result = SemanticAnalizer_EvaluateProd(*result, regTerm);
                 break;
             }
             default:
@@ -233,13 +233,13 @@ void Parser_SAP_Factor(SemanticRegister *result)
     if(currentToken == T_ID)
     {
         //#process_id: devuelvo el valor que contiene el ID
-        (*result) = Parser_Sem_GetID();
+        (*result) = SemanticAnalizer_GetID();
         return;
     }
     else if(currentToken == T_CONSTANT)
     {
         //#process_constant: devuelvo el valor expresado por la constante
-        (*result) = Parser_Sem_GetConstant();
+        (*result) = SemanticAnalizer_GetConstant();
         return;
     }
     else if(currentToken == T_L_PAR)
@@ -259,7 +259,7 @@ void Parser_SAP_Factor(SemanticRegister *result)
     }
 }
 
-int Parser_Sem_FindValue(char name[])
+int SemanticAnalizer_FindValue(char name[])
 {
     for(size_t pos = 0; pos < SEMANTIC_REGISTER_TABLE_SIZE; pos++)
         if(strcmp(name, SemanticTable[pos].name) == 0)
@@ -267,16 +267,16 @@ int Parser_Sem_FindValue(char name[])
     return -1; //uninitialized (?) //TODO debería devolver algo dentro del universo
 }
 
-SemanticRegister Parser_Sem_GetID() 
+SemanticRegister SemanticAnalizer_GetID() 
 {
     SemanticRegister sr;
     sr.type = RT_ID;
     Scanner_BufferGetContent(sr.name);
-    sr.value = Parser_Sem_FindValue(sr.name);
+    sr.value = SemanticAnalizer_FindValue(sr.name);
     return sr;
 }
 
-SemanticRegister Parser_Sem_GetConstant()
+SemanticRegister SemanticAnalizer_GetConstant()
 {
     SemanticRegister sr;
     sr.type = RT_CONSTANT;
@@ -287,7 +287,7 @@ SemanticRegister Parser_Sem_GetConstant()
     return sr;
 }
 
-SemanticRegister Parser_Sem_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2) 
+SemanticRegister SemanticAnalizer_EvaluateProd(SemanticRegister operand1, SemanticRegister operand2) 
 {
     SemanticRegister result;
     result.type = RT_CONSTANT;
@@ -295,7 +295,7 @@ SemanticRegister Parser_Sem_EvaluateProd(SemanticRegister operand1, SemanticRegi
     return result;
 }
 
-SemanticRegister Parser_Sem_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2) 
+SemanticRegister SemanticAnalizer_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2) 
 {
     SemanticRegister result;
     result.type = RT_CONSTANT;
@@ -303,7 +303,7 @@ SemanticRegister Parser_Sem_EvaluateSum(SemanticRegister operand1, SemanticRegis
     return result;
 }
 
-void Parser_Sem_Assign(SemanticRegister regID, SemanticRegister regConstant)
+void SemanticAnalizer_Assign(SemanticRegister regID, SemanticRegister regConstant)
 {
     size_t pos;
     size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
@@ -322,7 +322,7 @@ void Parser_Sem_Assign(SemanticRegister regID, SemanticRegister regConstant)
     SemanticTable[SemanticTableTop++] = newReg;
 }
 
-void Parser_Sem_CleanSemanticTable()
+void SemanticAnalizer_CleanSemanticTable()
 {
     size_t pos;
     size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
