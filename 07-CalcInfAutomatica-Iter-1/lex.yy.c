@@ -776,24 +776,26 @@ YY_RULE_SETUP
 #line 19 "ScannerLex.l"
 { return T_END; };
 	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 20 "ScannerLex.l"
+{ return T_END; }
+	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 20 "ScannerLex.l"
+#line 21 "ScannerLex.l"
 
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 21 "ScannerLex.l"
+#line 22 "ScannerLex.l"
 ;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 22 "ScannerLex.l"
+#line 23 "ScannerLex.l"
 ECHO;
 	YY_BREAK
-#line 795 "lex.yy.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 799 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1796,7 +1798,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 22 "ScannerLex.l"
+#line 23 "ScannerLex.l"
 
 
 /*int main()

@@ -17,6 +17,7 @@ int fileno( FILE * stream ); /*remove warning: implicit declaration*/
 \= { return T_ASSIGN; }
 \$ { return T_PRINT; }
 \n { return T_END; };
+<<EOF>> { return T_END; }
   ;
 . ;
 %%
