@@ -8,7 +8,7 @@ int SemanticAnalyzer_FindValue(char name[])
     for(size_t pos = 0; pos < SEMANTIC_REGISTER_TABLE_SIZE; pos++)
         if(strcmp(name, VariableTable[pos].name) == 0)
             return VariableTable[pos].value;
-    return -1; //uninitialized (?) //TODO debería devolver algo dentro del universo
+    return 0; //uninitialized
 }
 
 SemanticRegister SemanticAnalyzer_GetID() 
@@ -49,6 +49,12 @@ SemanticRegister SemanticAnalyzer_EvaluateSum(SemanticRegister operand1, Semanti
 
 void SemanticAnalyzer_Assign(SemanticRegister regID, SemanticRegister regConstant)
 {
+    if(regID.type != RT_ID)
+    {
+        printf("[Semantic error: you can only assign values to variables!]");
+        return;
+    }
+
     size_t pos;
     size_t max = SEMANTIC_REGISTER_TABLE_SIZE;
     for(size_t pos = 0; pos < max; pos++)
@@ -77,4 +83,9 @@ void SemanticAnalyzer_CleanVariableTable()
         VariableTable[pos].value = 0;
     }
     VariableTableTop = 0;
+}
+
+void SemanticAnalyzer_Print(SemanticRegister reg)
+{
+    printf("$:%d\n", reg.value);
 }

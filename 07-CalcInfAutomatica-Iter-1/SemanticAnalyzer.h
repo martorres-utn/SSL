@@ -20,7 +20,7 @@ struct SemanticRegisterStruct
 };
 
 typedef struct SemanticRegisterStruct SemanticRegister;
-static SemanticRegister VariableTable[SEMANTIC_REGISTER_TABLE_SIZE]; //TODO: VariableTable
+static SemanticRegister VariableTable[SEMANTIC_REGISTER_TABLE_SIZE];
 static size_t VariableTableTop = 0;
 
 //SemanticAnalyzer - Semantic building procedures
@@ -31,3 +31,4 @@ SemanticRegister SemanticAnalyzer_EvaluateProd(SemanticRegister operand1, Semant
 SemanticRegister SemanticAnalyzer_EvaluateSum(SemanticRegister operand1, SemanticRegister operand2);
 void SemanticAnalyzer_Assign(SemanticRegister regID, SemanticRegister regConstant);
 void SemanticAnalyzer_CleanVariableTable();
+void SemanticAnalyzer_Print(SemanticRegister reg);

@@ -130,7 +130,7 @@ void Parser_SAP_SingleSentence()
             Parser_Aux_Match(T_R_PAR);
             Parser_Aux_Match(T_END);
 
-            printf("$:%d\n", regExp.value);
+            SemanticAnalyzer_Print(regExp);
 
             break;
         }
