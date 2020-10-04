@@ -18,8 +18,8 @@ int fileno( FILE * stream ); /*remove warning: implicit declaration*/
 \$ { return T_PRINT; }
 \n { return T_END; };
 <<EOF>> { return T_END; }
-  ;
-. ;
+[ ]+ ;
+. { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 %%
 
 /*int main()
