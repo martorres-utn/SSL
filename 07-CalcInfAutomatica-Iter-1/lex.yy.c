@@ -450,7 +450,7 @@ char *yytext;
 #line 1 "ScannerLex.l"
 #line 2 "ScannerLex.l"
 #include <stdio.h>
-#include "Scanner.h"
+#include "ScannerTypes.h"
 
 int fileno( FILE * stream ); /*remove warning: implicit declaration*/
 #line 457 "lex.yy.c"

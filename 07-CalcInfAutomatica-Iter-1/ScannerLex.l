@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include "Scanner.h"
+#include "ScannerTypes.h"
 
 int fileno( FILE * stream ); /*remove warning: implicit declaration*/
 %}
