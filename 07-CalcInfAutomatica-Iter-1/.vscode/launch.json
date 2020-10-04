@@ -11,7 +11,7 @@
             //"program": "enter program name, for example ${workspaceFolder}/a.out",
             "program": "${workspaceFolder}\\Calc.out",
             "args": [
-                "<","input_calc_lang.txt", ">","output_calc_lang.txt"
+                "<","input_calc_lang.txt", ">","output_calc_lang_flex.txt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

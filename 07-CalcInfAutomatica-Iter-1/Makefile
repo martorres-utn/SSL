@@ -1,6 +1,6 @@
-SOURCE1 = Scanner.c Parser.c SemanticAnalyzer.c Calc.c
+SOURCE1 = Scanner.c lex.yy.c Parser.c SemanticAnalyzer.c Calc.c
 BIN1 = Calc.out
-OBJ1 = Scanner.o Parser.o SemanticAnalyzer.o Calc.o
+OBJ1 = Scanner.o lex.yy.o Parser.o SemanticAnalyzer.o Calc.o
 
 CC = gcc
 CFLAGS = -std=c18 -g #agrego -g para decirle al compilador que emita informacion adicional para debugger GDB

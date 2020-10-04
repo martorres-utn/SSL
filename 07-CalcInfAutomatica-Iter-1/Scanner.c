@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "Scanner.h"
+#include "lex.yy.h"
 
 #define BUFFER_SIZE 33
 
@@ -9,111 +10,37 @@
 static bool ReachedEOF = false;
 static bool LexicalError = false;
 static Token LastToken = T_INITIAL;
+static Token RemainingToken = T_INITIAL;
 static char Buffer[BUFFER_SIZE]; // 32 characters + 1 '\0' 
-static size_t BufferTop = 0;
+static char RemainingText[BUFFER_SIZE]; // 32 characters + 1 '\0' 
+//static size_t BufferTop = 0;
 
 //Scanner - private functions
-void Scanner_BufferPush(int symbol);
-int Scanner_BufferPop();
-void Scanner_BufferClear();
+//void Scanner_BufferPush(int symbol);
+//int Scanner_BufferPop();
+void Scanner_BufferClear(char someBuffer[]);
 
 //Scanner - Implementations
 Token Scanner_GetNextToken()
 {
-    Scanner_BufferClear(); //(?)
-
-    int newChar = EOF;
-
-    //get char from input stream
-    while((newChar = getchar()) != EOF && newChar != '\n')
+    if(RemainingToken != T_INITIAL)
     {
-        if(!isspace(newChar))
-        {
-            if(isalpha(newChar))
-            {
-                //token id [a-zA-Z]*
+        LastToken = RemainingToken;
+        strcpy(Buffer, RemainingText);
+        //BufferTop = strlen(RemainingText);
 
-                Scanner_BufferPush(newChar);
-
-				int accepted = 0;
-				while( (newChar = getchar()) != EOF && (accepted = isalpha(newChar)) ) {
-                    Scanner_BufferPush(newChar);
-                }
-
-				if(!accepted)
-					ungetc(newChar, stdin);
-
-				return (LastToken = T_ID);
-            }
-            else if(isdigit(newChar))
-            {
-                //token const [0-9]*
-                
-                Scanner_BufferPush(newChar);
-
-				int accepted = 0;
-				while( (newChar = getchar()) != EOF && (accepted = isdigit(newChar)) ) {
-                    Scanner_BufferPush(newChar);
-                }
-
-				if(!accepted)
-					ungetc(newChar, stdin);
-
-				return (LastToken = T_CONSTANT);
-            }
-            else if(newChar == '+')
-            {
-                Scanner_BufferPush(newChar);
-
-                return (LastToken = T_OP_PLUS);
-            }
-            else if(newChar == '*')
-            {
-                Scanner_BufferPush(newChar);
-
-                return (LastToken = T_OP_PROD);
-            }
-            else if(newChar == '(')
-            {
-                Scanner_BufferPush(newChar);
-
-                return (LastToken = T_L_PAR);
-            }
-            else if(newChar == ')')
-            {
-                Scanner_BufferPush(newChar);
-
-                return (LastToken = T_R_PAR);
-            }
-            else if (newChar == '=')
-            {
-                Scanner_BufferPush(newChar);
-
-                return (LastToken = T_ASSIGN);
-            }
-            else if (newChar == '$')
-            {
-                Scanner_BufferPush(newChar);
-
-                return (LastToken = T_PRINT);
-            }
-            else
-            {
-                printf("[lexical error!]\n");
-                LexicalError = true;
-                return (LastToken = T_END);
-            }
-        }
+        RemainingToken = T_INITIAL;
+        Scanner_BufferClear(RemainingText);
+        return LastToken;
     }
-    
-    Scanner_BufferPush(newChar);
 
-    //getchar() == EOF or \n
-    ReachedEOF = newChar == EOF;
-    return (LastToken = T_END);
+    LastToken = yylex(); //get a new token from stream
+    strcpy(Buffer, yyget_text()); //get new string from stream
+
+    return LastToken;
 }
 
-void Scanner_BufferPush(int symbol)
+/*void Scanner_BufferPush(int symbol)
 {
     Buffer[BufferTop++] = symbol;
     Buffer[BufferTop] = '\0';
@@ -124,25 +51,39 @@ int Scanner_BufferPop()
     int symbol = Buffer[--BufferTop];
     Buffer[BufferTop] = '\0';
     return symbol;
-}
+}*/
 
-void Scanner_BufferClear()
+void Scanner_BufferClear(char someBuffer[])
 {
     for(size_t pos = 0; pos < BUFFER_SIZE; pos++)
-        Buffer[pos] = '\0';
-    BufferTop = 0;
+        someBuffer[pos] = '\0';
+    /*if(someBufferTop != NULL)
+        (*someBufferTop) = 0;*/
 }
 
 void Scanner_BufferGetContent(char output[])
 {
+    //strcpy(output, Buffer);
+    if(RemainingText[0] != '\0')
+    {
+        strcpy(output, RemainingText);
+        Scanner_BufferClear(RemainingText);
+        return;
+    }
+
     strcpy(output, Buffer);
 }
 
 void Scanner_UngetLastToken()
 {
-    while(BufferTop > 0)
-        ungetc(Scanner_BufferPop(), stdin);
+    /*while(BufferTop > 0)
+        ungetc(Scanner_BufferPop(), stdin);*/
+
+    RemainingToken = LastToken; //save last matching token
+    strcpy(RemainingText, Buffer); //save last matching string in buffer
+    
     LastToken = T_INITIAL;
+    Scanner_BufferClear(Buffer);
 }
 
 bool Scanner_HasReachedEOF()

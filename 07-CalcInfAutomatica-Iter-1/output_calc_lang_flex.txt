@@ -1,0 +1,7 @@
+$:5
+$:252
+$:3
+$:3
+$:252
+[syntax error! - expected one of the following:t[9] but current:t[0] ]$:2
+[syntax error! - expected one of the following:t[9] but current:t[0] ]
