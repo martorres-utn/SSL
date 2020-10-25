@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "ScannerTypes.h"
 
-int fileno( FILE * stream ); /*remove warning: implicit declaration*/
+int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 %}
 
 %option noyywrap

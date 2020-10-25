@@ -452,7 +452,7 @@ char *yytext;
 #include <stdio.h>
 #include "ScannerTypes.h"
 
-int fileno( FILE * stream ); /*remove warning: implicit declaration*/
+int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 #line 457 "lex.yy.c"
 #line 458 "lex.yy.c"
 
