@@ -7,8 +7,6 @@
 #define BUFFER_SIZE 33
 
 //Scanner - private global variables
-//static bool ReachedEOF = false;
-//static bool LexicalError = false;
 static Token LastToken = T_INITIAL;
 static Token RemainingToken = T_INITIAL;
 static char Buffer[BUFFER_SIZE]; // 32 characters + 1 '\0' 
@@ -62,28 +60,3 @@ void Scanner_UngetLastToken()
     LastToken = T_INITIAL;
     Scanner_BufferClear(Buffer);
 }
-
-/*bool Scanner_HasReachedEOF()
-{
-    return ReachedEOF;
-}
-
-bool Scanner_HasFoundLexicalError()
-{
-    return LexicalError;
-}
-
-void Scanner_MoveToNextExpression()
-{
-    int newChar;
-    
-    while((newChar = getchar()) != EOF)
-        if(newChar == '\n')
-            return;
-    ReachedEOF = true;
-}
-
-void Scanner_ResetInternalState()
-{
-    LexicalError = false; //clean flag
-}*/
