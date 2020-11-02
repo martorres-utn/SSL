@@ -27,42 +27,27 @@ Gramatica:
 void yyerror(const char *);
 %}
 
-%token TK_ID TK_CONSTANT TK_OP_PLUS TK_OP_PROD TK_L_PAR TK_R_PAR TK_ASSIGN TK_PRINT TK_END
+%token TK_ID TK_CONSTANT TK_OP_PLUS TK_OP_PROD TK_L_PAR TK_R_PAR TK_ASSIGN TK_PRINT TK_END_STATEMENT
+%token TK_END_PROGRAM 0
 
 %%
-target
-    : program TK_END
-    ;
+statement_list : single_statement | statement_list single_statement
+;
 
-program
-    : statements
-    ;
+single_statement : TK_ID TK_ASSIGN expression statement_end | TK_PRINT TK_L_PAR expression TK_R_PAR statement_end
+;
 
-statements
-    : single_statement
-    | statements single_statement
-    ;
+statement_end : TK_END_PROGRAM | TK_END_STATEMENT
+;
 
-single_statement
-    : TK_ID TK_ASSIGN expression TK_END
-    | TK_PRINT TK_L_PAR expression TK_R_PAR TK_END
-    ;
+expression : term | expression TK_OP_PLUS term
+;
 
-expression
-    : term
-    | term TK_OP_PLUS expression
-    ;
+term : factor | term TK_OP_PROD factor
+;
 
-term
-    : factor
-    | factor TK_OP_PROD term
-    ;
-
-factor
-    : TK_ID
-    | TK_CONSTANT
-    | TK_L_PAR expression TK_R_PAR
-    ;
+factor : TK_ID | TK_CONSTANT | TK_L_PAR expression TK_R_PAR
+;
 %%
 /*int main(void){
     switch( yyparse() ){

@@ -17,8 +17,8 @@ int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 \) { return TK_R_PAR; }
 \= { return TK_ASSIGN; }
 \$ { return TK_PRINT; }
-\n { return TK_END; };
-<<EOF>> { return TK_END; }
+\n { return TK_END_STATEMENT; };
+<<EOF>> { return TK_END_PROGRAM; }
 [ ]+ ;
 . { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 %%

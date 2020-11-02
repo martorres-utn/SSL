@@ -450,11 +450,12 @@ char *yytext;
 #line 1 "ScannerLex.l"
 #line 2 "ScannerLex.l"
 #include <stdio.h>
-#include "ScannerTypes.h"
+//#include "ScannerTypes.h" //old manual token definition
+#include "AutoParser.tab.h" //new automatic token definition
 
 int fileno( FILE * stream ); /*removes warning: implicit declaration*/
-#line 457 "lex.yy.c"
 #line 458 "lex.yy.c"
+#line 459 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -671,9 +672,9 @@ YY_DECL
 		}
 
 	{
-#line 10 "ScannerLex.l"
+#line 11 "ScannerLex.l"
 
-#line 677 "lex.yy.c"
+#line 678 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -732,70 +733,70 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 11 "ScannerLex.l"
-{ return T_ID; }
+#line 12 "ScannerLex.l"
+{ return TK_ID; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "ScannerLex.l"
-{ return T_CONSTANT; }
+#line 13 "ScannerLex.l"
+{ return TK_CONSTANT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 13 "ScannerLex.l"
-{ return T_OP_PLUS; }
+#line 14 "ScannerLex.l"
+{ return TK_OP_PLUS; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "ScannerLex.l"
-{ return T_OP_PROD; }
+#line 15 "ScannerLex.l"
+{ return TK_OP_PROD; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 15 "ScannerLex.l"
-{ return T_L_PAR; }
+#line 16 "ScannerLex.l"
+{ return TK_L_PAR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 16 "ScannerLex.l"
-{ return T_R_PAR; }
+#line 17 "ScannerLex.l"
+{ return TK_R_PAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 17 "ScannerLex.l"
-{ return T_ASSIGN; }
+#line 18 "ScannerLex.l"
+{ return TK_ASSIGN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 18 "ScannerLex.l"
-{ return T_PRINT; }
+#line 19 "ScannerLex.l"
+{ return TK_PRINT; }
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 19 "ScannerLex.l"
-{ return T_END; };
+#line 20 "ScannerLex.l"
+{ return TK_END_STATEMENT; };
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 20 "ScannerLex.l"
-{ return T_END; }
+#line 21 "ScannerLex.l"
+{ return TK_END_PROGRAM; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "ScannerLex.l"
+#line 22 "ScannerLex.l"
 ;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "ScannerLex.l"
+#line 23 "ScannerLex.l"
 { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "ScannerLex.l"
+#line 24 "ScannerLex.l"
 ECHO;
 	YY_BREAK
-#line 799 "lex.yy.c"
+#line 800 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1798,7 +1799,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 23 "ScannerLex.l"
+#line 24 "ScannerLex.l"
 
 
 /*int main()
