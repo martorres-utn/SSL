@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
-#include "ScannerTypes.h"
+//#include "ScannerTypes.h" //old manual token definition
+#include "AutoParser.tab.h" //new automatic token definition
 
 int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 %}
@@ -8,16 +9,16 @@ int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 %option noyywrap
 
 %%
-[a-zA-Z]+ { return T_ID; }
-[0-9]+ { return T_CONSTANT; }
-\+ { return T_OP_PLUS; }
-\* { return T_OP_PROD; }
-\( { return T_L_PAR; }
-\) { return T_R_PAR; }
-\= { return T_ASSIGN; }
-\$ { return T_PRINT; }
-\n { return T_END; };
-<<EOF>> { return T_END; }
+[a-zA-Z]+ { return TK_ID; }
+[0-9]+ { return TK_CONSTANT; }
+\+ { return TK_OP_PLUS; }
+\* { return TK_OP_PROD; }
+\( { return TK_L_PAR; }
+\) { return TK_R_PAR; }
+\= { return TK_ASSIGN; }
+\$ { return TK_PRINT; }
+\n { return TK_END; };
+<<EOF>> { return TK_END; }
 [ ]+ ;
 . { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 %%
