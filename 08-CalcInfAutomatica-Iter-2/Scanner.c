@@ -7,8 +7,8 @@
 #define BUFFER_SIZE 33
 
 //Scanner - private global variables
-static Token LastToken = T_INITIAL;
-static Token RemainingToken = T_INITIAL;
+//static Token LastToken = T_INITIAL;
+//static Token RemainingToken = T_INITIAL;
 static char Buffer[BUFFER_SIZE]; // 32 characters + 1 '\0' 
 static char RemainingText[BUFFER_SIZE]; // 32 characters + 1 '\0'
 
@@ -16,9 +16,9 @@ static char RemainingText[BUFFER_SIZE]; // 32 characters + 1 '\0'
 void Scanner_BufferClear(char someBuffer[]);
 
 //Scanner - Implementations
-Token Scanner_GetNextToken()
+int Scanner_GetNextToken()
 {
-    if(RemainingToken != T_INITIAL)
+    /*if(RemainingToken != T_INITIAL)
     {
         LastToken = RemainingToken;
         strcpy(Buffer, RemainingText);
@@ -31,7 +31,9 @@ Token Scanner_GetNextToken()
     LastToken = yylex(); //get a new token from stream
     strcpy(Buffer, yyget_text()); //get new string from stream
 
-    return LastToken;
+    return LastToken;*/
+    
+    return yylex();
 }
 
 void Scanner_BufferClear(char someBuffer[])
@@ -52,11 +54,11 @@ void Scanner_BufferGetContent(char output[])
     strcpy(output, Buffer);
 }
 
-void Scanner_UngetLastToken()
+/*void Scanner_UngetLastToken()
 {
     RemainingToken = LastToken; //save last matching token
     strcpy(RemainingText, Buffer); //save last matching string in buffer
     
     LastToken = T_INITIAL;
     Scanner_BufferClear(Buffer);
-}
+}*/

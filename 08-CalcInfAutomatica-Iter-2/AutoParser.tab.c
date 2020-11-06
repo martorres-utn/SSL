@@ -68,34 +68,14 @@
 /* First part of user prologue.  */
 #line 1 "AutoParser.y"
 
-/*
-Parser Calculadora
-
-Gramatica:
-
-        <objetivo> -> <programa> TK_END ( Esta es la producción global que se agrega)
-
-        <programa> -> <listaSentencias>
-
-        <listaSentencias> -> <sentencia> {<sentencia>}
-
-        <sentencia> -> TK_ID TK_ASSIGN <expresión> TK_END | TK_PRINT TK_L_PAR <expresion> TK_R_PAR TK_END
-
-        <expresion> -> <termino> | <termino> + <expresion>
-
-        <termino> -> <factor> | <factor> * <termino>
-
-        <factor> -> TK_ID | TK_CONSTANT | TK_L_PAR <expresión> TK_R_PAR
-
-
-*/
 #include <stdio.h>
-//#include "ScannerTypes.h"
-#include "lex.yy.h"
-//int yylex(void);
+#include "Scanner.h"
+
+static int yylex(void);
 void yyerror(const char *);
 
-#line 99 "AutoParser.tab.c"
+
+#line 79 "AutoParser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -531,8 +511,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    34,    34,    34,    37,    37,    40,    40,    43,    43,
-      46,    46,    49,    49,    49
+       0,    14,    14,    14,    17,    17,    20,    20,    23,    23,
+      26,    26,    29,    29,    29
 };
 #endif
 
@@ -1332,7 +1312,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1336 "AutoParser.tab.c"
+#line 1316 "AutoParser.tab.c"
 
       default: break;
     }
@@ -1564,27 +1544,17 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 51 "AutoParser.y"
+#line 31 "AutoParser.y"
 
-/*int main(void){
-    switch( yyparse() ){
-    case 0:
-        puts("Pertenece al LIC"); return 0;
-    case 1:
-        puts("No pertenece al LIC"); return 1;
-    case 2:
-        puts("Memoria insuficiente"); return 2;
-    }
-}*/
-/* yylex es el Scanner. Retorna el siguiente símbolo (token).
+
+/* 
+* yylex es el Scanner. Retorna el siguiente símbolo (token).
 * Si no hay más símbolos, retorna 0.
 */
-/*int yylex(void){
-    int c = getchar();
-    if(c == EOF)
-        return 0;
-    return c;
-}*/
+int yylex(void){   
+    return Scanner_GetNextToken();
+}
+
 /* Informa la ocurrencia de un error. */
 void yyerror(const char *s){
     puts(s);
