@@ -1,8 +1,6 @@
 PARSER_NAME = AutoParser
 SCANNER_NAME = AutoScanner
 
-#SOURCE1 = Scanner.c lex.yy.c Parser.c SemanticAnalyzer.c Calc.c AutoParser.tab.c
-
 SOURCE1 = $(PARSER_NAME).tab.c lex.yy.c Scanner.c Calc.c
 BIN1 = Calc.out
 OBJ1 = $(PARSER_NAME).tab.o lex.yy.o Scanner.o Calc.o
