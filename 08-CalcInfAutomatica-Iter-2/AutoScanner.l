@@ -8,8 +8,8 @@ int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 %option noyywrap
 
 %%
-[a-zA-Z]+ { return TK_ID; }
-[0-9]+ { return TK_CONSTANT; }
+[a-zA-Z]+ { yylval = 0; return TK_ID; }
+[0-9]+ { printf("[debug - AutoScanner - TK_CONSTANT: processing yytext value as constant:%s]\n", yytext); yylval = atoi(yytext); return TK_CONSTANT; }
 \+ { return TK_OP_PLUS; }
 \* { return TK_OP_PROD; }
 \( { return TK_L_PAR; }

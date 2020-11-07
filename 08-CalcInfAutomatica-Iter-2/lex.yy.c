@@ -733,12 +733,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 11 "AutoScanner.l"
-{ return TK_ID; }
+{ yylval = 0; return TK_ID; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 12 "AutoScanner.l"
-{ return TK_CONSTANT; }
+{ printf("[debug - AutoScanner - TK_CONSTANT: processing yytext value as constant:%s]\n", yytext); yylval = atoi(yytext); return TK_CONSTANT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP

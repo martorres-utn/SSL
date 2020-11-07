@@ -511,8 +511,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    14,    14,    14,    17,    17,    20,    20,    23,    23,
-      26,    26,    29,    29,    29
+       0,    15,    15,    16,    20,    21,    24,    24,    28,    29,
+      33,    34,    38,    39,    40
 };
 #endif
 
@@ -1311,8 +1311,50 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 5:
+#line 21 "AutoParser.y"
+                                                          { printf("[debug - AutoParser - 3: %i]\n", yyvsp[-2]); printf("$:%i\n", yyvsp[-2]); }
+#line 1318 "AutoParser.tab.c"
+    break;
 
-#line 1316 "AutoParser.tab.c"
+  case 8:
+#line 28 "AutoParser.y"
+            { printf("[debug - AutoParser - term: %i]\n", yyvsp[0]); yyval = yyvsp[0]; }
+#line 1324 "AutoParser.tab.c"
+    break;
+
+  case 9:
+#line 29 "AutoParser.y"
+                                  { yyval = yyvsp[-2] + yyvsp[0]; }
+#line 1330 "AutoParser.tab.c"
+    break;
+
+  case 10:
+#line 33 "AutoParser.y"
+             { printf("[debug - AutoParser - factor: %i]\n", yyvsp[0]); yyval = yyvsp[0]; }
+#line 1336 "AutoParser.tab.c"
+    break;
+
+  case 11:
+#line 34 "AutoParser.y"
+                             { yyval = yyvsp[-2] * yyvsp[0]; }
+#line 1342 "AutoParser.tab.c"
+    break;
+
+  case 13:
+#line 39 "AutoParser.y"
+                  { printf("[debug - AutoParser - TK_CONSTANT: %i]\n", yyvsp[0]); yyval = yyvsp[0]; }
+#line 1348 "AutoParser.tab.c"
+    break;
+
+  case 14:
+#line 40 "AutoParser.y"
+                                    { yyval = yyvsp[-1]; }
+#line 1354 "AutoParser.tab.c"
+    break;
+
+
+#line 1358 "AutoParser.tab.c"
 
       default: break;
     }
@@ -1544,7 +1586,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 31 "AutoParser.y"
+#line 42 "AutoParser.y"
 
 
 /* 
