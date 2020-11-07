@@ -69,13 +69,16 @@
 #line 1 "AutoParser.y"
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "Scanner.h"
+#include "SemanticValue.h"
+#include "VariableManager.h"
 
 static int yylex(void);
 void yyerror(const char *);
 
 
-#line 79 "AutoParser.tab.c"
+#line 82 "AutoParser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -511,8 +514,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    15,    15,    16,    20,    21,    24,    24,    28,    29,
-      33,    34,    38,    39,    40
+       0,    18,    18,    19,    23,    24,    28,    29,    33,    34,
+      38,    39,    43,    44,    45
 };
 #endif
 
@@ -1311,50 +1314,68 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 4:
+#line 23 "AutoParser.y"
+                                               { VariableManager_SetValue(yyvsp[-3].strVal, yyvsp[-1].intVal); }
+#line 1321 "AutoParser.tab.c"
+    break;
+
   case 5:
-#line 21 "AutoParser.y"
-                                                          { printf("[debug - AutoParser - 3: %i]\n", yyvsp[-2]); printf("$:%i\n", yyvsp[-2]); }
-#line 1318 "AutoParser.tab.c"
+#line 24 "AutoParser.y"
+                                                          { printf("[debug - AutoParser - 3: %i]\n", yyvsp[-2].intVal); printf("$:%i\n", yyvsp[-2].intVal); }
+#line 1327 "AutoParser.tab.c"
+    break;
+
+  case 6:
+#line 28 "AutoParser.y"
+                     { VariableManager_RemoveAll(); }
+#line 1333 "AutoParser.tab.c"
     break;
 
   case 8:
-#line 28 "AutoParser.y"
-            { printf("[debug - AutoParser - term: %i]\n", yyvsp[0]); yyval = yyvsp[0]; }
-#line 1324 "AutoParser.tab.c"
+#line 33 "AutoParser.y"
+            { printf("[debug - AutoParser - term: %i]\n", yyvsp[0].intVal); yyval.intVal = yyvsp[0].intVal; }
+#line 1339 "AutoParser.tab.c"
     break;
 
   case 9:
-#line 29 "AutoParser.y"
-                                  { yyval = yyvsp[-2] + yyvsp[0]; }
-#line 1330 "AutoParser.tab.c"
+#line 34 "AutoParser.y"
+                                  { yyval.intVal = yyvsp[-2].intVal + yyvsp[0].intVal; }
+#line 1345 "AutoParser.tab.c"
     break;
 
   case 10:
-#line 33 "AutoParser.y"
-             { printf("[debug - AutoParser - factor: %i]\n", yyvsp[0]); yyval = yyvsp[0]; }
-#line 1336 "AutoParser.tab.c"
+#line 38 "AutoParser.y"
+             { printf("[debug - AutoParser - factor: %i]\n", yyvsp[0].intVal); yyval.intVal = yyvsp[0].intVal; }
+#line 1351 "AutoParser.tab.c"
     break;
 
   case 11:
-#line 34 "AutoParser.y"
-                             { yyval = yyvsp[-2] * yyvsp[0]; }
-#line 1342 "AutoParser.tab.c"
+#line 39 "AutoParser.y"
+                             { yyval.intVal = yyvsp[-2].intVal * yyvsp[0].intVal; }
+#line 1357 "AutoParser.tab.c"
+    break;
+
+  case 12:
+#line 43 "AutoParser.y"
+            { int value = 0; bool foundVar = VariableManager_GetValue(yyvsp[0].strVal, &value); if(foundVar) { yyval.intVal = value; } else { yyerror("Variable Undefined!"); } }
+#line 1363 "AutoParser.tab.c"
     break;
 
   case 13:
-#line 39 "AutoParser.y"
-                  { printf("[debug - AutoParser - TK_CONSTANT: %i]\n", yyvsp[0]); yyval = yyvsp[0]; }
-#line 1348 "AutoParser.tab.c"
+#line 44 "AutoParser.y"
+                  { printf("[debug - AutoParser - TK_CONSTANT: %i]\n", yyvsp[0].intVal); yyval.intVal = yyvsp[0].intVal; }
+#line 1369 "AutoParser.tab.c"
     break;
 
   case 14:
-#line 40 "AutoParser.y"
-                                    { yyval = yyvsp[-1]; }
-#line 1354 "AutoParser.tab.c"
+#line 45 "AutoParser.y"
+                                    { yyval.intVal = yyvsp[-1].intVal; }
+#line 1375 "AutoParser.tab.c"
     break;
 
 
-#line 1358 "AutoParser.tab.c"
+#line 1379 "AutoParser.tab.c"
 
       default: break;
     }
@@ -1586,7 +1607,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 42 "AutoParser.y"
+#line 47 "AutoParser.y"
 
 
 /* 
