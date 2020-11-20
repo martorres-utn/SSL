@@ -739,7 +739,7 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 13 "AutoScanner.l"
-{ printf("[debug - AutoScanner - TK_CONSTANT: processing yytext value as constant:%s]\n", yytext); yylval.intVal = atoi(yytext); return TK_CONSTANT; }
+{ /*printf("[debug - AutoScanner - TK_CONSTANT: processing yytext value as constant:%s]\n", yytext);*/ yylval.intVal = atoi(yytext); return TK_CONSTANT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP

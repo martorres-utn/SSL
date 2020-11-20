@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "VariableManager.h"
-#include "BST.h"
+#include "BST.h" //BSTNode BST_FindChild BST_Insert BST_RemoveAll
 
 static BSTNode *root = NULL; //binary search tree
 
-int VariableManager_Hash(const char * key)
+static int VariableManager_Hash(const char * key)
 {
     int hash = 0;
     for(size_t pos = 0; key[pos] != '\0' ; pos++)
-        hash += key[pos] * (pos + 1);
+        hash += key[pos] * (pos + 1); //TODO: revisar colisiones posibles y cómo resolver.
     return hash;
 }
 

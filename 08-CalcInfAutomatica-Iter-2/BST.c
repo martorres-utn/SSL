@@ -50,7 +50,7 @@ void BST_Remove(BSTNode **root, BSTNode **parent, BSTNode *child)
 			else if((*parent)->right == child)
 				(*parent)->right = NULL;
 		}
-		printf("freed %p child (leaf) with key %i value %i\n", child, child->data.key, child->data.value);
+		//printf("freed %p child (leaf) with key %i value %i\n", child, child->data.key, child->data.value);
 		free(child);
 		return;
 	}
@@ -72,7 +72,7 @@ void BST_Remove(BSTNode **root, BSTNode **parent, BSTNode *child)
 				(*parent)->left = child->right;
 			else if((*parent)->right == child)
 				(*parent)->right = child->right;
-			printf("freed %p child (with right children) with key %i value %i\n", child, child->data.key, child->data.value);
+			//printf("freed %p child (with right children) with key %i value %i\n", child, child->data.key, child->data.value);
 			free(child);
 			return;
 		}
@@ -92,7 +92,7 @@ void BST_Remove(BSTNode **root, BSTNode **parent, BSTNode *child)
 				(*parent)->left = child->left;
 			else if((*parent)->right == child)
 				(*parent)->right = child->left;
-			printf("freed %p child (with left children) with key %i value %i\n", child, child->data.key, child->data.value);
+			//printf("freed %p child (with left children) with key %i value %i\n", child, child->data.key, child->data.value);
 			free(child);
 			return;
 		}
@@ -150,7 +150,7 @@ void BST_Print(BSTNode *root)
 	{
 		BST_Print(root->left);
 		BST_Print(root->right);
-		printf("p[%p] k[%i] v[%i]\n", root, root->data.key, root->data.value);
+		//printf("p[%p] k[%i] v[%i]\n", root, root->data.key, root->data.value);
 	}
 }
 
@@ -160,7 +160,7 @@ void BST_RemoveAll(BSTNode *root)
 	{
 		BST_RemoveAll(root->left);
 		BST_RemoveAll(root->right);
-		printf("removeall - p[%p] k[%i] v[%i]\n", root, root->data.key, root->data.value);
+		//printf("removeall - p[%p] k[%i] v[%i]\n", root, root->data.key, root->data.value);
 		root->left = NULL;
 		root->right = NULL;
 		free(root);
@@ -174,6 +174,6 @@ BSTNode * BST_CreateNewNode(int key, int value, BSTNode *parent, BSTNode *left, 
 	newNode->data.value = value;
 	newNode->left = left;
 	newNode->right = right;
-	printf("created %p with key %i and value %i\n", newNode, key, value);
+	//printf("created %p with key %i and value %i\n", newNode, key, value);
 	return newNode;
 }
