@@ -8,3 +8,7 @@ union SemanticValueUnion
 };
 
 typedef union SemanticValueUnion YYSTYPE; //AutoParser lo usa
+
+typedef union SemanticValueUnion SemanticValue; //Parser Manual
+
+SemanticValue LastSemanticValue; //Scanner Manual + Parser Manual

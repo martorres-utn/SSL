@@ -3,23 +3,8 @@
 #include <stdbool.h>
 #include "Parser.h"
 #include "Scanner.h"
+#include "TokenDefinition.h"
 #include "SemanticAnalyzer.h"
-
-enum TokenEnum //as Bison generated code
-{
-    TK_END_PROGRAM = 0,
-    TK_ID = 258,
-    TK_CONSTANT = 259,
-    TK_OP_PLUS = 260,
-    TK_OP_PROD = 261,
-    TK_L_PAR = 262,
-    TK_R_PAR = 263,
-    TK_ASSIGN = 264,
-    TK_PRINT = 265,
-    TK_END_STATEMENT = 266
-};
-
-typedef enum TokenEnum Token;
 
 /*
     Gramatica:
@@ -81,7 +66,7 @@ void Parser_SAP_Target()
     SemanticAnalyzer_CleanVariableTable(); //clean (?)
 
     Parser_SAP_Program();
-    Parser_Aux_Match(TK_END_STATEMENT);
+    Parser_Aux_Match(TK_END_PROGRAM);
 }
 
 void Parser_SAP_Program()

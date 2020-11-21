@@ -2,6 +2,7 @@
 #include <string.h>
 #include "SemanticAnalyzer.h"
 #include "Scanner.h"
+#include "SemanticValue.h"
 
 int SemanticAnalyzer_FindValue(char name[])
 {
@@ -15,7 +16,8 @@ SemanticRegister SemanticAnalyzer_GetID()
 {
     SemanticRegister sr;
     sr.type = RT_ID;
-    Scanner_BufferGetContent(sr.name);
+    //Scanner_BufferGetContent(sr.name);
+    strcpy(sr.name, LastSemanticValue.strVal);
     sr.value = SemanticAnalyzer_FindValue(sr.name);
     return sr;
 }
@@ -26,8 +28,9 @@ SemanticRegister SemanticAnalyzer_GetConstant()
     sr.type = RT_CONSTANT;
     strcpy(sr.name, "[constant]");
     char stringValue[SEMANTIC_REGISTER_VALUE_SIZE] = "";
-    Scanner_BufferGetContent(stringValue);
-    sscanf(stringValue, "%d", &sr.value);
+    //Scanner_BufferGetContent(stringValue);
+    //sscanf(stringValue, "%d", &sr.value);
+    sr.value = LastSemanticValue.intVal;
     return sr;
 }
 
