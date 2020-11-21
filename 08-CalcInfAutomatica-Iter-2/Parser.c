@@ -5,22 +5,38 @@
 #include "Scanner.h"
 #include "SemanticAnalyzer.h"
 
+enum TokenEnum //as Bison generated code
+{
+    TK_END_PROGRAM = 0,
+    TK_ID = 258,
+    TK_CONSTANT = 259,
+    TK_OP_PLUS = 260,
+    TK_OP_PROD = 261,
+    TK_L_PAR = 262,
+    TK_R_PAR = 263,
+    TK_ASSIGN = 264,
+    TK_PRINT = 265,
+    TK_END_STATEMENT = 266
+};
+
+typedef enum TokenEnum Token;
+
 /*
     Gramatica:
 
-        <objetivo> -> <programa> T_END ( Esta es la producción global que se agrega)
+        <objetivo> -> <programa> TK_END ( Esta es la producción global que se agrega)
 
         <programa> -> <listaSentencias>
 
         <listaSentencias> -> <sentencia> {<sentencia>}
 
-        <sentencia> -> T_ID T_ASSIGN <expresión> T_END | T_PRINT T_L_PAR <expresion> T_R_PAR T_END
+        <sentencia> -> TK_ID TK_ASSIGN <expresión> TK_END | TK_PRINT TK_L_PAR <expresion> TK_R_PAR TK_END
 
         <expresion> -> <termino> | <termino> + <expresion>
 
         <termino> -> <factor> | <factor> * <termino>
 
-        <factor> -> T_ID | T_CONSTANT | T_L_PAR <expresión> T_R_PAR
+        <factor> -> TK_ID | TK_CONSTANT | TK_L_PAR <expresión> TK_R_PAR
 */
 static bool SyntaxError = false;
 
@@ -65,7 +81,7 @@ void Parser_SAP_Target()
     SemanticAnalyzer_CleanVariableTable(); //clean (?)
 
     Parser_SAP_Program();
-    Parser_Aux_Match(T_END);
+    Parser_Aux_Match(TK_END_STATEMENT);
 }
 
 void Parser_SAP_Program()
@@ -79,9 +95,9 @@ void Parser_SAP_SentenceList()
     while (!SyntaxError) { /* un ciclo indefinido */
         Token currentToken = Scanner_GetNextToken();
         switch (currentToken) {
-            case T_ID: case T_PRINT: /* detectó token correcto */
+            case TK_ID: case TK_PRINT: /* detectó token correcto */
             {
-                Scanner_UngetLastToken(); //devuelvo T_ID o T_PRINT
+                Scanner_UngetLastToken(); //devuelvo TK_ID o TK_PRINT
                 Parser_SAP_SingleSentence(); /* procesa la secuencia opcional */
                 break;
             }
@@ -97,38 +113,38 @@ void Parser_SAP_SingleSentence()
 {
     Token token = Scanner_GetNextToken();
     switch (token) {
-        case T_ID: /* <sentencia> -> ID = <expresion> */
+        case TK_ID: /* <sentencia> -> ID = <expresion> */
         {
             Scanner_UngetLastToken(); //devolver token ID leido
             
-            Parser_Aux_Match(T_ID); 
+            Parser_Aux_Match(TK_ID); 
 
             SemanticRegister regID = SemanticAnalyzer_GetID();
 
-            Parser_Aux_Match(T_ASSIGN);
+            Parser_Aux_Match(TK_ASSIGN);
 
             SemanticRegister regExp;
             Parser_SAP_Expression(&regExp);
 
-            Parser_Aux_Match(T_END);
+            Parser_Aux_Match(TK_END_STATEMENT);
 
             //asignar regExp al regID y guardar en VariableTable
             SemanticAnalyzer_Assign(regID, regExp);
             break;
         }
-        case T_PRINT: /* <sentencia> -> $(<expresion>) */
+        case TK_PRINT: /* <sentencia> -> $(<expresion>) */
         {
             Scanner_UngetLastToken(); //devolver token ID leido
 
-            Parser_Aux_Match(T_PRINT);
-            Parser_Aux_Match(T_L_PAR);
+            Parser_Aux_Match(TK_PRINT);
+            Parser_Aux_Match(TK_L_PAR);
             
             SemanticRegister regExp;
 
             Parser_SAP_Expression(&regExp);
 
-            Parser_Aux_Match(T_R_PAR);
-            Parser_Aux_Match(T_END);
+            Parser_Aux_Match(TK_R_PAR);
+            Parser_Aux_Match(TK_END_STATEMENT);
 
             SemanticAnalyzer_Print(regExp);
 
@@ -136,7 +152,7 @@ void Parser_SAP_SingleSentence()
         }
         default:
         {
-            Token expectedTokens[2] = { T_ID, T_PRINT };
+            Token expectedTokens[2] = { TK_ID, TK_PRINT };
             Parser_Aux_SyntaxError(expectedTokens, 2, token);
             break;
         }
@@ -151,7 +167,7 @@ void Parser_SAP_Expression(SemanticRegister *result)
     {
         Token currentToken = Scanner_GetNextToken();
         switch (currentToken) {
-            case T_OP_PLUS:
+            case TK_OP_PLUS:
             {
                 SemanticRegister regExpr;
                 Parser_SAP_Expression(&regExpr);
@@ -177,7 +193,7 @@ void Parser_SAP_Term(SemanticRegister *result)
     {
         Token currentToken = Scanner_GetNextToken();
         switch (currentToken) {
-            case T_OP_PROD:
+            case TK_OP_PROD:
             {
                 SemanticRegister regTerm;
                 Parser_SAP_Term(&regTerm);
@@ -198,30 +214,30 @@ void Parser_SAP_Factor(SemanticRegister *result)
 {
     Token currentToken = Scanner_GetNextToken();
 
-    if(currentToken == T_ID)
+    if(currentToken == TK_ID)
     {
         //#process_id: devuelvo el valor que contiene el ID
         (*result) = SemanticAnalyzer_GetID();
         return;
     }
-    else if(currentToken == T_CONSTANT)
+    else if(currentToken == TK_CONSTANT)
     {
         //#process_constant: devuelvo el valor expresado por la constante
         (*result) = SemanticAnalyzer_GetConstant();
         return;
     }
-    else if(currentToken == T_L_PAR)
+    else if(currentToken == TK_L_PAR)
     {
         Scanner_UngetLastToken(); //devolver token ID leido
-        Parser_Aux_Match(T_L_PAR);
+        Parser_Aux_Match(TK_L_PAR);
         Parser_SAP_Expression(result);
-        Parser_Aux_Match(T_R_PAR);
+        Parser_Aux_Match(TK_R_PAR);
         
         return;
     }
     else
     {
-        Token expectedTokens[3] = { T_ID, T_CONSTANT, T_L_PAR };
+        Token expectedTokens[3] = { TK_ID, TK_CONSTANT, TK_L_PAR };
         Parser_Aux_SyntaxError(expectedTokens, 3, currentToken);
         return;
     }
