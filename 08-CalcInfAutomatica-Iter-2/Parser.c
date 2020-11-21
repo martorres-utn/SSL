@@ -32,8 +32,8 @@ void Parser_Aux_SyntaxError(Token expectedToken[], size_t expectedSize, Token fo
 
 //Parser - Syntactic Analysis Procedures
 void Parser_SAP_Program();
-void Parser_SAP_SentenceList();
-void Parser_SAP_SingleSentence();
+void Parser_SAP_Statements();
+void Parser_SAP_SingleStatement();
 void Parser_SAP_StatementEnd();
 void Parser_SAP_Expression(SemanticRegister *result);
 void Parser_SAP_Term(SemanticRegister *result);
@@ -70,19 +70,19 @@ void Parser_SAP_Target()
 
 void Parser_SAP_Program()
 {
-    Parser_SAP_SentenceList();
+    Parser_SAP_Statements();
 }
 
-void Parser_SAP_SentenceList()
+void Parser_SAP_Statements()
 {
-    Parser_SAP_SingleSentence(); /* la primera de la lista de sentencias */
+    Parser_SAP_SingleStatement(); /* la primera de la lista de sentencias */
     while (!SyntaxError) { /* un ciclo indefinido */
         Token currentToken = Scanner_GetNextToken();
         switch (currentToken) {
             case TK_ID: case TK_PRINT: /* detectó token correcto */
             {
                 Scanner_UngetLastToken(); //devuelvo TK_ID o TK_PRINT
-                Parser_SAP_SingleSentence(); /* procesa la secuencia opcional */
+                Parser_SAP_SingleStatement(); /* procesa la secuencia opcional */
                 break;
             }
             default:
@@ -93,7 +93,7 @@ void Parser_SAP_SentenceList()
     }
 }
 
-void Parser_SAP_SingleSentence()
+void Parser_SAP_SingleStatement()
 {
     Token token = Scanner_GetNextToken();
     switch (token) {
