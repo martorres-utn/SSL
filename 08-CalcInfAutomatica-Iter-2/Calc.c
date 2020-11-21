@@ -1,19 +1,8 @@
 #include <stdio.h>
-//#include "Parser.h"
-#include "AutoParser.tab.h"
-//TODO: incluir sólo Parser.h -> Parser.h adentro incluye AutoParser.tab.h
+#include "Parser.h"
+
 int main(void)
 {
-    //Parser_SAP_Target();
-
-    switch( yyparse() ){
-    case 0:
-        puts("Pertenece al LIC"); return 0;
-    case 1:
-        puts("No pertenece al LIC"); return 1;
-    case 2:
-        puts("Memoria insuficiente"); return 2;
-    }
-
+    Parser_SAP_Target();
     return 0;
 }

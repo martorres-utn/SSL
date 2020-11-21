@@ -1,9 +1,9 @@
 PARSER_NAME = AutoParser
 SCANNER_NAME = AutoScanner
 
-SOURCE1 = $(PARSER_NAME).tab.c lex.yy.c Scanner.c BST.c VariableManager.c Calc.c
+SOURCE1 = $(PARSER_NAME).tab.c ParserBison.c lex.yy.c Scanner.c BST.c VariableManager.c Calc.c
 BIN1 = Calc.out
-OBJ1 = $(PARSER_NAME).tab.o lex.yy.o Scanner.o BST.o VariableManager.o Calc.o
+OBJ1 = $(PARSER_NAME).tab.o ParserBison.o lex.yy.o Scanner.o BST.o VariableManager.o Calc.o
 
 CC = gcc
 CFLAGS = -std=c18 -g #agrego -g para decirle al compilador que emita informacion adicional para debugger GDB
