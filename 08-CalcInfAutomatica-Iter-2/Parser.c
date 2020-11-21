@@ -4,7 +4,10 @@
 #include "Parser.h"
 #include "Scanner.h"
 #include "TokenDefinition.h"
-#include "SemanticAnalyzer.h"
+#include "SemanticValue.h"
+#include "VariableManager.h"
+
+//#include "SemanticAnalyzer.h"
 
 /*
     Gramatica:
@@ -35,9 +38,9 @@ void Parser_SAP_Program();
 void Parser_SAP_Statements();
 void Parser_SAP_SingleStatement();
 void Parser_SAP_StatementEnd();
-void Parser_SAP_Expression(SemanticRegister *result);
-void Parser_SAP_Term(SemanticRegister *result);
-void Parser_SAP_Factor(SemanticRegister *result);
+void Parser_SAP_Expression(SemanticValue *result);
+void Parser_SAP_Term(SemanticValue *result);
+void Parser_SAP_Factor(SemanticValue *result);
 
 //Parser - Implementations
 
@@ -64,7 +67,7 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
 
 void Parser_SAP_Target() 
 {
-    SemanticAnalyzer_CleanVariableTable();
+    VariableManager_RemoveAll();
     Parser_SAP_Program();
 }
 
@@ -103,15 +106,16 @@ void Parser_SAP_SingleStatement()
             
             Parser_Aux_Match(TK_ID); 
 
-            SemanticRegister regID = SemanticAnalyzer_GetID();
+            SemanticValue identifier;
+            strcpy(identifier.strVal, LastSemanticValue.strVal);
 
             Parser_Aux_Match(TK_ASSIGN);
 
-            SemanticRegister regExp;
-            Parser_SAP_Expression(&regExp);
+            SemanticValue expression;
+            Parser_SAP_Expression(&expression);
             
             //asignar regExp al regID y guardar en VariableTable
-            SemanticAnalyzer_Assign(regID, regExp);
+            VariableManager_SetValue(identifier.strVal, expression.intVal);
 
             Parser_SAP_StatementEnd();
             break;
@@ -123,13 +127,14 @@ void Parser_SAP_SingleStatement()
             Parser_Aux_Match(TK_PRINT);
             Parser_Aux_Match(TK_L_PAR);
             
-            SemanticRegister regExp;
+            SemanticValue expression;
 
-            Parser_SAP_Expression(&regExp);
+            Parser_SAP_Expression(&expression);
 
             Parser_Aux_Match(TK_R_PAR);
 
-            SemanticAnalyzer_Print(regExp);
+            printf("$:%i\n", expression.intVal);
+
             Parser_SAP_StatementEnd();
             break;
         }
@@ -148,7 +153,7 @@ void Parser_SAP_StatementEnd()
     switch (token) {
         case TK_END_PROGRAM:
         {
-            SemanticAnalyzer_CleanVariableTable(); //TODO: replace VariableManager
+            VariableManager_RemoveAll();
             break;
         }
         case TK_END_STATEMENT:
@@ -164,7 +169,7 @@ void Parser_SAP_StatementEnd()
     }
 }
 
-void Parser_SAP_Expression(SemanticRegister *result) 
+void Parser_SAP_Expression(SemanticValue *result) 
 {
     Parser_SAP_Term(result); //single <term>
     
@@ -174,10 +179,11 @@ void Parser_SAP_Expression(SemanticRegister *result)
         switch (currentToken) {
             case TK_OP_PLUS:
             {
-                SemanticRegister regExpr;
-                Parser_SAP_Expression(&regExpr);
+                SemanticValue expression;
+                Parser_SAP_Expression(&expression);
 
-                *result = SemanticAnalyzer_EvaluateSum(*result, regExpr);
+                result->intVal += expression.intVal;
+
                 break;
             }
             default:
@@ -189,7 +195,7 @@ void Parser_SAP_Expression(SemanticRegister *result)
     }
 }
 
-void Parser_SAP_Term(SemanticRegister *result) 
+void Parser_SAP_Term(SemanticValue *result) 
 {
 
     Parser_SAP_Factor(result); //single expression
@@ -200,10 +206,10 @@ void Parser_SAP_Term(SemanticRegister *result)
         switch (currentToken) {
             case TK_OP_PROD:
             {
-                SemanticRegister regTerm;
-                Parser_SAP_Term(&regTerm);
+                SemanticValue term;
+                Parser_SAP_Term(&term);
 
-                *result = SemanticAnalyzer_EvaluateProd(*result, regTerm);
+                result->intVal *= term.intVal;
                 break;
             }
             default:
@@ -215,18 +221,26 @@ void Parser_SAP_Term(SemanticRegister *result)
     }
 }
 
-void Parser_SAP_Factor(SemanticRegister *result)
+void Parser_SAP_Factor(SemanticValue *result)
 {
     Token currentToken = Scanner_GetNextToken();
 
     if(currentToken == TK_ID)
     {
-        (*result) = SemanticAnalyzer_GetID();
+        int value = 0; 
+        
+        bool foundVar = VariableManager_GetValue(LastSemanticValue.strVal, &value); 
+        
+        if(foundVar)
+            result->intVal = value; 
+        //else
+            //yyerror("Variable Undefined!");
+
         return;
     }
     else if(currentToken == TK_CONSTANT)
     {
-        (*result) = SemanticAnalyzer_GetConstant();
+        result->intVal = LastSemanticValue.intVal;
         return;
     }
     else if(currentToken == TK_L_PAR)
