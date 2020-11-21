@@ -34,6 +34,7 @@ void Parser_Aux_SyntaxError(Token expectedToken[], size_t expectedSize, Token fo
 void Parser_SAP_Program();
 void Parser_SAP_SentenceList();
 void Parser_SAP_SingleSentence();
+void Parser_SAP_StatementEnd();
 void Parser_SAP_Expression(SemanticRegister *result);
 void Parser_SAP_Term(SemanticRegister *result);
 void Parser_SAP_Factor(SemanticRegister *result);
@@ -63,10 +64,8 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
 
 void Parser_SAP_Target() 
 {
-    SemanticAnalyzer_CleanVariableTable(); //clean (?)
-
+    SemanticAnalyzer_CleanVariableTable();
     Parser_SAP_Program();
-    Parser_Aux_Match(TK_END_PROGRAM);
 }
 
 void Parser_SAP_Program()
@@ -90,7 +89,7 @@ void Parser_SAP_SentenceList()
             {
                 return;
             }
-        } /* fin switch */
+        }
     }
 }
 
@@ -110,11 +109,11 @@ void Parser_SAP_SingleSentence()
 
             SemanticRegister regExp;
             Parser_SAP_Expression(&regExp);
-
-            Parser_Aux_Match(TK_END_STATEMENT);
-
+            
             //asignar regExp al regID y guardar en VariableTable
             SemanticAnalyzer_Assign(regID, regExp);
+
+            Parser_SAP_StatementEnd();
             break;
         }
         case TK_PRINT: /* <sentencia> -> $(<expresion>) */
@@ -129,16 +128,37 @@ void Parser_SAP_SingleSentence()
             Parser_SAP_Expression(&regExp);
 
             Parser_Aux_Match(TK_R_PAR);
-            Parser_Aux_Match(TK_END_STATEMENT);
 
             SemanticAnalyzer_Print(regExp);
-
+            Parser_SAP_StatementEnd();
             break;
         }
         default:
         {
             Token expectedTokens[2] = { TK_ID, TK_PRINT };
             Parser_Aux_SyntaxError(expectedTokens, 2, token);
+            break;
+        }
+    }
+}
+
+void Parser_SAP_StatementEnd()
+{
+    Token token = Scanner_GetNextToken();
+    switch (token) {
+        case TK_END_PROGRAM:
+        {
+            SemanticAnalyzer_CleanVariableTable(); //TODO: replace VariableManager
+            break;
+        }
+        case TK_END_STATEMENT:
+        {
+            break;
+        }
+        default: 
+        {
+            Token expectedTokens[2] = { TK_END_PROGRAM, TK_END_STATEMENT };
+            Parser_Aux_SyntaxError(expectedTokens, 1, token);
             break;
         }
     }
@@ -162,7 +182,7 @@ void Parser_SAP_Expression(SemanticRegister *result)
             }
             default:
             {
-                Scanner_UngetLastToken(); //devolver token ID leido
+                Scanner_UngetLastToken();
                 return;
             }
         }
@@ -188,7 +208,7 @@ void Parser_SAP_Term(SemanticRegister *result)
             }
             default:
             {
-                Scanner_UngetLastToken(); //devolver token ID leido
+                Scanner_UngetLastToken();
                 return;
             }
         }
@@ -201,19 +221,17 @@ void Parser_SAP_Factor(SemanticRegister *result)
 
     if(currentToken == TK_ID)
     {
-        //#process_id: devuelvo el valor que contiene el ID
         (*result) = SemanticAnalyzer_GetID();
         return;
     }
     else if(currentToken == TK_CONSTANT)
     {
-        //#process_constant: devuelvo el valor expresado por la constante
         (*result) = SemanticAnalyzer_GetConstant();
         return;
     }
     else if(currentToken == TK_L_PAR)
     {
-        Scanner_UngetLastToken(); //devolver token ID leido
+        Scanner_UngetLastToken();
         Parser_Aux_Match(TK_L_PAR);
         Parser_SAP_Expression(result);
         Parser_Aux_Match(TK_R_PAR);
