@@ -1322,7 +1322,7 @@ yyreduce:
 
   case 5:
 #line 24 "AutoParser.y"
-                                                          { /*printf("[debug - AutoParser - 3: %i]\n", $3.intVal);*/ printf("$:%i\n", yyvsp[-2].intVal); }
+                                                          { printf("$:%i\n", yyvsp[-2].intVal); }
 #line 1327 "AutoParser.tab.c"
     break;
 
@@ -1334,7 +1334,7 @@ yyreduce:
 
   case 8:
 #line 33 "AutoParser.y"
-            { /*printf("[debug - AutoParser - term: %i]\n", $1.intVal);*/ yyval.intVal = yyvsp[0].intVal; }
+            { yyval.intVal = yyvsp[0].intVal; }
 #line 1339 "AutoParser.tab.c"
     break;
 
@@ -1346,7 +1346,7 @@ yyreduce:
 
   case 10:
 #line 38 "AutoParser.y"
-             { /*printf("[debug - AutoParser - factor: %i]\n", $1.intVal);*/ yyval.intVal = yyvsp[0].intVal; }
+             { yyval.intVal = yyvsp[0].intVal; }
 #line 1351 "AutoParser.tab.c"
     break;
 
@@ -1364,7 +1364,7 @@ yyreduce:
 
   case 13:
 #line 44 "AutoParser.y"
-                  { /*printf("[debug - AutoParser - TK_CONSTANT: %i]\n", $1.intVal);*/ yyval.intVal = yyvsp[0].intVal; }
+                  { yyval.intVal = yyvsp[0].intVal; }
 #line 1369 "AutoParser.tab.c"
     break;
 

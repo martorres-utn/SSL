@@ -12,3 +12,6 @@ typedef union SemanticValueUnion YYSTYPE; //AutoParser lo usa
 typedef union SemanticValueUnion SemanticValue; //Parser Manual
 
 SemanticValue LastSemanticValue; //Scanner Manual + Parser Manual
+
+void SemanticValue_SetString(char stringLexeme[]);
+void SemanticValue_SetInteger(char integerLexeme[]);

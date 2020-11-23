@@ -451,11 +451,22 @@ char *yytext;
 #line 2 "AutoScanner.l"
 #include <stdio.h>
 #include "SemanticValue.h"
+
+#ifdef AUTOMATIC_PARSER
 #include "AutoParser.tab.h" //new automatic token definition
+#else
+#include "TokenDefinition.h"
+#endif
 
 int fileno( FILE * stream ); /*removes warning: implicit declaration*/
-#line 458 "lex.yy.c"
-#line 459 "lex.yy.c"
+
+//static void SemanticValue_SetString(char stringLexeme[]);
+
+//static void SemanticValue_SetInteger(char integerLexeme[]);
+
+void Scanner_UngetLastToken();
+#line 469 "lex.yy.c"
+#line 470 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -672,9 +683,9 @@ YY_DECL
 		}
 
 	{
-#line 11 "AutoScanner.l"
+#line 22 "AutoScanner.l"
 
-#line 678 "lex.yy.c"
+#line 689 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -733,70 +744,70 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "AutoScanner.l"
-{ strcpy(yylval.strVal, yytext); return TK_ID; }
+#line 23 "AutoScanner.l"
+{ SemanticValue_SetString(yytext); return TK_ID; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "AutoScanner.l"
-{ /*printf("[debug - AutoScanner - TK_CONSTANT: processing yytext value as constant:%s]\n", yytext);*/ yylval.intVal = atoi(yytext); return TK_CONSTANT; }
+#line 24 "AutoScanner.l"
+{ SemanticValue_SetInteger(yytext); return TK_CONSTANT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "AutoScanner.l"
+#line 25 "AutoScanner.l"
 { return TK_OP_PLUS; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "AutoScanner.l"
+#line 26 "AutoScanner.l"
 { return TK_OP_PROD; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "AutoScanner.l"
+#line 27 "AutoScanner.l"
 { return TK_L_PAR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "AutoScanner.l"
+#line 28 "AutoScanner.l"
 { return TK_R_PAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "AutoScanner.l"
+#line 29 "AutoScanner.l"
 { return TK_ASSIGN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "AutoScanner.l"
+#line 30 "AutoScanner.l"
 { return TK_PRINT; }
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 20 "AutoScanner.l"
+#line 31 "AutoScanner.l"
 { return TK_END_STATEMENT; };
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 21 "AutoScanner.l"
+#line 32 "AutoScanner.l"
 { return TK_END_PROGRAM; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 22 "AutoScanner.l"
+#line 33 "AutoScanner.l"
 ;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 23 "AutoScanner.l"
+#line 34 "AutoScanner.l"
 { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 24 "AutoScanner.l"
+#line 35 "AutoScanner.l"
 ECHO;
 	YY_BREAK
-#line 800 "lex.yy.c"
+#line 811 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1799,5 +1810,27 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 24 "AutoScanner.l"
+#line 35 "AutoScanner.l"
 
+/*
+void SemanticValue_SetString(char stringLexeme[])
+{
+#ifdef AUTOMATIC_PARSER
+    strcpy(yylval.strVal, yytext);
+    //printf("AUTOMATIC_PARSER is defined!");
+#else
+    strcpy(LastSemanticValue.strVal, yytext);
+#endif
+}
+
+void SemanticValue_SetInteger(char integerLexeme[])
+{
+#ifdef AUTOMATIC_PARSER
+    yylval.intVal = atoi(yytext);
+    //printf("AUTOMATIC_PARSER is defined!");
+#else
+    LastSemanticValue.intVal = atoi(yytext);
+#endif
+}
+*/
+void Scanner_UngetLastToken(){;}

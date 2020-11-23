@@ -21,7 +21,7 @@ statement_list
 
 single_statement 
     : TK_ID TK_ASSIGN expression statement_end { VariableManager_SetValue($1.strVal, $3.intVal); }
-    | TK_PRINT TK_L_PAR expression TK_R_PAR statement_end { /*printf("[debug - AutoParser - 3: %i]\n", $3.intVal);*/ printf("$:%i\n", $3.intVal); }
+    | TK_PRINT TK_L_PAR expression TK_R_PAR statement_end { printf("$:%i\n", $3.intVal); }
 ;
 
 statement_end 
@@ -30,18 +30,18 @@ statement_end
 ;
 
 expression 
-    : term  { /*printf("[debug - AutoParser - term: %i]\n", $1.intVal);*/ $$.intVal = $1.intVal; }
+    : term  { $$.intVal = $1.intVal; }
     | expression TK_OP_PLUS term  { $$.intVal = $1.intVal + $3.intVal; }
 ;
 
 term 
-    : factor { /*printf("[debug - AutoParser - factor: %i]\n", $1.intVal);*/ $$.intVal = $1.intVal; }
+    : factor { $$.intVal = $1.intVal; }
     | term TK_OP_PROD factor { $$.intVal = $1.intVal * $3.intVal; }
 ;
 
 factor 
     : TK_ID { int value = 0; bool foundVar = VariableManager_GetValue($1.strVal, &value); if(foundVar) { $$.intVal = value; } else { yyerror("Variable Undefined!"); } }
-    | TK_CONSTANT { /*printf("[debug - AutoParser - TK_CONSTANT: %i]\n", $1.intVal);*/ $$.intVal = $1.intVal; }
+    | TK_CONSTANT { $$.intVal = $1.intVal; }
     | TK_L_PAR expression TK_R_PAR  { $$.intVal = $2.intVal; }
 ;
 %%
