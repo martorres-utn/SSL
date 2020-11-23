@@ -36,7 +36,7 @@ $(BLUEPRINT_BISON).tab.c: $(BLUEPRINT_BISON).y
 	bison -d $(BLUEPRINT_BISON).y
 
 #Flex Scanner
-lex.yy.c: $(BLUEPRINT_FLEX).l
+$(SOURCE_FLEX_SCANNER): $(BLUEPRINT_FLEX).l
 	flex $(BLUEPRINT_FLEX).l
 
 #BST + VariableManager

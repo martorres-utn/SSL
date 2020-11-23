@@ -48,8 +48,7 @@ int Scanner_GetNextToken()
 				if(!accepted)
 					ungetc(newChar, stdin);
 
-                //Scanner_BufferGetContent(LastSemanticValue.strVal);
-                strcpy(LastSemanticValue.strVal, Buffer);
+                SemanticValue_SetString(Buffer);
 
 				return (LastToken = TK_ID);
             }
@@ -67,7 +66,7 @@ int Scanner_GetNextToken()
 				if(!accepted)
 					ungetc(newChar, stdin);
                 
-                LastSemanticValue.intVal = atoi(Buffer);
+                SemanticValue_SetInteger(Buffer);
 
 				return (LastToken = TK_CONSTANT);
             }

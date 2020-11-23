@@ -10,10 +10,6 @@
 
 int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 
-//static void SemanticValue_SetString(char stringLexeme[]);
-
-//static void SemanticValue_SetInteger(char integerLexeme[]);
-
 void Scanner_UngetLastToken();
 %}
 
@@ -33,25 +29,5 @@ void Scanner_UngetLastToken();
 [ ]+ ;
 . { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 %%
-/*
-void SemanticValue_SetString(char stringLexeme[])
-{
-#ifdef AUTOMATIC_PARSER
-    strcpy(yylval.strVal, yytext);
-    //printf("AUTOMATIC_PARSER is defined!");
-#else
-    strcpy(LastSemanticValue.strVal, yytext);
-#endif
-}
 
-void SemanticValue_SetInteger(char integerLexeme[])
-{
-#ifdef AUTOMATIC_PARSER
-    yylval.intVal = atoi(yytext);
-    //printf("AUTOMATIC_PARSER is defined!");
-#else
-    LastSemanticValue.intVal = atoi(yytext);
-#endif
-}
-*/
 void Scanner_UngetLastToken(){;}
