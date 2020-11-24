@@ -17,23 +17,23 @@ OBJECT_FLEX_SCANNER_MANUALPARSER = lex.yy.manual.Parser_Manual.o
 
 #Calc_1.out: Flex Scanner + Bison Parser
 BIN1 = Calc_1.out
-SOURCE1 = SemanticValueAuto.c Parser_Automatic.c ScannerLex.c
-OBJ1 = SemanticValueAuto.o Parser_Automatic.o ScannerLex.o
+SOURCE1 = SemanticValue_Automatic.c Parser_Automatic.c Scanner_Automatic.c
+OBJ1 = SemanticValue_Automatic.o Parser_Automatic.o Scanner_Automatic.o
 
 #Calc_2.out: Manual Scanner + Manual Parser
 BIN2 = Calc_2.out
-SOURCE2 = SemanticValueManual.c Parser_Manual.c Scanner_Manual.c
-OBJ2 = SemanticValueManual.o Parser_Manual.o Scanner_Manual.o
+SOURCE2 = SemanticValue_Manual.c Parser_Manual.c Scanner_Manual.c
+OBJ2 = SemanticValue_Manual.o Parser_Manual.o Scanner_Manual.o
 
 #Calc_3.out: Flex Scanner + Manual Parser
 BIN3 = Calc_3.out
-SOURCE3 =  SemanticValueManual.c ScannerLex.c Parser_Manual.c
-OBJ3 = SemanticValueManual.o ScannerLex.o Parser_Manual.o
+SOURCE3 =  SemanticValue_Manual.c Scanner_Automatic.c Parser_Manual.c
+OBJ3 = SemanticValue_Manual.o Scanner_Automatic.o Parser_Manual.o
 
 #Calc_4.out: Manual Scanner + Bison Parser
 BIN4 = Calc_4.out
-SOURCE4 = SemanticValueAuto.c Scanner_Manual.c Parser_Automatic.c
-OBJ4 = SemanticValueAuto.o Scanner_Manual.o Parser_Automatic.o
+SOURCE4 = SemanticValue_Automatic.c Scanner_Manual.c Parser_Automatic.c
+OBJ4 = SemanticValue_Automatic.o Scanner_Manual.o Parser_Automatic.o
 
 all: $(BIN1) $(BIN2) $(BIN3) $(BIN4)
 
