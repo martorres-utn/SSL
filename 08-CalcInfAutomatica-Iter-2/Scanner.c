@@ -147,18 +147,6 @@ void Scanner_BufferClear()
     BufferTop = 0;
 }
 
-/*void Scanner_BufferGetContent(char output[])
-{
-    strcpy(output, Buffer);
-}*/
-
-void Scanner_UngetLastToken()
-{
-    while(BufferTop > 0)
-        ungetc(Scanner_BufferPop(), stdin);
-    LastToken = UNINITIALIZED_TOKEN;
-}
-
 bool Scanner_HasReachedEOF()
 {
     return ReachedEOF;

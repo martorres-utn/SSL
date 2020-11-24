@@ -10,7 +10,6 @@
 
 int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 
-void Scanner_UngetLastToken();
 %}
 
 %option noyywrap
@@ -29,5 +28,3 @@ void Scanner_UngetLastToken();
 [ ]+ ;
 . { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 %%
-
-void Scanner_UngetLastToken(){;}
