@@ -12,28 +12,28 @@ SOURCE_BISON_PARSER = $(BLUEPRINT_BISON).tab.c
 OBJECT_BISON_PARSER = $(BLUEPRINT_BISON).tab.o
 
 SOURCE_FLEX_SCANNER = lex.yy.c
-OBJECT_FLEX_SCANNER_AUTOPARSER = lex.yy.auto.parser.o
-OBJECT_FLEX_SCANNER_MANUALPARSER = lex.yy.manual.parser.o
+OBJECT_FLEX_SCANNER_AUTOPARSER = lex.yy.auto.Parser_Manual.o
+OBJECT_FLEX_SCANNER_MANUALPARSER = lex.yy.manual.Parser_Manual.o
 
 #Calc_1.out: Flex Scanner + Bison Parser
 BIN1 = Calc_1.out
-SOURCE1 = SemanticValueAuto.c ParserBison.c ScannerLex.c
-OBJ1 = SemanticValueAuto.o ParserBison.o ScannerLex.o
+SOURCE1 = SemanticValueAuto.c Parser_Automatic.c ScannerLex.c
+OBJ1 = SemanticValueAuto.o Parser_Automatic.o ScannerLex.o
 
 #Calc_2.out: Manual Scanner + Manual Parser
 BIN2 = Calc_2.out
-SOURCE2 = SemanticValueManual.c Parser.c Scanner.c
-OBJ2 = SemanticValueManual.o Parser.o Scanner.o
+SOURCE2 = SemanticValueManual.c Parser_Manual.c Scanner_Manual.c
+OBJ2 = SemanticValueManual.o Parser_Manual.o Scanner_Manual.o
 
 #Calc_3.out: Flex Scanner + Manual Parser
 BIN3 = Calc_3.out
-SOURCE3 =  SemanticValueManual.c ScannerLex.c Parser.c
-OBJ3 = SemanticValueManual.o ScannerLex.o Parser.o
+SOURCE3 =  SemanticValueManual.c ScannerLex.c Parser_Manual.c
+OBJ3 = SemanticValueManual.o ScannerLex.o Parser_Manual.o
 
 #Calc_4.out: Manual Scanner + Bison Parser
 BIN4 = Calc_4.out
-SOURCE4 = SemanticValueAuto.c Scanner.c ParserBison.c
-OBJ4 = SemanticValueAuto.o Scanner.o ParserBison.o
+SOURCE4 = SemanticValueAuto.c Scanner_Manual.c Parser_Automatic.c
+OBJ4 = SemanticValueAuto.o Scanner_Manual.o Parser_Automatic.o
 
 all: $(BIN1) $(BIN2) $(BIN3) $(BIN4)
 
