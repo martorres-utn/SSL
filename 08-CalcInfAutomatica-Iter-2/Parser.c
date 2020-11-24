@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -6,8 +7,6 @@
 #include "TokenDefinition.h"
 #include "SemanticValue.h"
 #include "VariableManager.h"
-
-//#include "SemanticAnalyzer.h"
 
 /*
     Gramatica:
@@ -29,29 +28,36 @@
 static bool SyntaxError = false;
 
 //Parser - Auxiliar Functions
-void Parser_Aux_Match(Token expectedToken);
+void Parser_Aux_Match(Token currentToken, Token expectedToken);
+void Parser_Aux_MatchNext(Token expectedToken);
+
 void Parser_Aux_SyntaxError(Token expectedToken[], size_t expectedSize, Token foundToken);
 
 
 //Parser - Syntactic Analysis Procedures
 void Parser_SAP_Program();
 void Parser_SAP_Statements();
-void Parser_SAP_SingleStatement();
-void Parser_SAP_StatementEnd();
-void Parser_SAP_Expression(SemanticValue *result);
-void Parser_SAP_Term(SemanticValue *result);
+Token Parser_SAP_SingleStatement();
+void Parser_SAP_StatementEnd(Token *tokenToCheck);
+Token Parser_SAP_Expression(SemanticValue *result);
+Token Parser_SAP_Term(SemanticValue *result);
 void Parser_SAP_Factor(SemanticValue *result);
 
 //Parser - Implementations
 
-void Parser_Aux_Match(Token expectedToken)
+void Parser_Aux_Match(Token currentToken, Token expectedToken)
 {
-    Token currentToken = Scanner_GetNextToken();
     if(currentToken != expectedToken)
     {
         Token expectedTokens[1] = { expectedToken };
         Parser_Aux_SyntaxError(expectedTokens, 1, currentToken);
     }
+}
+
+void Parser_Aux_MatchNext(Token expectedToken)
+{
+    Token currentToken = Scanner_GetNextToken();
+    Parser_Aux_Match(currentToken, expectedToken);
 }
 
 void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token foundToken)
@@ -63,6 +69,8 @@ void Parser_Aux_SyntaxError(Token expectedTokens[], size_t expectedSize, Token f
         printf("t[%d]", expectedTokens[pos]);
     }
     printf(" but current:t[%d] ]", foundToken);
+    
+    exit(1); //terminate
 }
 
 void Parser_SAP_Target() 
@@ -78,78 +86,74 @@ void Parser_SAP_Program()
 
 void Parser_SAP_Statements()
 {
-    Parser_SAP_SingleStatement(); /* la primera de la lista de sentencias */
-    while (!SyntaxError) { /* un ciclo indefinido */
-        Token currentToken = Scanner_GetNextToken();
-        switch (currentToken) {
-            case TK_ID: case TK_PRINT: /* detectó token correcto */
-            {
-                Scanner_UngetLastToken(); //devuelvo TK_ID o TK_PRINT
-                Parser_SAP_SingleStatement(); /* procesa la secuencia opcional */
-                break;
-            }
-            default:
-            {
-                return;
-            }
-        }
-    }
+    Token endToken = Parser_SAP_SingleStatement(); 
+    while( endToken != TK_END_PROGRAM)
+        endToken = Parser_SAP_SingleStatement();
 }
 
-void Parser_SAP_SingleStatement()
+Token Parser_SAP_SingleStatement()
 {
-    Token token = Scanner_GetNextToken();
-    switch (token) {
+    Token newToken = Scanner_GetNextToken();
+    
+    switch (newToken) {
         case TK_ID: /* <sentencia> -> ID = <expresion> */
         {
-            Scanner_UngetLastToken(); //devolver token ID leido
-            
-            Parser_Aux_Match(TK_ID); 
-
             SemanticValue identifier;
             strcpy(identifier.strVal, LastSemanticValue.strVal);
 
-            Parser_Aux_Match(TK_ASSIGN);
+            Parser_Aux_MatchNext(TK_ASSIGN);
 
             SemanticValue expression;
-            Parser_SAP_Expression(&expression);
+            Token exprEnd = Parser_SAP_Expression(&expression);
             
             //asignar regExp al regID y guardar en VariableTable
             VariableManager_SetValue(identifier.strVal, expression.intVal);
 
-            Parser_SAP_StatementEnd();
+            Parser_SAP_StatementEnd(&exprEnd);
+
+            return exprEnd;
             break;
         }
         case TK_PRINT: /* <sentencia> -> $(<expresion>) */
         {
-            Scanner_UngetLastToken(); //devolver token ID leido
-
-            Parser_Aux_Match(TK_PRINT);
-            Parser_Aux_Match(TK_L_PAR);
+            Parser_Aux_MatchNext(TK_L_PAR);
             
             SemanticValue expression;
 
-            Parser_SAP_Expression(&expression);
+            Token exprEnd = Parser_SAP_Expression(&expression);
 
-            Parser_Aux_Match(TK_R_PAR);
+            Parser_Aux_Match(exprEnd, TK_R_PAR);
 
             printf("$:%i\n", expression.intVal);
 
-            Parser_SAP_StatementEnd();
+            Parser_SAP_StatementEnd(NULL);
+            return TK_END_STATEMENT;
+            break;
+        }
+        case TK_END_PROGRAM:
+        {
+            return newToken;
             break;
         }
         default:
         {
             Token expectedTokens[2] = { TK_ID, TK_PRINT };
-            Parser_Aux_SyntaxError(expectedTokens, 2, token);
+            Parser_Aux_SyntaxError(expectedTokens, 2, newToken);
             break;
         }
     }
+    return newToken;
 }
 
-void Parser_SAP_StatementEnd()
+void Parser_SAP_StatementEnd(Token *tokenToCheck)
 {
-    Token token = Scanner_GetNextToken();
+    Token token;
+
+    if(tokenToCheck == NULL)
+        token = Scanner_GetNextToken();
+    else
+        token = (*tokenToCheck);
+    
     switch (token) {
         case TK_END_PROGRAM:
         {
@@ -169,56 +173,32 @@ void Parser_SAP_StatementEnd()
     }
 }
 
-void Parser_SAP_Expression(SemanticValue *result) 
+Token Parser_SAP_Expression(SemanticValue *result) 
 {
-    Parser_SAP_Term(result); //single <term>
-    
-    while (!SyntaxError) //undefined cycle of + <term>
+    Token termEnd = Parser_SAP_Term(result); //single <term>
+    if(termEnd == TK_OP_PLUS)
     {
-        Token currentToken = Scanner_GetNextToken();
-        switch (currentToken) {
-            case TK_OP_PLUS:
-            {
-                SemanticValue expression;
-                Parser_SAP_Expression(&expression);
+        SemanticValue expression;
+        Token exprEnd = Parser_SAP_Expression(&expression);
 
-                result->intVal += expression.intVal;
-
-                break;
-            }
-            default:
-            {
-                Scanner_UngetLastToken();
-                return;
-            }
-        }
+        result->intVal += expression.intVal;
+        return exprEnd;
     }
+    return termEnd;
 }
 
-void Parser_SAP_Term(SemanticValue *result) 
+Token Parser_SAP_Term(SemanticValue *result) 
 {
-
-    Parser_SAP_Factor(result); //single expression
-    
-    while (!SyntaxError) //undefined cycle of * <factor>
+    Parser_SAP_Factor(result); //single expression       
+    Token newToken = Scanner_GetNextToken();
+    if(newToken == TK_OP_PROD)
     {
-        Token currentToken = Scanner_GetNextToken();
-        switch (currentToken) {
-            case TK_OP_PROD:
-            {
-                SemanticValue term;
-                Parser_SAP_Term(&term);
-
-                result->intVal *= term.intVal;
-                break;
-            }
-            default:
-            {
-                Scanner_UngetLastToken();
-                return;
-            }
-        }
+        SemanticValue term;
+        Token endToken = Parser_SAP_Term(&term);
+        result->intVal *= term.intVal;
+        return endToken;
     }
+    return newToken;
 }
 
 void Parser_SAP_Factor(SemanticValue *result)
@@ -245,11 +225,8 @@ void Parser_SAP_Factor(SemanticValue *result)
     }
     else if(currentToken == TK_L_PAR)
     {
-        Scanner_UngetLastToken();
-        Parser_Aux_Match(TK_L_PAR);
-        Parser_SAP_Expression(result);
-        Parser_Aux_Match(TK_R_PAR);
-        
+        Token endToken = Parser_SAP_Expression(result);
+        Parser_Aux_Match(endToken, TK_R_PAR);
         return;
     }
     else
