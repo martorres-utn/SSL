@@ -12,7 +12,8 @@ SOURCE_BISON_PARSER = $(BLUEPRINT_BISON).tab.c
 OBJECT_BISON_PARSER = $(BLUEPRINT_BISON).tab.o
 
 SOURCE_FLEX_SCANNER = lex.yy.c
-OBJECT_FLEX_SCANNER = lex.yy.o
+OBJECT_FLEX_SCANNER_AUTOPARSER = lex.yy.auto.parser.o
+OBJECT_FLEX_SCANNER_MANUALPARSER = lex.yy.manual.parser.o
 
 #Calc_1.out: Flex Scanner + Bison Parser
 BIN1 = Calc_1.out
@@ -29,7 +30,12 @@ BIN3 = Calc_3.out
 SOURCE3 =  SemanticValueManual.c ScannerLex.c Parser.c
 OBJ3 = SemanticValueManual.o ScannerLex.o Parser.o
 
-all: $(BIN1) $(BIN2) $(BIN3)
+#Calc_4.out: Manual Scanner + Bison Parser
+BIN4 = Calc_4.out
+SOURCE4 = SemanticValueAuto.c Scanner.c ParserBison.c
+OBJ4 = SemanticValueAuto.o Scanner.o ParserBison.o
+
+all: $(BIN1) $(BIN2) $(BIN3) $(BIN4)
 
 #Bison Parser
 $(BLUEPRINT_BISON).tab.c: $(BLUEPRINT_BISON).y
@@ -48,15 +54,19 @@ $(OBJECT_BISON_PARSER): $(SOURCE_BISON_PARSER)
 	$(CC) -c $(SOURCE_BISON_PARSER) $(CFLAGS)
 
 #Flex Scanner with Automatic Parser
-$(OBJECT_FLEX_SCANNER): $(SOURCE_FLEX_SCANNER)
-	$(CC) -c $(SOURCE_FLEX_SCANNER) $(CFLAGS) -DAUTOMATIC_PARSER
+$(OBJECT_FLEX_SCANNER_AUTOPARSER): $(SOURCE_FLEX_SCANNER)
+	$(CC) -o $(OBJECT_FLEX_SCANNER_AUTOPARSER) -c $(SOURCE_FLEX_SCANNER) $(CFLAGS) -DAUTOMATIC_PARSER
+
+#Flex Scanner with Manual Parser
+$(OBJECT_FLEX_SCANNER_MANUALPARSER): $(SOURCE_FLEX_SCANNER)
+	$(CC) -o $(OBJECT_FLEX_SCANNER_MANUALPARSER) -c $(SOURCE_FLEX_SCANNER) $(CFLAGS)
 
 #Flex + Bison
 $(OBJ1): $(SOURCE1)
 	$(CC) -c $(SOURCE1) $(CFLAGS)
 
-$(BIN1): $(OBJ0) $(OBJECT_BISON_PARSER) $(OBJECT_FLEX_SCANNER) $(OBJ1)
-	$(CC) $(OBJ0) $(OBJECT_BISON_PARSER) $(OBJECT_FLEX_SCANNER) $(OBJ1) -o $(BIN1) $(CFLAGS)
+$(BIN1): $(OBJ0) $(OBJECT_BISON_PARSER) $(OBJECT_FLEX_SCANNER_AUTOPARSER) $(OBJ1)
+	$(CC) $(OBJ0) $(OBJECT_BISON_PARSER) $(OBJECT_FLEX_SCANNER_AUTOPARSER) $(OBJ1) -o $(BIN1) $(CFLAGS)
 
 #Manual Only
 $(OBJ2): $(SOURCE2)
@@ -66,21 +76,23 @@ $(BIN2): $(OBJ0) $(OBJ2)
 	$(CC) $(OBJ0) $(OBJ2) -o $(BIN2) $(CFLAGS)
 
 #Lex Scanner + Manual Parser
+$(BIN3): $(OBJ0) $(OBJ3) $(OBJECT_FLEX_SCANNER_MANUALPARSER)
+	$(CC) $(OBJ0) $(OBJECT_FLEX_SCANNER_MANUALPARSER) $(OBJ3) -o $(BIN3) $(CFLAGS)
 
-#remove old flex scanner object file and compile it again with different flag
-$(BIN3): $(OBJ0) $(OBJ3)
-	-rm $(OBJECT_FLEX_SCANNER)
-	$(CC) -c $(SOURCE_FLEX_SCANNER) $(CFLAGS)
-	$(CC) $(OBJ0) $(OBJECT_FLEX_SCANNER) $(OBJECT_BISON_PARSER) $(OBJ3) -o $(BIN3) $(CFLAGS)
+#Manual Scanner + Automatic Parser
+$(BIN4): $(OBJ0) $(OBJ4) $(OBJECT_BISON_PARSER)
+	$(CC) $(OBJ0) $(OBJ4) $(OBJECT_BISON_PARSER) -o $(BIN4) $(CFLAGS)
 
 #removes *.o files
 clean:
 	-rm $(OBJ0)
-	-rm $(OBJECT_BISON_PARSER)
-	-rm $(OBJECT_FLEX_SCANNER)
 	-rm $(OBJ1)
 	-rm $(OBJ2)
 	-rm $(OBJ3)
+	-rm $(OBJ4)
+	-rm $(OBJECT_BISON_PARSER)
+	-rm $(OBJECT_FLEX_SCANNER_AUTOPARSER)
+	-rm $(OBJECT_FLEX_SCANNER_MANUALPARSER)
 
 run: $(BIN1)
 	$(BIN1)
