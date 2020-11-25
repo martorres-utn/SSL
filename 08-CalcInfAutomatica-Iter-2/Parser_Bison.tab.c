@@ -66,7 +66,7 @@
 
 
 /* First part of user prologue.  */
-#line 1 "AutoParser.y"
+#line 1 "Parser_Bison.y"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -78,7 +78,7 @@ static int yylex(void);
 void yyerror(const char *);
 
 
-#line 82 "AutoParser.tab.c"
+#line 82 "Parser_Bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -111,8 +111,8 @@ void yyerror(const char *);
 
 /* Use api.header.include to #include this header
    instead of duplicating it here.  */
-#ifndef YY_YY_AUTOPARSER_TAB_H_INCLUDED
-# define YY_YY_AUTOPARSER_TAB_H_INCLUDED
+#ifndef YY_YY_PARSER_BISON_TAB_H_INCLUDED
+# define YY_YY_PARSER_BISON_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -151,7 +151,7 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_AUTOPARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSER_BISON_TAB_H_INCLUDED  */
 
 
 
@@ -1315,67 +1315,67 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 23 "AutoParser.y"
+#line 23 "Parser_Bison.y"
                                                { VariableManager_SetValue(yyvsp[-3].strVal, yyvsp[-1].intVal); }
-#line 1321 "AutoParser.tab.c"
+#line 1321 "Parser_Bison.tab.c"
     break;
 
   case 5:
-#line 24 "AutoParser.y"
+#line 24 "Parser_Bison.y"
                                                           { printf("$:%i\n", yyvsp[-2].intVal); }
-#line 1327 "AutoParser.tab.c"
+#line 1327 "Parser_Bison.tab.c"
     break;
 
   case 6:
-#line 28 "AutoParser.y"
+#line 28 "Parser_Bison.y"
                      { VariableManager_RemoveAll(); }
-#line 1333 "AutoParser.tab.c"
+#line 1333 "Parser_Bison.tab.c"
     break;
 
   case 8:
-#line 33 "AutoParser.y"
+#line 33 "Parser_Bison.y"
             { yyval.intVal = yyvsp[0].intVal; }
-#line 1339 "AutoParser.tab.c"
+#line 1339 "Parser_Bison.tab.c"
     break;
 
   case 9:
-#line 34 "AutoParser.y"
+#line 34 "Parser_Bison.y"
                                   { yyval.intVal = yyvsp[-2].intVal + yyvsp[0].intVal; }
-#line 1345 "AutoParser.tab.c"
+#line 1345 "Parser_Bison.tab.c"
     break;
 
   case 10:
-#line 38 "AutoParser.y"
+#line 38 "Parser_Bison.y"
              { yyval.intVal = yyvsp[0].intVal; }
-#line 1351 "AutoParser.tab.c"
+#line 1351 "Parser_Bison.tab.c"
     break;
 
   case 11:
-#line 39 "AutoParser.y"
+#line 39 "Parser_Bison.y"
                              { yyval.intVal = yyvsp[-2].intVal * yyvsp[0].intVal; }
-#line 1357 "AutoParser.tab.c"
+#line 1357 "Parser_Bison.tab.c"
     break;
 
   case 12:
-#line 43 "AutoParser.y"
+#line 43 "Parser_Bison.y"
             { int value = 0; bool foundVar = VariableManager_GetValue(yyvsp[0].strVal, &value); if(foundVar) { yyval.intVal = value; } else { yyerror("Variable Undefined!"); } }
-#line 1363 "AutoParser.tab.c"
+#line 1363 "Parser_Bison.tab.c"
     break;
 
   case 13:
-#line 44 "AutoParser.y"
+#line 44 "Parser_Bison.y"
                   { yyval.intVal = yyvsp[0].intVal; }
-#line 1369 "AutoParser.tab.c"
+#line 1369 "Parser_Bison.tab.c"
     break;
 
   case 14:
-#line 45 "AutoParser.y"
+#line 45 "Parser_Bison.y"
                                     { yyval.intVal = yyvsp[-1].intVal; }
-#line 1375 "AutoParser.tab.c"
+#line 1375 "Parser_Bison.tab.c"
     break;
 
 
-#line 1379 "AutoParser.tab.c"
+#line 1379 "Parser_Bison.tab.c"
 
       default: break;
     }
@@ -1607,7 +1607,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 47 "AutoParser.y"
+#line 47 "Parser_Bison.y"
 
 
 /* 

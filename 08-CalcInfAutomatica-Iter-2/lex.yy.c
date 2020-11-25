@@ -447,13 +447,13 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "AutoScanner.l"
-#line 2 "AutoScanner.l"
+#line 1 "Scanner_Flex.l"
+#line 2 "Scanner_Flex.l"
 #include <stdio.h>
 #include "SemanticValue.h"
 
 #ifdef AUTOMATIC_PARSER
-#include "AutoParser.tab.h" //new automatic token definition
+#include "Parser_Bison.tab.h" //new automatic token definition
 #else
 #include "TokenDefinition.h"
 #endif
@@ -678,7 +678,7 @@ YY_DECL
 		}
 
 	{
-#line 17 "AutoScanner.l"
+#line 17 "Scanner_Flex.l"
 
 #line 684 "lex.yy.c"
 
@@ -739,67 +739,67 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "AutoScanner.l"
+#line 18 "Scanner_Flex.l"
 { SemanticValue_SetString(yytext); return TK_ID; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 19 "AutoScanner.l"
+#line 19 "Scanner_Flex.l"
 { SemanticValue_SetInteger(yytext); return TK_CONSTANT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 20 "AutoScanner.l"
+#line 20 "Scanner_Flex.l"
 { return TK_OP_PLUS; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "AutoScanner.l"
+#line 21 "Scanner_Flex.l"
 { return TK_OP_PROD; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 22 "AutoScanner.l"
+#line 22 "Scanner_Flex.l"
 { return TK_L_PAR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "AutoScanner.l"
+#line 23 "Scanner_Flex.l"
 { return TK_R_PAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 24 "AutoScanner.l"
+#line 24 "Scanner_Flex.l"
 { return TK_ASSIGN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 25 "AutoScanner.l"
+#line 25 "Scanner_Flex.l"
 { return TK_PRINT; }
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 26 "AutoScanner.l"
+#line 26 "Scanner_Flex.l"
 { return TK_END_STATEMENT; };
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 27 "AutoScanner.l"
+#line 27 "Scanner_Flex.l"
 { return TK_END_PROGRAM; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "AutoScanner.l"
+#line 28 "Scanner_Flex.l"
 ;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "AutoScanner.l"
+#line 29 "Scanner_Flex.l"
 { printf("[lexical error: unrecognized symbol at %s]", yytext); };
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 30 "AutoScanner.l"
+#line 30 "Scanner_Flex.l"
 ECHO;
 	YY_BREAK
 #line 806 "lex.yy.c"
@@ -1805,5 +1805,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 30 "AutoScanner.l"
+#line 30 "Scanner_Flex.l"
 

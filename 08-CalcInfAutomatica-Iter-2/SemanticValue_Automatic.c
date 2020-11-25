@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "SemanticValue.h"
-#include "AutoParser.tab.h"
+#include "Parser_Bison.tab.h"
 
 void SemanticValue_SetString(char stringLexeme[])
 {

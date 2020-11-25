@@ -3,7 +3,7 @@
 #include "SemanticValue.h"
 
 #ifdef AUTOMATIC_PARSER
-#include "AutoParser.tab.h" //new automatic token definition
+#include "Parser_Bison.tab.h" //new automatic token definition
 #else
 #include "TokenDefinition.h"
 #endif

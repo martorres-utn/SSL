@@ -5,8 +5,8 @@ CFLAGS = -std=c18 -g #agrego -g para decirle al compilador que emita informacion
 SOURCE0 = BST.c VariableManager.c Calc.c
 OBJ0 = BST.o VariableManager.o Calc.o
 
-BLUEPRINT_BISON = AutoParser
-BLUEPRINT_FLEX = AutoScanner
+BLUEPRINT_BISON = Parser_Bison
+BLUEPRINT_FLEX = Scanner_Flex
 
 SOURCE_BISON_PARSER = $(BLUEPRINT_BISON).tab.c
 OBJECT_BISON_PARSER = $(BLUEPRINT_BISON).tab.o
