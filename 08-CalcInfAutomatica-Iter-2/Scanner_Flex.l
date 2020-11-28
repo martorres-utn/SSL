@@ -1,12 +1,7 @@
 %{
 #include <stdio.h>
 #include "SemanticValue.h"
-
-#ifdef AUTOMATIC_PARSER
-#include "Parser_Bison.tab.h" //new automatic token definition
-#else
 #include "TokenDefinition.h"
-#endif
 
 int fileno( FILE * stream ); /*removes warning: implicit declaration*/
 

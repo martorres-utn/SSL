@@ -50,15 +50,15 @@ extern int yydebug;
   enum yytokentype
   {
     TK_END_PROGRAM = 0,
-    TK_ID = 258,
-    TK_CONSTANT = 259,
-    TK_OP_PLUS = 260,
-    TK_OP_PROD = 261,
-    TK_L_PAR = 262,
-    TK_R_PAR = 263,
-    TK_ASSIGN = 264,
-    TK_PRINT = 265,
-    TK_END_STATEMENT = 266
+    TK_ID = 1,
+    TK_CONSTANT = 2,
+    TK_OP_PLUS = 3,
+    TK_OP_PROD = 4,
+    TK_L_PAR = 5,
+    TK_R_PAR = 6,
+    TK_ASSIGN = 7,
+    TK_PRINT = 8,
+    TK_END_STATEMENT = 9
   };
 #endif
 

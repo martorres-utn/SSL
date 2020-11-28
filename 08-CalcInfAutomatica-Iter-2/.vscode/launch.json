@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Calc 1 - Flex & Bison",
+            "name": "Calc 1 - Flex Scanner & Bison Parser",
             "type": "cppdbg",
             "request": "launch",
             //"program": "enter program name, for example ${workspaceFolder}/a.out",
@@ -36,6 +36,54 @@
             "program": "${workspaceFolder}\\Calc_2.out",
             "args": [
                 "<","input_calc_lang.txt", ">","output_2.txt"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            //"miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build"
+        },
+        {
+            "name": "Calc 3 - Flex Scanner & Manual Parser",
+            "type": "cppdbg",
+            "request": "launch",
+            //"program": "enter program name, for example ${workspaceFolder}/a.out",
+            "program": "${workspaceFolder}\\Calc_3.out",
+            "args": [
+                "<","input_calc_lang.txt", ">","output_3.txt"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            //"miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build"
+        },
+        {
+            "name": "Calc 4 - Manual Scanner & Bison Parser",
+            "type": "cppdbg",
+            "request": "launch",
+            //"program": "enter program name, for example ${workspaceFolder}/a.out",
+            "program": "${workspaceFolder}\\Calc_4.out",
+            "args": [
+                "<","input_calc_lang.txt", ">","output_4.txt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

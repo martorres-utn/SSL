@@ -73,12 +73,13 @@
 #include "Scanner.h"
 #include "SemanticValue.h"
 #include "VariableManager.h"
+#include "TokenDefinition.h"
 
 static int yylex(void);
 void yyerror(const char *);
 
 
-#line 82 "Parser_Bison.tab.c"
+#line 83 "Parser_Bison.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -127,15 +128,15 @@ extern int yydebug;
   enum yytokentype
   {
     TK_END_PROGRAM = 0,
-    TK_ID = 258,
-    TK_CONSTANT = 259,
-    TK_OP_PLUS = 260,
-    TK_OP_PROD = 261,
-    TK_L_PAR = 262,
-    TK_R_PAR = 263,
-    TK_ASSIGN = 264,
-    TK_PRINT = 265,
-    TK_END_STATEMENT = 266
+    TK_ID = 1,
+    TK_CONSTANT = 2,
+    TK_OP_PLUS = 3,
+    TK_OP_PROD = 4,
+    TK_L_PAR = 5,
+    TK_R_PAR = 6,
+    TK_ASSIGN = 7,
+    TK_PRINT = 8,
+    TK_END_STATEMENT = 9
   };
 #endif
 
@@ -469,7 +470,7 @@ union yyalloc
 #define YYNSTATES  27
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   266
+#define YYMAXUTOK   257
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -481,7 +482,7 @@ union yyalloc
    as returned by yylex.  */
 static const yytype_int8 yytranslate[] =
 {
-       0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       0,     3,     4,     5,     6,     7,     8,     9,    10,    11,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -506,16 +507,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       2,     2,     2,     2,     2,     2,     1,     2
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    18,    18,    19,    23,    24,    28,    29,    33,    34,
-      38,    39,    43,    44,    45
+       0,    27,    27,    28,    32,    33,    37,    38,    42,    43,
+      47,    48,    52,    53,    54
 };
 #endif
 
@@ -536,8 +536,8 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_int16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266
+       0,   256,   257,     1,     2,     3,     4,     5,     6,     7,
+       8,     9
 };
 # endif
 
@@ -1315,61 +1315,61 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 23 "Parser_Bison.y"
+#line 32 "Parser_Bison.y"
                                                { VariableManager_SetValue(yyvsp[-3].strVal, yyvsp[-1].intVal); }
 #line 1321 "Parser_Bison.tab.c"
     break;
 
   case 5:
-#line 24 "Parser_Bison.y"
+#line 33 "Parser_Bison.y"
                                                           { printf("$:%i\n", yyvsp[-2].intVal); }
 #line 1327 "Parser_Bison.tab.c"
     break;
 
   case 6:
-#line 28 "Parser_Bison.y"
+#line 37 "Parser_Bison.y"
                      { VariableManager_RemoveAll(); }
 #line 1333 "Parser_Bison.tab.c"
     break;
 
   case 8:
-#line 33 "Parser_Bison.y"
+#line 42 "Parser_Bison.y"
             { yyval.intVal = yyvsp[0].intVal; }
 #line 1339 "Parser_Bison.tab.c"
     break;
 
   case 9:
-#line 34 "Parser_Bison.y"
+#line 43 "Parser_Bison.y"
                                   { yyval.intVal = yyvsp[-2].intVal + yyvsp[0].intVal; }
 #line 1345 "Parser_Bison.tab.c"
     break;
 
   case 10:
-#line 38 "Parser_Bison.y"
+#line 47 "Parser_Bison.y"
              { yyval.intVal = yyvsp[0].intVal; }
 #line 1351 "Parser_Bison.tab.c"
     break;
 
   case 11:
-#line 39 "Parser_Bison.y"
+#line 48 "Parser_Bison.y"
                              { yyval.intVal = yyvsp[-2].intVal * yyvsp[0].intVal; }
 #line 1357 "Parser_Bison.tab.c"
     break;
 
   case 12:
-#line 43 "Parser_Bison.y"
+#line 52 "Parser_Bison.y"
             { int value = 0; bool foundVar = VariableManager_GetValue(yyvsp[0].strVal, &value); if(foundVar) { yyval.intVal = value; } else { yyerror("Variable Undefined!"); } }
 #line 1363 "Parser_Bison.tab.c"
     break;
 
   case 13:
-#line 44 "Parser_Bison.y"
+#line 53 "Parser_Bison.y"
                   { yyval.intVal = yyvsp[0].intVal; }
 #line 1369 "Parser_Bison.tab.c"
     break;
 
   case 14:
-#line 45 "Parser_Bison.y"
+#line 54 "Parser_Bison.y"
                                     { yyval.intVal = yyvsp[-1].intVal; }
 #line 1375 "Parser_Bison.tab.c"
     break;
@@ -1607,7 +1607,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 47 "Parser_Bison.y"
+#line 56 "Parser_Bison.y"
 
 
 /* 

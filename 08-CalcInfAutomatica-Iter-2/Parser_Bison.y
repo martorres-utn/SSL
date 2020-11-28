@@ -4,14 +4,23 @@
 #include "Scanner.h"
 #include "SemanticValue.h"
 #include "VariableManager.h"
+#include "TokenDefinition.h"
 
 static int yylex(void);
 void yyerror(const char *);
 
 %}
 
-%token TK_ID TK_CONSTANT TK_OP_PLUS TK_OP_PROD TK_L_PAR TK_R_PAR TK_ASSIGN TK_PRINT TK_END_STATEMENT
 %token TK_END_PROGRAM 0
+%token TK_ID 1
+%token TK_CONSTANT 2
+%token TK_OP_PLUS 3
+%token TK_OP_PROD 4
+%token TK_L_PAR 5
+%token TK_R_PAR 6
+%token TK_ASSIGN 7
+%token TK_PRINT 8
+%token TK_END_STATEMENT 9
 
 %%
 statement_list 

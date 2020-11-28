@@ -38,7 +38,7 @@ OBJ4 = SemanticValue_Automatic.o Scanner_Manual.o Parser_Automatic.o
 all: $(BIN1) $(BIN2) $(BIN3) $(BIN4)
 
 #Bison Parser
-$(BLUEPRINT_BISON).tab.c: $(BLUEPRINT_BISON).y
+$(SOURCE_BISON_PARSER): $(BLUEPRINT_BISON).y
 	bison -d $(BLUEPRINT_BISON).y
 
 #Flex Scanner
