@@ -107,7 +107,7 @@ void yyerror(const char *);
 # undef YYERROR_VERBOSE
 # define YYERROR_VERBOSE 1
 #else
-# define YYERROR_VERBOSE 0
+# define YYERROR_VERBOSE 1
 #endif
 
 /* Use api.header.include to #include this header
@@ -514,12 +514,12 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    27,    27,    28,    32,    33,    37,    38,    42,    43,
-      47,    48,    52,    53,    54
+       0,    28,    28,    29,    33,    34,    38,    39,    43,    44,
+      48,    49,    53,    54,    55
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if YYDEBUG || YYERROR_VERBOSE || 1
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -1315,61 +1315,61 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 32 "Parser_Bison.y"
+#line 33 "Parser_Bison.y"
                                                { VariableManager_SetValue(yyvsp[-3].strVal, yyvsp[-1].intVal); }
 #line 1321 "Parser_Bison.tab.c"
     break;
 
   case 5:
-#line 33 "Parser_Bison.y"
+#line 34 "Parser_Bison.y"
                                                           { printf("$:%i\n", yyvsp[-2].intVal); }
 #line 1327 "Parser_Bison.tab.c"
     break;
 
   case 6:
-#line 37 "Parser_Bison.y"
+#line 38 "Parser_Bison.y"
                      { VariableManager_RemoveAll(); }
 #line 1333 "Parser_Bison.tab.c"
     break;
 
   case 8:
-#line 42 "Parser_Bison.y"
+#line 43 "Parser_Bison.y"
             { yyval.intVal = yyvsp[0].intVal; }
 #line 1339 "Parser_Bison.tab.c"
     break;
 
   case 9:
-#line 43 "Parser_Bison.y"
+#line 44 "Parser_Bison.y"
                                   { yyval.intVal = yyvsp[-2].intVal + yyvsp[0].intVal; }
 #line 1345 "Parser_Bison.tab.c"
     break;
 
   case 10:
-#line 47 "Parser_Bison.y"
+#line 48 "Parser_Bison.y"
              { yyval.intVal = yyvsp[0].intVal; }
 #line 1351 "Parser_Bison.tab.c"
     break;
 
   case 11:
-#line 48 "Parser_Bison.y"
+#line 49 "Parser_Bison.y"
                              { yyval.intVal = yyvsp[-2].intVal * yyvsp[0].intVal; }
 #line 1357 "Parser_Bison.tab.c"
     break;
 
   case 12:
-#line 52 "Parser_Bison.y"
+#line 53 "Parser_Bison.y"
             { int value = 0; bool foundVar = VariableManager_GetValue(yyvsp[0].strVal, &value); if(foundVar) { yyval.intVal = value; } else { yyerror("Variable Undefined!"); } }
 #line 1363 "Parser_Bison.tab.c"
     break;
 
   case 13:
-#line 53 "Parser_Bison.y"
+#line 54 "Parser_Bison.y"
                   { yyval.intVal = yyvsp[0].intVal; }
 #line 1369 "Parser_Bison.tab.c"
     break;
 
   case 14:
-#line 54 "Parser_Bison.y"
+#line 55 "Parser_Bison.y"
                                     { yyval.intVal = yyvsp[-1].intVal; }
 #line 1375 "Parser_Bison.tab.c"
     break;
@@ -1607,18 +1607,13 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 56 "Parser_Bison.y"
+#line 57 "Parser_Bison.y"
 
 
-/* 
-* yylex es el Scanner. Retorna el siguiente símbolo (token).
-* Si no hay más símbolos, retorna 0.
-*/
 int yylex(void){   
     return Scanner_GetNextToken();
 }
 
-/* Informa la ocurrencia de un error. */
 void yyerror(const char *s){
     puts(s);
     return;

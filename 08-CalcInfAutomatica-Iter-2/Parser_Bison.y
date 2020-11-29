@@ -10,6 +10,7 @@ static int yylex(void);
 void yyerror(const char *);
 
 %}
+%define parse.error verbose
 
 %token TK_END_PROGRAM 0
 %token TK_ID 1
@@ -55,15 +56,10 @@ factor
 ;
 %%
 
-/* 
-* yylex es el Scanner. Retorna el siguiente símbolo (token).
-* Si no hay más símbolos, retorna 0.
-*/
 int yylex(void){   
     return Scanner_GetNextToken();
 }
 
-/* Informa la ocurrencia de un error. */
 void yyerror(const char *s){
     puts(s);
     return;
